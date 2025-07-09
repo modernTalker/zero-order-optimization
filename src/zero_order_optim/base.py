@@ -26,16 +26,20 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         scaling_factor: float = 1.0,
         random_seed: Optional[int] = None,
         generator: Optional[torch.Generator] = None,
-        custom_perturb_func: Optional[Callable[[torch.Tensor], torch.Tensor]] = None
+        custom_perturb_func: Optional[Callable[[torch.Tensor], torch.Tensor]] = None,
+        indices: Optional[Dict[int, Tuple[str, Any]]] = None,
+        element_wise: bool = False
     ) -> None:
         """
-        Applies perturbation.
+        Applies perturbation to parameters, either globally or to selected indices.
         
         Args:
-            scaling_factor: scale of perturbation
-            random_seed: fixes random seed
-            generator: custom indices generator
-            custom_perturb_func: custom perturb function
+            scaling_factor: Scale of perturbation
+            random_seed: Fixes random seed for reproducibility
+            generator: Custom random number generator
+            custom_perturb_func: Custom perturbation function
+            indices: Dictionary of indices from _select_perturbation_indices for selective perturbation
+            element_wise: Whether to apply perturbations element-wise (for indices mode)
         """
         if random_seed is not None:
             torch.manual_seed(random_seed)
@@ -43,9 +47,40 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         for group in self.param_groups:
             eps = group['eps']
             for p in group['params']:
-                if p.requires_grad:
+                if not p.requires_grad:
+                    continue
+                    
+                param_id = id(p)
+                
+                if indices is not None and param_id in indices:
+                    spec = indices[param_id]
+                    
+                    if spec[0] == '1d':
+                        idx = spec[1]
+                        if element_wise:
+                            if custom_perturb_func:
+                                perturbations = custom_perturb_func(p.data[idx]) * eps
+                            else:
+                                perturbations = torch.randn_like(p.data[idx], generator=generator) * eps
+                            p.data[idx] += scaling_factor * perturbations
+                        else:
+                            p.data[idx] += scaling_factor * eps
+                            
+                    elif spec[0] == '2d':
+                        rows, cols = spec[1], spec[2]
+                        if element_wise:
+                            slice_data = p.data[rows[:, None], cols]
+                            if custom_perturb_func:
+                                perturbations = custom_perturb_func(slice_data) * eps
+                            else:
+                                perturbations = torch.randn_like(slice_data, generator=generator) * eps
+                            p.data[rows[:, None], cols] += scaling_factor * perturbations
+                        else:
+                            p.data[rows[:, None], cols] += scaling_factor * eps
+                
+                else:
                     if custom_perturb_func:
-                        perturbation = custom_perturb_func(p)
+                        perturbation = custom_perturb_func(p) * eps
                     else:
                         z = torch.randn_like(p, generator=generator)
                         perturbation = z * eps
@@ -127,40 +162,3 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         indices[param_id] = ('2d', rows, cols)
                         
         return indices
-    
-    def _apply_perturbation(
-        self, 
-        indices: Dict[int, Tuple[str, Any]], 
-        scaling: float,
-        element_wise: bool = False
-    ) -> None:
-        """
-        Applies a perturbation to selected indices
-        
-        Args:
-            indices: Dictionary of indices from _select_perturbation_indices
-            scaling: Magnitude of perturbation
-            element_wise: Whether to apply the perturbation element by element (True) or to the entire selection (False)
-        """
-        for group in self.param_groups:
-            for p in group['params']:
-                param_id = id(p)
-                if param_id in indices:
-                    spec = indices[param_id]
-                    
-                    if spec[0] == '1d':
-                        idx = spec[1]
-                        if element_wise:
-                            perturbations = torch.randn_like(p.data[idx]) * scaling
-                            p.data[idx] += perturbations
-                        else:
-                            p.data[idx] += scaling
-                            
-                    elif spec[0] == '2d':
-                        rows, cols = spec[1], spec[2]
-                        if element_wise:
-                            slice_data = p.data[rows[:, None], cols]
-                            perturbations = torch.randn_like(slice_data) * scaling
-                            p.data[rows[:, None], cols] += perturbations
-                        else:
-                            p.data[rows[:, None], cols] += scaling
