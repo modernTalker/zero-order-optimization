@@ -4,10 +4,14 @@ from typing import Optional, Callable, List, Dict, Any, Tuple, Union
 import torch
 
 class ZeroOrderOptimizer(Optimizer, ABC):
-    def __init__(self, params, defaults: Dict[str, Any]):
+    def __init__(self, trainer, params, defaults: Dict[str, Any]):
         super().__init__(params, defaults)
         self._validate_hyperparameters()
-        
+
+        self.sparse_grad_rng = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
+        self.sparse_grad_random_seed = np.random.randint(1000000000) # FIXME: is it correct?
+        self.trainer = trainer # FIXME: is it correct?
+
     def _validate_hyperparameters(self):
         """Obligatory hyperparameters check"""
         required = ['lr', 'eps']
@@ -86,6 +90,25 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         perturbation = z * eps
                         
                     p.data.add_(scaling_factor * perturbation)
+
+    def zo_perturb_parameters(self, random_seed=None, scaling_factor=1):
+        """
+        Perturb the parameters with random vector z.
+        Input:
+        - random_seed: random seed for MeZO in-place perturbation (if it's None, we will use self.zo_random_seed)
+        - scaling_factor: theta = theta + scaling_factor * z * eps
+        """
+
+        # Set the random seed to ensure that we sample the same z for perturbation/update
+        torch.manual_seed(random_seed if random_seed is not None else self.zo_random_seed)
+        self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed) # NOTE: call trainer. instead of self. ??? FIXED.
+
+        for name, param in self.named_parameters_to_optim:
+            grad_sparsity = self.trainer.get_grad_sparsity_by_name(name) # NOTE: call trainer. instead of self. ??? FIXED.
+            z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device, dtype=param.data.dtype)
+            if grad_sparsity is not None:
+                z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
+            param.data = param.data + scaling_factor * z * self.args.zo_eps
     
     def grad_approx(
         self,
