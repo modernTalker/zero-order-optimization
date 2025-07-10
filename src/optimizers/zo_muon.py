@@ -1,7 +1,15 @@
+from .base import ZeroOrderOptimizer
+import torch
+from torch.optim import SGD
+import numpy as np
+from .opt_utils import *
+
 class ZO_MUON(ZeroOrderOptimizer):
-    def __init__(self, params, args)
-        self._inner_optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
-        super().__init__(params, defaults)
+    def __init__(self, trainer, params, defaults):
+        params = list(params)
+        
+        self._inner_optimizer = SGD(params, lr=defaults["lr"], momentum=defaults["momentum"])
+        super().__init__(trainer, params, defaults)
 
     @torch.no_grad()
     def step(self, model, inputs):

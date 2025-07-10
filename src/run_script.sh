@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=0,5 
+export CUDA_VISIBLE_DEVICES=2
 export WANDB_DISABLED="false"        
 export WANDB_PROJECT="zo-llm-ft"    
 export WANDB_API_KEY=$(cat ~/.wandb_api_key)

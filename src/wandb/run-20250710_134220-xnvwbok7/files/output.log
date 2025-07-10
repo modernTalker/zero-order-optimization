@@ -1,0 +1,27 @@
+2025-07-10 13:42:29,608 - INFO - Sample train set 1500/67349
+2025-07-10 13:42:29,609 - INFO - ... including dev set 500 samples
+2025-07-10 13:42:29,609 - INFO - Loading model with FP16...
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+5
+2025-07-10 13:42:31,488 - INFO - Done with 1.88s
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 652, in main
+    framework = Framework(args, task)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 185, in __init__
+    self.model, self.tokenizer = self.load_model()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 249, in load_model
+    model = AutoModelForCausalLM.from_pretrained(self.args.model_name, config=config, device_map='auto',
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 471, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/modeling_utils.py", line 2722, in from_pretrained
+    max_memory = get_balanced_memory(
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/accelerate/utils/modeling.py", line 807, in get_balanced_memory
+    max_memory = get_max_memory(max_memory)
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/accelerate/utils/modeling.py", line 694, in get_max_memory
+    max_memory[key] = convert_file_size_to_int(max_memory[key])
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/accelerate/utils/modeling.py", line 92, in convert_file_size_to_int
+    raise ValueError(err_msg)
+ValueError: `size` 0GB is not in a valid format. Use an integer for bytes, or a string with an unit (like '5.0GB').

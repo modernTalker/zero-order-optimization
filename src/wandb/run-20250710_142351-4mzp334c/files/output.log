@@ -1,0 +1,77 @@
+2025-07-10 14:24:00,941 - INFO - Sample train set 1500/67349
+2025-07-10 14:24:00,942 - INFO - ... including dev set 500 samples
+2025-07-10 14:24:00,942 - INFO - Loading model with FP16...
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+39
+2025-07-10 14:24:05,773 - INFO - Done with 4.83s
+2025-07-10 14:24:06,066 - INFO - Dev samples: 500
+2025-07-10 14:24:06,067 - INFO - Train samples: 1000
+2025-07-10 14:24:06,067 - INFO - Eval sample length is 872
+2025-07-10 14:24:06,067 - INFO - Tokenizing training samples...
+2025-07-10 14:24:06,959 - INFO - Done with 0.89s
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-07-10 14:24:06,971 - INFO - ***** Running training *****
+2025-07-10 14:24:06,971 - INFO -   Num examples = 1000
+2025-07-10 14:24:06,971 - INFO -   Num Epochs = 318
+2025-07-10 14:24:06,971 - INFO -   Instantaneous batch size per device = 16
+2025-07-10 14:24:06,971 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-07-10 14:24:06,971 - INFO -   Gradient Accumulation steps = 1
+2025-07-10 14:24:06,971 - INFO -   Total optimization steps = 20000
+2025-07-10 14:24:06,972 - INFO -   Number of trainable parameters = 1315758080
+  0%|                                                                                                                                                       | 0/20000 [00:00<?, ?it/s]You're using a GPT2TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+  0%|                                                                                                                                             | 1/20000 [00:01<6:29:10,  1.17s/it]
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+{'peak_mem': 5.1439337730407715, 'step_consumption': 1164.6389961242676, 'epoch': 0.02}
+
+  0%|                                                                                                                                             | 4/20000 [00:02<3:44:27,  1.48it/s]
+{'peak_mem': 5.616368770599365, 'step_consumption': 582.7629566192627, 'epoch': 0.05}
+{'peak_mem': 5.616368770599365, 'step_consumption': 577.9564380645752, 'epoch': 0.06}
+
+  0%|                                                                                                                                             | 8/20000 [00:05<3:19:09,  1.67it/s]
+{'peak_mem': 5.616368770599365, 'step_consumption': 580.773115158081, 'epoch': 0.1}
+{'peak_mem': 5.616368770599365, 'step_consumption': 576.5652656555176, 'epoch': 0.11}
+{'peak_mem': 5.616368770599365, 'step_consumption': 570.7924365997314, 'epoch': 0.13}
+
+  0%|                                                                                                                                            | 11/20000 [00:07<3:18:17,  1.68it/s]
+{'loss': 0.4348, 'learning_rate': 0.5, 'epoch': 0.16}
+{'peak_mem': 5.616368770599365, 'step_consumption': 603.6202907562256, 'epoch': 0.16}
+{'peak_mem': 5.61646032333374, 'step_consumption': 584.1917991638184, 'epoch': 0.17}
+
+  0%|                                                                                                                                            | 15/20000 [00:09<3:14:59,  1.71it/s]
+{'peak_mem': 5.6164679527282715, 'step_consumption': 575.8705139160156, 'epoch': 0.21}
+{'peak_mem': 5.616490840911865, 'step_consumption': 583.2772254943848, 'epoch': 0.22}
+{'peak_mem': 5.616490840911865, 'step_consumption': 577.6221752166748, 'epoch': 0.24}
+
+  0%|▏                                                                                                                                           | 18/20000 [00:11<3:14:59,  1.71it/s]
+{'peak_mem': 5.616490840911865, 'step_consumption': 576.6370296478271, 'epoch': 0.27}
+{'peak_mem': 5.735334396362305, 'step_consumption': 594.0852165222168, 'epoch': 0.29}
+
+  0%|▏                                                                                                                                           | 22/20000 [00:13<3:15:21,  1.70it/s]
+{'loss': 0.0, 'learning_rate': 0.5, 'epoch': 0.32}
+{'peak_mem': 5.735334396362305, 'step_consumption': 584.1813087463379, 'epoch': 0.32}
+{'peak_mem': 5.735334396362305, 'step_consumption': 584.3460559844971, 'epoch': 0.33}
+  0%|▏                                                                                                                                           | 24/20000 [00:14<3:12:21,  1.73it/s]Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 547, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(model, inputs) # FIXME: the same for other optimizers
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_muon.py", line 67, in step
+    g_ortho = zeropower_via_newtonschulz5(g, steps=5)
+  File "/home/rinya/zero-order-optimization/src/optimizers/opt_utils/sampling.py", line 33, in zeropower_via_newtonschulz5
+    X = a * X + B @ X
+KeyboardInterrupt
+{'peak_mem': 5.735334396362305, 'step_consumption': 565.9604072570801, 'epoch': 0.37}
+{'peak_mem': 5.735334396362305, 'step_consumption': 566.8778419494629, 'epoch': 0.38}

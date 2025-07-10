@@ -92,6 +92,7 @@ from gradient_pruning.pruning_utils import (
 )
 from metrics import f1
 from utils import OPT_PERTURBATION_LEVEL_TO_REGEX
+from optimizers import * 
 
 _is_native_cpu_amp_available = is_torch_greater_or_equal_than_1_10
 
@@ -346,7 +347,12 @@ class OurTrainer(Trainer):
             # print(f"### args.lr_scheduler: {args.lr_scheduler_type}")
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
         elif args.trainer == "zo_muon":
-            self.optimizer = ZO_MUON(self.model.parameters(), args)
+            defaults = {
+                'lr': args.learning_rate,
+                'momentum': args.momentum,
+                'eps': args.zo_eps,
+            }
+            self.optimizer = ZO_MUON(self, self.model.parameters(), defaults) # TODO: add for other optimizers
             # self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
         elif args.trainer == "zo_muon_sampling":
             self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
@@ -538,7 +544,7 @@ class OurTrainer(Trainer):
                 elif args.trainer == "zo_jaguar":
                     tr_loss_step = self.zo_jaguar_step(model, inputs)
                 elif args.trainer == "zo_muon":
-                    tr_loss_step = self.optimizer.step() # FIXME: the same for other optimizers
+                    tr_loss_step = self.optimizer.step(model, inputs) # FIXME: the same for other optimizers
                     # tr_loss_step = self.zo_muon_step(model, inputs)
                 elif args.trainer == "zo_muon_sampling":
                     tr_loss_step = self.zo_muon_sampling_step(model, inputs)

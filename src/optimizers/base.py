@@ -2,6 +2,7 @@ from torch.optim import Optimizer
 from abc import ABC, abstractmethod
 from typing import Optional, Callable, List, Dict, Any, Tuple, Union
 import torch
+from .opt_utils import * 
 
 class ZeroOrderOptimizer(Optimizer, ABC):
     def __init__(self, trainer, params, defaults: Dict[str, Any]):
@@ -21,7 +22,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     raise ValueError(f"Missing required hyperparameter: {key}")
     
     @abstractmethod
-    def step(self, closure: Optional[Callable[[], float]] = None) -> Optional[float]:
+    def step(self, closure: Optional[Callable[[], float]] = None) -> Optional[float]: # FIXME: change to (model, inputs) ???
         """Proceeds one optimization step"""
         pass
     
@@ -108,7 +109,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device, dtype=param.data.dtype)
             if grad_sparsity is not None:
                 z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-            param.data = param.data + scaling_factor * z * self.args.zo_eps
+            param.data = param.data + scaling_factor * z * self.trainer.args.zo_eps # FIXME: change to defaults["eps"] ??? 
     
     def grad_approx(
         self,

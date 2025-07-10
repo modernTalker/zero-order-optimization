@@ -1,3 +1,15 @@
+from collections import defaultdict
+import inspect
+import math
+import os
+import re
+import random
+import shutil
+import sys
+import scipy.stats as sps
+from scipy.stats import ortho_group
+import numpy as np
+import torch
 
 def zeropower_via_newtonschulz5(G, steps=10, eps=1e-7):
     """
