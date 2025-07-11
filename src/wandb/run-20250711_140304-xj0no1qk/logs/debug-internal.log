@@ -406,3 +406,71 @@
 2025-07-11 14:03:29,479 DEBUG   SenderThread:2278493 [sender.py:send():382] send: artifact
 2025-07-11 14:03:29,479 INFO    HandlerThread:2278493 [handler.py:handle_request_defer():172] handle defer: 9
 2025-07-11 14:03:29,581 INFO    Thread-12 :2278493 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/output.log
+2025-07-11 14:03:30,697 INFO    wandb-upload_1:2278493 [upload_job.py:push():86] Skipped uploading /home/rinya/.local/share/wandb/artifacts/staging/tmpc1gvfca3
+2025-07-11 14:03:31,020 INFO    wandb-upload_0:2278493 [upload_job.py:push():89] Uploaded file /home/rinya/.local/share/wandb/artifacts/staging/tmpjn6gpe04
+2025-07-11 14:03:33,217 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: keepalive
+2025-07-11 14:03:34,528 INFO    SenderThread:2278493 [sender.py:send_artifact():1470] sent artifact job-git_github.com_modernTalker_zero-order-optimization.git_src_run.py - {'id': 'QXJ0aWZhY3Q6MTg3MjA4OTk0MA==', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjY4Mjk1NjQ1Mg==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTg3MjA4NDExNg==', 'versionIndex': 22}}}
+2025-07-11 14:03:34,528 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: defer
+2025-07-11 14:03:34,529 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 14:03:34,529 INFO    SenderThread:2278493 [sender.py:send_request_defer():613] handle sender defer: 9
+2025-07-11 14:03:34,529 INFO    SenderThread:2278493 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-07-11 14:03:34,583 INFO    SenderThread:2278493 [dir_watcher.py:finish():388] scan: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files
+2025-07-11 14:03:34,583 INFO    SenderThread:2278493 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/wandb-metadata.json wandb-metadata.json
+2025-07-11 14:03:34,583 INFO    SenderThread:2278493 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/requirements.txt requirements.txt
+2025-07-11 14:03:34,584 INFO    SenderThread:2278493 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/conda-environment.yaml conda-environment.yaml
+2025-07-11 14:03:34,584 INFO    SenderThread:2278493 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/output.log output.log
+2025-07-11 14:03:34,584 INFO    SenderThread:2278493 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/config.yaml config.yaml
+2025-07-11 14:03:34,584 INFO    SenderThread:2278493 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/wandb-summary.json wandb-summary.json
+2025-07-11 14:03:34,587 INFO    SenderThread:2278493 [sender.py:transition_state():617] send defer: 10
+2025-07-11 14:03:34,588 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 14:03:34,588 INFO    HandlerThread:2278493 [handler.py:handle_request_defer():172] handle defer: 10
+2025-07-11 14:03:34,589 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: defer
+2025-07-11 14:03:34,589 INFO    SenderThread:2278493 [sender.py:send_request_defer():613] handle sender defer: 10
+2025-07-11 14:03:34,589 INFO    SenderThread:2278493 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 14:03:35,003 INFO    wandb-upload_0:2278493 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/output.log
+2025-07-11 14:03:35,780 INFO    wandb-upload_1:2278493 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/requirements.txt
+2025-07-11 14:03:35,817 INFO    wandb-upload_2:2278493 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/config.yaml
+2025-07-11 14:03:35,830 INFO    wandb-upload_3:2278493 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/files/wandb-summary.json
+2025-07-11 14:03:36,031 INFO    Thread-11 (_thread_body):2278493 [sender.py:transition_state():617] send defer: 11
+2025-07-11 14:03:36,032 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 14:03:36,032 INFO    HandlerThread:2278493 [handler.py:handle_request_defer():172] handle defer: 11
+2025-07-11 14:03:36,032 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: defer
+2025-07-11 14:03:36,033 INFO    SenderThread:2278493 [sender.py:send_request_defer():613] handle sender defer: 11
+2025-07-11 14:03:36,033 INFO    SenderThread:2278493 [file_pusher.py:join():181] waiting for file pusher
+2025-07-11 14:03:36,033 INFO    SenderThread:2278493 [sender.py:transition_state():617] send defer: 12
+2025-07-11 14:03:36,033 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 14:03:36,034 INFO    HandlerThread:2278493 [handler.py:handle_request_defer():172] handle defer: 12
+2025-07-11 14:03:36,034 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: defer
+2025-07-11 14:03:36,034 INFO    SenderThread:2278493 [sender.py:send_request_defer():613] handle sender defer: 12
+2025-07-11 14:03:36,034 INFO    SenderThread:2278493 [file_stream.py:finish():595] file stream finish called
+2025-07-11 14:03:36,218 INFO    SenderThread:2278493 [file_stream.py:finish():599] file stream finish is done
+2025-07-11 14:03:36,218 INFO    SenderThread:2278493 [sender.py:transition_state():617] send defer: 13
+2025-07-11 14:03:36,218 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 14:03:36,218 INFO    HandlerThread:2278493 [handler.py:handle_request_defer():172] handle defer: 13
+2025-07-11 14:03:36,219 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: defer
+2025-07-11 14:03:36,219 INFO    SenderThread:2278493 [sender.py:send_request_defer():613] handle sender defer: 13
+2025-07-11 14:03:36,219 INFO    SenderThread:2278493 [sender.py:transition_state():617] send defer: 14
+2025-07-11 14:03:36,220 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 14:03:36,220 INFO    HandlerThread:2278493 [handler.py:handle_request_defer():172] handle defer: 14
+2025-07-11 14:03:36,220 DEBUG   SenderThread:2278493 [sender.py:send():382] send: final
+2025-07-11 14:03:36,220 DEBUG   SenderThread:2278493 [sender.py:send():382] send: footer
+2025-07-11 14:03:36,220 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: defer
+2025-07-11 14:03:36,220 INFO    SenderThread:2278493 [sender.py:send_request_defer():613] handle sender defer: 14
+2025-07-11 14:03:36,222 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-11 14:03:36,222 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: server_info
+2025-07-11 14:03:36,222 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: get_summary
+2025-07-11 14:03:36,223 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: sampled_history
+2025-07-11 14:03:36,224 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 14:03:36,224 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: poll_exit
+2025-07-11 14:03:36,224 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: server_info
+2025-07-11 14:03:36,226 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: job_info
+2025-07-11 14:03:36,426 DEBUG   SenderThread:2278493 [sender.py:send_request():409] send_request: job_info
+2025-07-11 14:03:36,427 INFO    MainThread:2278493 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-07-11 14:03:36,428 INFO    MainThread:2278493 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-07-11 14:03:36,428 INFO    MainThread:2278493 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-07-11 14:03:36,429 DEBUG   HandlerThread:2278493 [handler.py:handle_request():146] handle_request: shutdown
+2025-07-11 14:03:36,429 INFO    HandlerThread:2278493 [handler.py:finish():866] shutting down handler
+2025-07-11 14:03:37,227 INFO    WriterThread:2278493 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250711_140304-xj0no1qk/run-xj0no1qk.wandb
+2025-07-11 14:03:37,427 INFO    SenderThread:2278493 [sender.py:finish():1548] shutting down sender
+2025-07-11 14:03:37,427 INFO    SenderThread:2278493 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 14:03:37,427 INFO    SenderThread:2278493 [file_pusher.py:join():181] waiting for file pusher

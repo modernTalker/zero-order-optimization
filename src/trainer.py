@@ -350,7 +350,7 @@ class OurTrainer(Trainer):
         # elif args.trainer == "zo_muon_sampling":
         #     self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
         elif args.trainer == "jaguar_muon":
-            self.optimizer = Jaguar_MUON(self, self.model.parameters(), defaults)
+            self.optimizer = Jaguar_MUON(self.model.parameters(), self.args, self.gradient_sparsity)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
@@ -543,12 +543,12 @@ class OurTrainer(Trainer):
                 elif args.trainer == "zo_muon_sampling":
                     tr_loss_step = self.zo_muon_sampling_step(model, inputs)
                 elif args.trainer == "jaguar_muon":
-                    tr_loss_step = self.optimizer.step(model, inputs)
+                    tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "zo_conserv":
                     tr_loss_step = self.optimizer.step(model, inputs)
-                elif args.trainer == "forward_grad":
-                    tr_loss_step = self.forward_grad_step(model, inputs)
-                else:
+                # elif args.trainer == "forward_grad": # FIXME: do we need this method? 
+                #     tr_loss_step = self.forward_grad_step(model, inputs)
+                else: # FIXME: do we need this part? maybe just throw error
                     if (
                             ((step + 1) % args.gradient_accumulation_steps != 0)
                             and args.local_rank != -1

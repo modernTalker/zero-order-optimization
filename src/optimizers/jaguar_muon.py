@@ -5,21 +5,24 @@ import numpy as np
 from .opt_utils import *
 
 class Jaguar_MUON(ZeroOrderOptimizer):
-    def __init__(self, trainer, params, defaults):
+    def __init__(self, params, args, gradient_sparsity=None):
         params = list(params)
-        
-        self._inner_optimizer = SGD(params, lr=defaults["lr"], momentum=defaults["momentum"])
-        super().__init__(trainer, params, defaults)
+        self._inner_optimizer = SGD(params, lr=args.learning_rate, momentum=args.momentum)
+        super().__init__(params, args, gradient_sparsity)
 
     @torch.no_grad()
-    def step(self, model, inputs):
-        args = self.trainer.args
+    def step(self, closure):
+        args = self.args
         tau = args.zo_tau
         beta = args.zo_beta
         use_smoothing = args.zo_use_smoothing
 
-        self.named_parameters_to_optim = [(name, param) for name, param in model.named_parameters() if param.requires_grad]
-
+        self.named_parameters_to_optim = []
+        for name, param in self.named_parameters_all:
+            if param.requires_grad:
+                self.named_parameters_to_optim.append((name, param))
+                param.grad = None  
+                
         self.zo_random_seed = np.random.randint(1_000_000_000)
         torch.manual_seed(self.zo_random_seed)
 
@@ -49,7 +52,7 @@ class Jaguar_MUON(ZeroOrderOptimizer):
             else:
                 selected_rows, selected_cols = selected_indices[name]
                 param.data[selected_rows[:, None], selected_cols] += tau
-        loss1 = self.trainer.zo_forward(model, inputs)
+        loss1 = closure()
 
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
@@ -58,7 +61,7 @@ class Jaguar_MUON(ZeroOrderOptimizer):
             else:
                 selected_rows, selected_cols = selected_indices[name]
                 param.data[selected_rows[:, None], selected_cols] = original_values[name] - tau
-        loss2 = self.trainer.zo_forward(model, inputs)
+        loss2 = closure()
 
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
