@@ -1,6 +1,19 @@
-@torch.no_grad()
-    def zo_ns_jaguar_step(self, model, inputs, debug=False):
-        args = self.args
+from .base import ZeroOrderOptimizer
+import torch
+from torch.optim import SGD
+import numpy as np
+from .opt_utils import *
+
+class Jaguar_MUON(ZeroOrderOptimizer):
+    def __init__(self, trainer, params, defaults):
+        params = list(params)
+        
+        self._inner_optimizer = SGD(params, lr=defaults["lr"], momentum=defaults["momentum"])
+        super().__init__(trainer, params, defaults)
+
+    @torch.no_grad()
+    def step(self, model, inputs):
+        args = self.trainer.args
         tau = args.zo_tau
         beta = args.zo_beta
         use_smoothing = args.zo_use_smoothing
@@ -36,7 +49,7 @@
             else:
                 selected_rows, selected_cols = selected_indices[name]
                 param.data[selected_rows[:, None], selected_cols] += tau
-        loss1 = self.zo_forward(model, inputs)
+        loss1 = self.trainer.zo_forward(model, inputs)
 
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
@@ -45,7 +58,7 @@
             else:
                 selected_rows, selected_cols = selected_indices[name]
                 param.data[selected_rows[:, None], selected_cols] = original_values[name] - tau
-        loss2 = self.zo_forward(model, inputs)
+        loss2 = self.trainer.zo_forward(model, inputs)
 
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
@@ -80,11 +93,7 @@
 
                 param.grad = zeropower_via_newtonschulz5(param.grad, steps=10).to(param.data.dtype)
 
-        self.optimizer.step()
-        # param.grad = None
+        self._inner_optimizer.step()
 
-        if debug:
-            print(f"loss1={loss1.item():.4f}, loss2={loss2.item():.4f}, rho={rho:.2f}")
-
-        assert args.gradient_accumulation_steps == 1
+        assert args.gradient_accumulation_steps == 1 # FIXME: for what?
         return loss1

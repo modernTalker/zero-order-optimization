@@ -329,7 +329,11 @@ class OurTrainer(Trainer):
         self._load_optimizer_and_scheduler(resume_from_checkpoint)
 
         # overload the optimizer here
-        # Added zo_jaguar
+        defaults = {
+                'lr': args.learning_rate,
+                'momentum': args.momentum,
+                'eps': args.zo_eps,
+        }
         if args.trainer == "zo_adam":
             self.optimizer = Adam(self.model.parameters(), lr=args.learning_rate)
             # self.optimizer = {name: Adam([param], lr=args.learning_rate) for name, param in self.model.named_parameters()}
@@ -347,17 +351,11 @@ class OurTrainer(Trainer):
             # print(f"### args.lr_scheduler: {args.lr_scheduler_type}")
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
         elif args.trainer == "zo_muon":
-            defaults = {
-                'lr': args.learning_rate,
-                'momentum': args.momentum,
-                'eps': args.zo_eps,
-            }
             self.optimizer = ZO_MUON(self, self.model.parameters(), defaults) # TODO: add for other optimizers
-            # self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
         elif args.trainer == "zo_muon_sampling":
             self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
         elif args.trainer == "zo_ns_jaguar":
-            self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
+            self.optimizer = Jaguar_MUON(self, self.model.parameters(), defaults)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam":
@@ -549,7 +547,8 @@ class OurTrainer(Trainer):
                 elif args.trainer == "zo_muon_sampling":
                     tr_loss_step = self.zo_muon_sampling_step(model, inputs)
                 elif args.trainer == "zo_ns_jaguar":
-                    tr_loss_step = self.zo_ns_jaguar_step(model, inputs)
+                    # tr_loss_step = self.zo_ns_jaguar_step(model, inputs)
+                    tr_loss_step = self.optimizer.step(model, inputs)
                 elif args.trainer == "zo_conserv":
                     tr_loss_step = self.zo_conserv_step(model, inputs)
                 elif args.trainer == "forward_grad":
@@ -755,7 +754,8 @@ class OurTrainer(Trainer):
             scale_after = self.scaler.get_scale()
             optimizer_was_run = scale_before <= scale_after
         else:
-            self.optimizer.step()
+            # self.optimizer.step()
+            pass # FIXME: fix this part
 
         if optimizer_was_run and not self.deepspeed:
             self.lr_scheduler.step()
