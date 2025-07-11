@@ -1,0 +1,514 @@
+2025-07-11 15:47:22,020 INFO    StreamThr :3039037 [internal.py:wandb_internal():86] W&B internal server running at pid: 3039037, started at: 2025-07-11 15:47:22.010347
+2025-07-11 15:47:22,026 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status
+2025-07-11 15:47:22,030 INFO    WriterThread:3039037 [datastore.py:open_for_write():85] open: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/run-obodlo3a.wandb
+2025-07-11 15:47:22,042 DEBUG   SenderThread:3039037 [sender.py:send():382] send: header
+2025-07-11 15:47:22,046 DEBUG   SenderThread:3039037 [sender.py:send():382] send: run
+2025-07-11 15:47:22,587 INFO    SenderThread:3039037 [dir_watcher.py:__init__():211] watching files in: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files
+2025-07-11 15:47:22,590 INFO    SenderThread:3039037 [sender.py:_start_run_threads():1136] run started: obodlo3a with start time 1752238042.017893
+2025-07-11 15:47:22,598 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: check_version
+2025-07-11 15:47:22,604 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: check_version
+2025-07-11 15:47:22,892 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: run_start
+2025-07-11 15:47:22,921 DEBUG   HandlerThread:3039037 [system_info.py:__init__():32] System info init
+2025-07-11 15:47:22,925 DEBUG   HandlerThread:3039037 [system_info.py:__init__():47] System info init done
+2025-07-11 15:47:22,932 INFO    HandlerThread:3039037 [system_monitor.py:start():194] Starting system monitor
+2025-07-11 15:47:22,938 INFO    SystemMonitor:3039037 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2025-07-11 15:47:22,939 INFO    HandlerThread:3039037 [system_monitor.py:probe():214] Collecting system info
+2025-07-11 15:47:22,943 INFO    SystemMonitor:3039037 [interfaces.py:start():190] Started cpu monitoring
+2025-07-11 15:47:22,952 INFO    SystemMonitor:3039037 [interfaces.py:start():190] Started disk monitoring
+2025-07-11 15:47:22,956 INFO    SystemMonitor:3039037 [interfaces.py:start():190] Started gpu monitoring
+2025-07-11 15:47:22,962 INFO    SystemMonitor:3039037 [interfaces.py:start():190] Started memory monitoring
+2025-07-11 15:47:22,966 INFO    SystemMonitor:3039037 [interfaces.py:start():190] Started network monitoring
+2025-07-11 15:47:23,004 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,004 DEBUG   HandlerThread:3039037 [system_info.py:probe():196] Probing system
+2025-07-11 15:47:23,009 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,018 DEBUG   HandlerThread:3039037 [system_info.py:_probe_git():181] Probing git
+2025-07-11 15:47:23,026 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,032 DEBUG   HandlerThread:3039037 [system_info.py:_probe_git():189] Probing git done
+2025-07-11 15:47:23,035 DEBUG   HandlerThread:3039037 [system_info.py:probe():244] Probing system done
+2025-07-11 15:47:23,036 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,039 DEBUG   HandlerThread:3039037 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-125-generic-x86_64-with-glibc2.31', 'python': '3.10.16', 'heartbeatAt': '2025-07-11T12:47:23.015610', 'startedAt': '2025-07-11T12:47:21.906134', 'docker': None, 'cuda': None, 'args': ('--model_name=facebook/opt-1.3b', '--task_name=SST2', '--output_dir=result/SST2-ft-', '--num_train_epochs=5', '--per_device_train_batch_size=16', '--load_best_model_at_end', '--evaluation_strategy=steps', '--save_strategy=steps', '--save_total_limit=1', '--eval_steps=1000', '--max_steps=20000', '--logging_steps=10', '--num_eval=1000', '--num_train=1000', '--num_dev=500', '--train_as_classification', '--perturbation_mode=two_side', '--trainer=zo_sampling_muon', '--train_set_seed=0', '--lr_scheduler_type=constant', '--save_steps=1000', '--load_float16', '--learning_rate=5e-1', '--zo_eps=0.001', '--momentum=0.9', '--weight_decay=0', '--module_wise_perturbation=False', '--zo_tau=0.1', '--zo_use_smoothing=true', '--zo_beta=1e-2', '--overwrite_output_dir'), 'state': 'running', 'program': '/home/rinya/zero-order-optimization/src/run.py', 'codePathLocal': 'run.py', 'codePath': 'src/run.py', 'git': {'remote': 'git@github.com:modernTalker/zero-order-optimization.git', 'commit': '0d105223aedb5a6e81f839651612c4133b8556fc'}, 'email': 'evseevgrv@gmail.com', 'root': '/home/rinya/zero-order-optimization', 'host': 'opt-mipt', 'username': 'rinya', 'executable': '/home/rinya/anaconda3/envs/zollm/bin/python', 'cpu_count': 48, 'cpu_count_logical': 48, 'cpu_freq': {'current': 2195.856, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 132.80414581298828, 'used': 53.412635803222656}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 8, 'memory': {'total': 503.8747673034668}}
+2025-07-11 15:47:23,052 INFO    HandlerThread:3039037 [system_monitor.py:probe():224] Finished collecting system info
+2025-07-11 15:47:23,056 INFO    HandlerThread:3039037 [system_monitor.py:probe():227] Publishing system info
+2025-07-11 15:47:23,061 DEBUG   HandlerThread:3039037 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2025-07-11 15:47:23,069 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,074 DEBUG   HandlerThread:3039037 [system_info.py:_save_pip():68] Saving pip packages done
+2025-07-11 15:47:23,078 DEBUG   HandlerThread:3039037 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2025-07-11 15:47:23,091 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,104 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:23,121 DEBUG   HandlerThread:3039037 [system_info.py:_save_conda():87] Saving conda packages done
+2025-07-11 15:47:23,136 INFO    HandlerThread:3039037 [system_monitor.py:probe():229] Finished publishing system info
+2025-07-11 15:47:23,145 DEBUG   SenderThread:3039037 [sender.py:send():382] send: files
+2025-07-11 15:47:23,150 INFO    SenderThread:3039037 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2025-07-11 15:47:23,151 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 15:47:23,160 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:47:23,161 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 15:47:23,489 DEBUG   SenderThread:3039037 [sender.py:send():382] send: telemetry
+2025-07-11 15:47:23,592 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-metadata.json
+2025-07-11 15:47:23,597 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/requirements.txt
+2025-07-11 15:47:23,601 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/conda-environment.yaml
+2025-07-11 15:47:23,934 INFO    wandb-upload_0:3039037 [upload_job.py:push():131] Uploaded file /tmp/tmpei3t379vwandb/n8udrkta-wandb-metadata.json
+2025-07-11 15:47:25,107 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:25,107 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:25,110 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:25,113 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:25,114 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:25,118 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:25,123 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,123 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,124 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,127 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,130 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,131 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,135 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,140 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:27,498 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:29,140 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:29,141 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:29,144 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:29,147 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:29,148 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:29,152 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:29,159 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,160 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,160 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,164 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,167 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,168 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,173 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,178 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:31,629 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:47:32,771 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:33,178 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,179 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,182 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,185 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,189 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,193 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,198 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:33,630 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:47:34,630 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:47:35,199 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:35,200 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:35,203 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:35,206 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:35,208 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:35,212 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:35,218 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,220 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,221 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,224 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,227 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,229 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,234 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,240 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:37,632 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:47:37,673 DEBUG   SenderThread:3039037 [sender.py:send():382] send: config
+2025-07-11 15:47:37,676 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:47:37,677 DEBUG   SenderThread:3039037 [sender.py:send():382] send: telemetry
+2025-07-11 15:47:37,679 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:47:37,680 WARNING SenderThread:3039037 [sender.py:send_metric():1343] Seen metric with glob (shouldn't happen)
+2025-07-11 15:47:38,152 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 15:47:38,153 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:47:38,154 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 15:47:38,328 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:39,241 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,244 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,249 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,253 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,255 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,260 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,266 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:39,633 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:47:40,634 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:47:41,267 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:41,270 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:41,274 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:41,279 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:41,281 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:41,286 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:41,293 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,295 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,297 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,301 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,305 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,307 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,313 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,319 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:43,329 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:45,323 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:45,325 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:45,329 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:45,332 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:45,335 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:45,339 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:45,346 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,349 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,351 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,355 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,359 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,361 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,366 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:47,372 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:48,331 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:49,374 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:49,377 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:49,383 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:49,387 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:49,392 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:49,397 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:49,405 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,408 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,411 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,415 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,421 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,425 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,437 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:51,450 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,152 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 15:47:53,158 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 15:47:53,193 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:47:53,363 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:53,454 ERROR   gpu       :3039037 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2025-07-11 15:47:53,458 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,463 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,471 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,478 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,482 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,490 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:53,501 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:54,692 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/config.yaml
+2025-07-11 15:47:55,505 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:55,508 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:55,515 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:55,524 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:55,527 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:55,536 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:55,545 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,548 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,552 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,558 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,565 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,569 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,576 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:57,584 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:58,730 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:47:59,592 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:59,597 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:59,603 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:59,609 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:59,613 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:59,620 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:47:59,627 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,630 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,634 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,640 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,646 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,650 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,656 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:01,662 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,666 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,668 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,674 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,679 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,683 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,690 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,696 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:03,732 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:05,700 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:05,703 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:05,709 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:05,715 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:05,720 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:05,727 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:05,735 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,739 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,742 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,748 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,754 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,758 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,764 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:07,771 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:08,153 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 15:48:08,154 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 15:48:08,193 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:48:09,421 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:09,775 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:09,775 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:09,786 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:09,789 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:09,790 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:09,794 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:09,799 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,800 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,800 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,804 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,807 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,808 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,812 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:11,817 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,818 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,819 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,822 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,825 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,826 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,830 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:13,836 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:14,434 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:15,837 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:15,837 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:15,841 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:15,844 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:15,846 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:15,850 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:15,856 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,857 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,858 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,861 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,865 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,866 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,871 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:17,876 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,435 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:19,877 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,878 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,881 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,885 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,886 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,897 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:19,920 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,922 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,923 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,926 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,930 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,931 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,936 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:21,942 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:22,970 DEBUG   SystemMonitor:3039037 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2025-07-11 15:48:22,974 DEBUG   SenderThread:3039037 [sender.py:send():382] send: stats
+2025-07-11 15:48:23,153 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 15:48:23,155 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 15:48:23,197 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:48:23,943 ERROR   gpu       :3039037 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2025-07-11 15:48:23,945 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:23,946 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:23,950 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:23,955 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:23,957 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:23,962 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:23,969 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,295 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:25,337 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 15:48:25,339 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 15:48:25,340 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:48:25,342 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:48:25,344 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:48:25,345 DEBUG   SenderThread:3039037 [sender.py:send():382] send: history
+2025-07-11 15:48:25,347 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 15:48:25,352 INFO    SenderThread:3039037 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 15:48:25,354 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:48:25,355 DEBUG   SenderThread:3039037 [sender.py:send():382] send: metric
+2025-07-11 15:48:25,357 DEBUG   SenderThread:3039037 [sender.py:send():382] send: history
+2025-07-11 15:48:25,358 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 15:48:25,365 INFO    SenderThread:3039037 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 15:48:25,732 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-summary.json
+2025-07-11 15:48:25,971 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,973 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,978 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,982 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,984 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,989 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:25,996 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:26,733 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:48:27,733 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:48:27,999 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:28,002 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:28,007 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:28,011 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:28,014 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:28,021 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:28,029 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,032 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,035 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,044 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,052 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,057 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,063 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,070 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:30,391 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:32,073 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:32,077 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:32,086 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:32,093 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:32,098 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:32,107 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:32,118 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,124 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,129 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,140 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,148 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,156 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,167 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:34,180 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:35,393 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:36,186 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:36,192 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:36,204 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:36,213 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:36,221 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:36,233 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:36,242 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,153 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 15:48:38,160 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:48:38,161 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 15:48:38,247 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,252 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,262 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,269 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,276 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,285 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,298 ERROR   gpu       :3039037 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 15:48:38,470 DEBUG   SenderThread:3039037 [sender.py:send():382] send: exit
+2025-07-11 15:48:38,475 INFO    SenderThread:3039037 [sender.py:send_exit():589] handling exit code: 255
+2025-07-11 15:48:38,483 INFO    SenderThread:3039037 [sender.py:send_exit():591] handling runtime: 75
+2025-07-11 15:48:38,607 INFO    SenderThread:3039037 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 15:48:38,618 INFO    SenderThread:3039037 [sender.py:send_exit():597] send defer
+2025-07-11 15:48:38,625 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,632 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 0
+2025-07-11 15:48:38,639 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,646 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 0
+2025-07-11 15:48:38,656 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 1
+2025-07-11 15:48:38,671 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,681 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 1
+2025-07-11 15:48:38,688 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,695 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 1
+2025-07-11 15:48:38,701 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 2
+2025-07-11 15:48:38,708 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,715 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 2
+2025-07-11 15:48:38,725 INFO    HandlerThread:3039037 [system_monitor.py:finish():203] Stopping system monitor
+2025-07-11 15:48:38,736 ERROR   gpu       :3039037 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2025-07-11 15:48:38,737 INFO    HandlerThread:3039037 [interfaces.py:finish():202] Joined cpu monitor
+2025-07-11 15:48:38,738 DEBUG   SystemMonitor:3039037 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2025-07-11 15:48:38,739 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-summary.json
+2025-07-11 15:48:38,749 INFO    HandlerThread:3039037 [interfaces.py:finish():202] Joined disk monitor
+2025-07-11 15:48:38,756 DEBUG   SystemMonitor:3039037 [system_monitor.py:_start():183] Publishing last batch of metrics
+2025-07-11 15:48:38,770 INFO    HandlerThread:3039037 [interfaces.py:finish():202] Joined gpu monitor
+2025-07-11 15:48:38,784 INFO    HandlerThread:3039037 [interfaces.py:finish():202] Joined memory monitor
+2025-07-11 15:48:38,791 INFO    HandlerThread:3039037 [interfaces.py:finish():202] Joined network monitor
+2025-07-11 15:48:38,798 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,804 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 2
+2025-07-11 15:48:38,811 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 3
+2025-07-11 15:48:38,818 DEBUG   SenderThread:3039037 [sender.py:send():382] send: stats
+2025-07-11 15:48:38,818 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,832 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 3
+2025-07-11 15:48:38,839 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,846 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 3
+2025-07-11 15:48:38,853 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 4
+2025-07-11 15:48:38,860 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,866 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 4
+2025-07-11 15:48:38,874 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,880 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 4
+2025-07-11 15:48:38,887 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 5
+2025-07-11 15:48:38,894 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,901 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 5
+2025-07-11 15:48:38,909 DEBUG   SenderThread:3039037 [sender.py:send():382] send: summary
+2025-07-11 15:48:38,943 INFO    SenderThread:3039037 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 15:48:38,950 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,956 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 5
+2025-07-11 15:48:38,963 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 6
+2025-07-11 15:48:38,973 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:38,983 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 6
+2025-07-11 15:48:38,990 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:38,996 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 6
+2025-07-11 15:48:39,008 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 15:48:39,278 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 7
+2025-07-11 15:48:39,285 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:39,291 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 7
+2025-07-11 15:48:39,298 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:39,304 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 7
+2025-07-11 15:48:39,468 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-11 15:48:39,740 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/config.yaml
+2025-07-11 15:48:39,746 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:48:39,752 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-summary.json
+2025-07-11 15:48:39,852 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 8
+2025-07-11 15:48:39,858 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: poll_exit
+2025-07-11 15:48:39,859 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:39,870 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 8
+2025-07-11 15:48:39,877 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:39,882 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 8
+2025-07-11 15:48:39,888 INFO    SenderThread:3039037 [job_builder.py:build():298] Attempting to build job artifact
+2025-07-11 15:48:39,896 INFO    SenderThread:3039037 [job_builder.py:_get_source_type():428] is repo sourced job
+2025-07-11 15:48:39,915 INFO    SenderThread:3039037 [job_builder.py:build():404] adding wandb-job metadata file
+2025-07-11 15:48:40,106 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 9
+2025-07-11 15:48:40,112 DEBUG   SenderThread:3039037 [sender.py:send():382] send: artifact
+2025-07-11 15:48:40,112 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:40,123 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 9
+2025-07-11 15:48:40,469 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-11 15:48:40,740 INFO    Thread-12 :3039037 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:48:41,310 INFO    wandb-upload_0:3039037 [upload_job.py:push():86] Skipped uploading /home/rinya/.local/share/wandb/artifacts/staging/tmpd087vy2m
+2025-07-11 15:48:41,737 INFO    wandb-upload_1:3039037 [upload_job.py:push():89] Uploaded file /home/rinya/.local/share/wandb/artifacts/staging/tmpvesuq4jd
+2025-07-11 15:48:43,215 INFO    SenderThread:3039037 [sender.py:send_artifact():1470] sent artifact job-git_github.com_modernTalker_zero-order-optimization.git_src_run.py - {'id': 'QXJ0aWZhY3Q6MTg3MjI0OTI4NA==', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjY4Mjk1NjQ1Mg==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTg3MjIyODk0OA==', 'versionIndex': 31}}}
+2025-07-11 15:48:43,220 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:43,226 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 9
+2025-07-11 15:48:43,232 INFO    SenderThread:3039037 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-07-11 15:48:43,746 INFO    SenderThread:3039037 [dir_watcher.py:finish():388] scan: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files
+2025-07-11 15:48:43,750 INFO    SenderThread:3039037 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/requirements.txt requirements.txt
+2025-07-11 15:48:43,753 INFO    SenderThread:3039037 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-metadata.json wandb-metadata.json
+2025-07-11 15:48:43,756 INFO    SenderThread:3039037 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/config.yaml config.yaml
+2025-07-11 15:48:43,759 INFO    SenderThread:3039037 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-summary.json wandb-summary.json
+2025-07-11 15:48:43,762 INFO    SenderThread:3039037 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log output.log
+2025-07-11 15:48:43,765 INFO    SenderThread:3039037 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/conda-environment.yaml conda-environment.yaml
+2025-07-11 15:48:43,769 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 10
+2025-07-11 15:48:43,772 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: poll_exit
+2025-07-11 15:48:43,772 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:43,778 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 10
+2025-07-11 15:48:43,782 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:43,785 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 10
+2025-07-11 15:48:43,788 INFO    SenderThread:3039037 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 15:48:44,173 INFO    wandb-upload_1:3039037 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/config.yaml
+2025-07-11 15:48:44,865 INFO    wandb-upload_0:3039037 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/requirements.txt
+2025-07-11 15:48:44,960 INFO    wandb-upload_2:3039037 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/wandb-summary.json
+2025-07-11 15:48:45,009 INFO    wandb-upload_3:3039037 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/files/output.log
+2025-07-11 15:48:45,213 INFO    Thread-11 (_thread_body):3039037 [sender.py:transition_state():617] send defer: 11
+2025-07-11 15:48:45,218 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:45,222 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 11
+2025-07-11 15:48:45,228 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:45,232 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 11
+2025-07-11 15:48:45,237 INFO    SenderThread:3039037 [file_pusher.py:join():181] waiting for file pusher
+2025-07-11 15:48:45,241 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 12
+2025-07-11 15:48:45,246 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:45,251 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 12
+2025-07-11 15:48:45,256 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:45,260 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 12
+2025-07-11 15:48:45,265 INFO    SenderThread:3039037 [file_stream.py:finish():595] file stream finish called
+2025-07-11 15:48:45,472 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: keepalive
+2025-07-11 15:48:45,970 INFO    SenderThread:3039037 [file_stream.py:finish():599] file stream finish is done
+2025-07-11 15:48:45,975 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 13
+2025-07-11 15:48:45,979 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:45,984 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 13
+2025-07-11 15:48:45,989 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:45,993 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 13
+2025-07-11 15:48:45,998 INFO    SenderThread:3039037 [sender.py:transition_state():617] send defer: 14
+2025-07-11 15:48:46,002 DEBUG   SenderThread:3039037 [sender.py:send():382] send: final
+2025-07-11 15:48:46,002 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 15:48:46,007 DEBUG   SenderThread:3039037 [sender.py:send():382] send: footer
+2025-07-11 15:48:46,011 INFO    HandlerThread:3039037 [handler.py:handle_request_defer():172] handle defer: 14
+2025-07-11 15:48:46,020 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: defer
+2025-07-11 15:48:46,025 INFO    SenderThread:3039037 [sender.py:send_request_defer():613] handle sender defer: 14
+2025-07-11 15:48:46,030 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-11 15:48:46,034 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: server_info
+2025-07-11 15:48:46,038 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: get_summary
+2025-07-11 15:48:46,034 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: poll_exit
+2025-07-11 15:48:46,043 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: sampled_history
+2025-07-11 15:48:46,047 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: server_info
+2025-07-11 15:48:46,052 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 15:48:46,061 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: job_info
+2025-07-11 15:48:46,248 DEBUG   SenderThread:3039037 [sender.py:send_request():409] send_request: job_info
+2025-07-11 15:48:46,251 INFO    MainThread:3039037 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-07-11 15:48:46,255 INFO    MainThread:3039037 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-07-11 15:48:46,260 INFO    MainThread:3039037 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-07-11 15:48:46,264 DEBUG   HandlerThread:3039037 [handler.py:handle_request():146] handle_request: shutdown
+2025-07-11 15:48:46,269 INFO    HandlerThread:3039037 [handler.py:finish():866] shutting down handler
+2025-07-11 15:48:47,065 INFO    WriterThread:3039037 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250711_154721-obodlo3a/run-obodlo3a.wandb
+2025-07-11 15:48:47,251 INFO    SenderThread:3039037 [sender.py:finish():1548] shutting down sender
+2025-07-11 15:48:47,256 INFO    SenderThread:3039037 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 15:48:47,261 INFO    SenderThread:3039037 [file_pusher.py:join():181] waiting for file pusher

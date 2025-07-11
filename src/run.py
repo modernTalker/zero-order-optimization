@@ -16,11 +16,11 @@ from transformers import (
 )
 
 from metrics import calculate_metric
-from modeling_mistral import (
+from models import (
     MistralForCausalLM,
     MistralConfig
 )
-from tasks import get_task
+from tasks.tasks import get_task
 from trainer import OurTrainer
 from utils import *
 
@@ -204,7 +204,7 @@ class Framework:
                     torch_dtype = torch.bfloat16
                 # Head tuning
                 if "opt" in self.args.model_name.lower():
-                    from modeling_opt import OPTForCausalLM
+                    from models import OPTForCausalLM
                     model = OPTForCausalLM.from_pretrained(
                         self.args.model_name,
                         config=config,
@@ -214,7 +214,7 @@ class Framework:
                                     range(torch.cuda.device_count())},
                     )
                 elif "llama" in self.args.model_name.lower():
-                    from modeling_llama import LlamaForCausalLMWithHeadTuning
+                    from models import LlamaForCausalLMWithHeadTuning
                     model = LlamaForCausalLMWithHeadTuning.from_pretrained(
                         self.args.model_name,
                         config=config,
@@ -224,7 +224,7 @@ class Framework:
                                     range(torch.cuda.device_count())},
                     )
                 elif "mistral" in self.args.model_name.lower():
-                    from modeling_mistral import MistralForCausalLMWithHeadTuning
+                    from models import MistralForCausalLMWithHeadTuning
                     model = MistralForCausalLMWithHeadTuning.from_pretrained(
                         self.args.model_name,
                         config=config,
@@ -267,7 +267,7 @@ class Framework:
 
         # Prefix tuning/LoRA
         if self.args.prefix_tuning:
-            from prefix_tuning import PrefixTuning
+            from tasks import PrefixTuning
             PrefixTuning(model, num_prefix=self.args.num_prefix, reparam=not self.args.no_reparam,
                          float16=self.args.load_float16, init_by_real_act=self.args.prefix_init_by_real_act)
         if self.args.lora:
@@ -275,7 +275,7 @@ class Framework:
             LoRA(model, r=self.args.lora_r, alpha=self.args.lora_alpha, float16=self.args.load_float16)
 
         if self.args.prompt_tuning:
-            from prompt_tuning import PromptTuning
+            from tasks import PromptTuning
             print("Adding Prompt Tuning to model...")
             PromptTuning(
                 model,

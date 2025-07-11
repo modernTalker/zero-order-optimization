@@ -2,7 +2,7 @@ wandb_version: 1
 
 output_dir:
   desc: null
-  value: result/momenzo_sampling_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1
+  value: result/momenzo_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1
 overwrite_output_dir:
   desc: null
   value: true
@@ -86,7 +86,7 @@ log_on_each_node:
   value: true
 logging_dir:
   desc: null
-  value: result/momenzo_sampling_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1/logs
+  value: result/momenzo_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1/logs
 logging_strategy:
   desc: null
   value: steps
@@ -182,7 +182,7 @@ past_index:
   value: -1
 run_name:
   desc: null
-  value: momenzo_sampling_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1
+  value: momenzo_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1
 disable_tqdm:
   desc: null
   value: false
@@ -341,7 +341,7 @@ train_set_seed:
   value: 0
 result_file:
   desc: null
-  value: result/momenzo_sampling_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1/results.json
+  value: result/momenzo_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1/results.json
 model_name:
   desc: null
   value: facebook/opt-1.3b
@@ -371,7 +371,7 @@ template_ver:
   value: 0
 trainer:
   desc: null
-  value: zo_sampling_muon
+  value: zo_muon
 optimizer:
   desc: null
   value: adamw
@@ -452,7 +452,7 @@ no_eval:
   value: false
 tag:
   desc: null
-  value: momenzo_sampling_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1
+  value: momenzo_muon-SST2-0-opt-1.3b-OPTIM_ft-STEP20000-adamw-LR0.5-constant-ZOEPS0.001-Q1
 linear_probing:
   desc: null
   value: false
@@ -522,7 +522,7 @@ _wandb:
     huggingface_version: 4.28.1
     is_jupyter_run: false
     is_kaggle_kernel: false
-    start_time: 1752235111.875529
+    start_time: 1752238135.353803
     t:
       1:
       - 1
