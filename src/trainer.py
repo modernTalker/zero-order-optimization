@@ -338,17 +338,19 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_Adam(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_sgd":
             self.optimizer = ZO_SGD(self, self.model.parameters(), defaults)
+        elif args.trainer == "zo_conserv":
+            self.optimizer = ZO_Conserv(self, self.model.parameters(), defaults)
         elif args.trainer == "jaguar_signsgd":
             self.optimizer = Jaguar_SignSGD(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self, self.model.parameters(), defaults) # TODO: add for other optimizers
-        elif args.trainer == "zo_muon_sampling":
-            self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
+        # elif args.trainer == "zo_muon_sampling":
+        #     self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self, self.model.parameters(), defaults)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
-            if args.optimizer == "adam":
+            if args.optimizer == "adam": # FIXME: what to do with this? 
                 self.optimizer = Adam(self.model.parameters(), lr=args.learning_rate)
             elif args.optimizer == "sgd":
                 self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
@@ -539,7 +541,7 @@ class OurTrainer(Trainer):
                 elif args.trainer == "jaguar_muon":
                     tr_loss_step = self.optimizer.step(model, inputs)
                 elif args.trainer == "zo_conserv":
-                    tr_loss_step = self.zo_conserv_step(model, inputs)
+                    tr_loss_step = self.optimizer.step(model, inputs)
                 elif args.trainer == "forward_grad":
                     tr_loss_step = self.forward_grad_step(model, inputs)
                 else:

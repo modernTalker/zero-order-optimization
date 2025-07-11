@@ -1,11 +1,24 @@
-@torch.no_grad()
-    def zo_conserv_step(self, model, inputs):
+from .base import ZeroOrderOptimizer
+import torch
+from torch.optim import SGD
+import numpy as np
+from .opt_utils import *
+
+class ZO_Conserv(ZeroOrderOptimizer):
+    def __init__(self, trainer, params, defaults):
+        params = list(params)
+        
+        self._inner_optimizer = SGD(params, lr=defaults["lr"], momentum=defaults["momentum"])
+        super().__init__(trainer, params, defaults)
+
+    @torch.no_grad()
+    def step(self, model, inputs):
         """
         Estimate gradient by MeZO. Return the loss from f(theta + z)
         update in the conservative way, i.e. 
         reject the update if it's not decreasing
         """
-        args = self.args
+        args = self.trainer.args
 
         # What parameters to optimize
         self.named_parameters_to_optim = []
@@ -14,24 +27,24 @@
                 self.named_parameters_to_optim.append((name, param))
                 param.grad = None
 
-        loss0 = self.zo_forward(model, inputs)
+        loss0 = self.trainer.zo_forward(model, inputs)
 
         # Sample the random seed for sampling z
         self.zo_random_seed = np.random.randint(1000000000)
 
         # First function evaluation
         self.zo_perturb_parameters(scaling_factor=1)
-        loss1 = self.zo_forward(model, inputs)
+        loss1 = self.trainer.zo_forward(model, inputs)
 
         # Second function evaluation
-        if self.args.perturbation_mode == "one_side":
+        if self.trainer.args.perturbation_mode == "one_side":
             self.zo_perturb_parameters(scaling_factor=-1)
-            loss2 = self.zo_forward(model, inputs)
-            self.projected_grad = ((loss1 - loss2) / self.args.zo_eps).item()
+            loss2 = self.trainer.zo_forward(model, inputs)
+            self.projected_grad = ((loss1 - loss2) / self.trainer.args.zo_eps).item()
         else:  # two side perturbation
             self.zo_perturb_parameters(scaling_factor=-2)
-            loss2 = self.zo_forward(model, inputs)
-            self.projected_grad = ((loss1 - loss2) / (2 * self.args.zo_eps)).item()
+            loss2 = self.trainer.zo_forward(model, inputs)
+            self.projected_grad = ((loss1 - loss2) / (2 * self.trainer.args.zo_eps)).item()
 
             # Reset model back to its parameters at start of step
             self.zo_perturb_parameters(scaling_factor=1)
@@ -62,16 +75,16 @@
                 # more mem-efficient:
                 # run optimizer.step here to avoid caching all grad.
                 param.grad = sign * graddiff_times_z
-                # self.optimizer[name].step()
-                self.optimizer.step()
+                # self._inner_optimizer[name].step()
+                self._inner_optimizer.step()
                 # param.data = param.data - graddiff_times_z / args.q
                 param.grad = None
 
         update_params()
-        loss1 = self.zo_forward(model, inputs)
+        loss1 = self.trainer.zo_forward(model, inputs)
 
         update_params(sign=-2.0)
-        loss2 = self.zo_forward(model, inputs)
+        loss2 = self.trainer.zo_forward(model, inputs)
 
         # conduct the update in the conservative way
         # choose from the three and take the minimum loss one
@@ -83,6 +96,6 @@
                 update_params(2.0)
 
         # No gradient accumulation support
-        assert self.args.gradient_accumulation_steps == 1
+        assert self.trainer.args.gradient_accumulation_steps == 1
 
         return loss1
