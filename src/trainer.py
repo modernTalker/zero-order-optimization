@@ -344,7 +344,7 @@ class OurTrainer(Trainer):
         elif args.trainer == "zo_conserv":
             self.optimizer = ZO_Conserv(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "jaguar_signsgd":
-            self.optimizer = Jaguar_SignSGD(self, self.model.parameters(), defaults)
+            self.optimizer = Jaguar_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), self.args, self.gradient_sparsity)
         # elif args.trainer == "zo_muon_sampling":
@@ -537,7 +537,7 @@ class OurTrainer(Trainer):
                     # else:
                     #     raise ValueError(f"q={args.q} is not supported.")
                 elif args.trainer == "jaguar_signsgd":
-                    tr_loss_step = self.optimizer.step(model, inputs)
+                    tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "zo_muon":
                     tr_loss_step = self.optimizer.step(closure) # FIXME: the same for other optimizers
                 elif args.trainer == "zo_muon_sampling":
