@@ -145,6 +145,7 @@ class OurTrainer(Trainer):
         self.dev_samples = dev_samples
         self.eval_samples = eval_samples
         self.perturb_module_regex = perturb_module_regex
+        self.gradient_sparsity = None # FIXME: is it ok?
 
     # def create_optimizer_and_scheduler(self, num_training_steps):
         # self.optimizer = SGD(self.model.parameters(), lr=self.args.learning_rate,)
@@ -330,9 +331,9 @@ class OurTrainer(Trainer):
 
         # overload the optimizer here
         defaults = {
-                'lr': args.learning_rate,
-                'momentum': args.momentum,
-                'eps': args.zo_eps,
+            'lr': args.learning_rate,
+            'momentum': args.momentum,
+            'eps': args.zo_eps,
         }
         if args.trainer == "zo_adam":
             self.optimizer = ZO_Adam(self, self.model.parameters(), defaults)
@@ -345,7 +346,7 @@ class OurTrainer(Trainer):
         elif args.trainer == "jaguar_signsgd":
             self.optimizer = Jaguar_SignSGD(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_muon":
-            self.optimizer = ZO_MUON(self, self.model.parameters(), defaults) # TODO: add for other optimizers
+            self.optimizer = ZO_MUON(self.model.parameters(), self.args, self.gradient_sparsity)
         # elif args.trainer == "zo_muon_sampling":
         #     self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
         elif args.trainer == "jaguar_muon":
@@ -520,6 +521,7 @@ class OurTrainer(Trainer):
 
                 # MeZO added: estimate gradient
                 # Added zo_jaguar
+                closure = self.create_closure(model, inputs)
                 if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd"]:
                     tr_loss_step = self.optimizer.step(model, inputs)
                     # if args.module_wise_perturbation:
@@ -537,7 +539,7 @@ class OurTrainer(Trainer):
                 elif args.trainer == "jaguar_signsgd":
                     tr_loss_step = self.optimizer.step(model, inputs)
                 elif args.trainer == "zo_muon":
-                    tr_loss_step = self.optimizer.step(model, inputs) # FIXME: the same for other optimizers
+                    tr_loss_step = self.optimizer.step(closure) # FIXME: the same for other optimizers
                 elif args.trainer == "zo_muon_sampling":
                     tr_loss_step = self.zo_muon_sampling_step(model, inputs)
                 elif args.trainer == "jaguar_muon":
@@ -754,7 +756,13 @@ class OurTrainer(Trainer):
             self.lr_scheduler.step()
         model.zero_grad()
 
-    
+    def create_closure(self, model, inputs):
+        '''
+        Creates closure for optimizer step.
+        '''
+        def closure(): return self.zo_forward(model, inputs)
+        
+        return closure
 
     def zo_forward(self, model, inputs):
         """

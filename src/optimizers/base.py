@@ -5,13 +5,25 @@ import torch
 from .opt_utils import * 
 
 class ZeroOrderOptimizer(Optimizer, ABC):
-    def __init__(self, trainer, params, defaults: Dict[str, Any]):
+    def __init__(self, params, args, gradient_sparsity=None):
+        self.args = args
+        defaults = {
+            'lr': args.learning_rate,
+            'momentum': args.momentum,
+            'eps': args.zo_eps,
+        }
         super().__init__(params, defaults)
         self._validate_hyperparameters()
-
+        self.gradient_sparsity = gradient_sparsity
         self.sparse_grad_rng = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
-        self.sparse_grad_random_seed = np.random.randint(1000000000) # FIXME: is it correct?
-        self.trainer = trainer # FIXME: is it correct?
+        self.sparse_grad_random_seed = np.random.randint(1000000000) # FIXME: is it ok?
+
+        self.named_parameters_all = []
+        for group_idx, group in enumerate(self.param_groups): # FIXME: is it ok?
+            for param_idx, param in enumerate(group['params']):
+                param_name = f"group_{group_idx}.param_{param_idx}" # create unique name
+                self.named_parameters_all.append((param_name, param))
+
 
     def _validate_hyperparameters(self):
         """Obligatory hyperparameters check"""
@@ -25,6 +37,33 @@ class ZeroOrderOptimizer(Optimizer, ABC):
     def step(self, closure: Optional[Callable[[], float]] = None) -> Optional[float]: # FIXME: change to (model, inputs) ???
         """Proceeds one optimization step"""
         pass
+    
+    def get_grad_sparsity_by_name(self, name):
+        if self.gradient_sparsity is None:
+            return None
+        elif isinstance(self.gradient_sparsity, float):
+            return self.gradient_sparsity
+        elif isinstance(self.gradient_sparsity, dict):
+            return self.gradient_sparsity[name]
+
+    def zo_perturb_parameters(self, random_seed=None, scaling_factor=1):
+        """
+        Perturb the parameters with random vector z.
+        Input:
+        - random_seed: random seed for MeZO in-place perturbation (if it's None, we will use self.zo_random_seed)
+        - scaling_factor: theta = theta + scaling_factor * z * eps
+        """
+        self.zo_random_seed = np.random.randint(1000000000)
+        # Set the random seed to ensure that we sample the same z for perturbation/update
+        torch.manual_seed(random_seed if random_seed is not None else self.zo_random_seed)
+        self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed) # NOTE: call trainer. instead of self. ??? FIXED.
+
+        for name, param in self.named_parameters_to_optim:
+            grad_sparsity = self.get_grad_sparsity_by_name(name) # NOTE: call trainer. instead of self. ??? FIXED.
+            z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device, dtype=param.data.dtype)
+            if grad_sparsity is not None:
+                z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
+            param.data = param.data + scaling_factor * z * self.args.zo_eps # FIXME: change to defaults["eps"] ??? 
     
     def perturb_parameters(
         self, 
@@ -92,25 +131,6 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         
                     p.data.add_(scaling_factor * perturbation)
 
-    def zo_perturb_parameters(self, random_seed=None, scaling_factor=1):
-        """
-        Perturb the parameters with random vector z.
-        Input:
-        - random_seed: random seed for MeZO in-place perturbation (if it's None, we will use self.zo_random_seed)
-        - scaling_factor: theta = theta + scaling_factor * z * eps
-        """
-
-        # Set the random seed to ensure that we sample the same z for perturbation/update
-        torch.manual_seed(random_seed if random_seed is not None else self.zo_random_seed)
-        self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed) # NOTE: call trainer. instead of self. ??? FIXED.
-
-        for name, param in self.named_parameters_to_optim:
-            grad_sparsity = self.trainer.get_grad_sparsity_by_name(name) # NOTE: call trainer. instead of self. ??? FIXED.
-            z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device, dtype=param.data.dtype)
-            if grad_sparsity is not None:
-                z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-            param.data = param.data + scaling_factor * z * self.trainer.args.zo_eps # FIXME: change to defaults["eps"] ??? 
-    
     def grad_approx(
         self,
         loss_original: torch.Tensor,
