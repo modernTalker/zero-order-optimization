@@ -1,0 +1,45 @@
+2025-07-11 14:58:40,048 - INFO - Sample train set 1500/67349
+2025-07-11 14:58:40,049 - INFO - ... including dev set 500 samples
+2025-07-11 14:58:40,049 - INFO - Loading model with FP16...
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+37
+2025-07-11 14:58:44,523 - INFO - Done with 4.47s
+2025-07-11 14:58:44,805 - INFO - Dev samples: 500
+2025-07-11 14:58:44,806 - INFO - Train samples: 1000
+2025-07-11 14:58:44,806 - INFO - Eval sample length is 872
+2025-07-11 14:58:44,806 - INFO - Tokenizing training samples...
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+2025-07-11 14:58:45,680 - INFO - Done with 0.87s
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-07-11 14:58:45,691 - INFO - ***** Running training *****
+2025-07-11 14:58:45,691 - INFO -   Num examples = 1000
+2025-07-11 14:58:45,692 - INFO -   Num Epochs = 318
+2025-07-11 14:58:45,692 - INFO -   Instantaneous batch size per device = 16
+2025-07-11 14:58:45,692 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-07-11 14:58:45,692 - INFO -   Gradient Accumulation steps = 1
+2025-07-11 14:58:45,692 - INFO -   Total optimization steps = 20000
+2025-07-11 14:58:45,693 - INFO -   Number of trainable parameters = 1315758080
+  0%|                                                                                                                                                       | 0/20000 [00:00<?, ?it/s]You're using a GPT2TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+  0%|                                                                                                                                           | 1/20000 [00:47<265:36:10, 47.81s/it]
+
+  0%|                                                                                                                                           | 2/20000 [01:35<263:55:06, 47.51s/it]
+
+  0%|                                                                                                                                           | 3/20000 [02:22<263:50:43, 47.50s/it]
+{'peak_mem': 8.345207214355469, 'step_consumption': 47483.44612121582, 'epoch': 0.05}
+
+
+  0%|                                                                                                                                           | 5/20000 [03:57<263:54:36, 47.52s/it]
+
+  0%|                                                                                                                                           | 6/20000 [04:45<263:56:23, 47.52s/it]
+
+  0%|                                                                                                                                           | 7/20000 [05:32<263:56:55, 47.53s/it]
+
+  0%|                                                                                                                                           | 8/20000 [06:20<263:54:37, 47.52s/it]
+
+  0%|                                                                                                                                           | 9/20000 [07:07<263:53:05, 47.52s/it]
+
+  0%|                                                                                                                                          | 10/20000 [07:55<263:52:24, 47.52s/it]
+{'loss': 0.5914, 'learning_rate': 0.5, 'epoch': 0.16}

@@ -347,8 +347,8 @@ class OurTrainer(Trainer):
             self.optimizer = Jaguar_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), self.args, self.gradient_sparsity)
-        # elif args.trainer == "zo_muon_sampling":
-        #     self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
+        elif args.trainer == "zo_sampling_muon":
+            self.optimizer = ZO_SamplingMUON(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self.model.parameters(), self.args, self.gradient_sparsity)
         else:
@@ -540,8 +540,8 @@ class OurTrainer(Trainer):
                     tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "zo_muon":
                     tr_loss_step = self.optimizer.step(closure) # FIXME: the same for other optimizers
-                # elif args.trainer == "zo_muon_sampling":
-                #     tr_loss_step = self.zo_muon_sampling_step(model, inputs)
+                elif args.trainer == "zo_sampling_muon":
+                    tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "jaguar_muon":
                     tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "zo_conserv":
@@ -583,7 +583,7 @@ class OurTrainer(Trainer):
                 ):
                     # MeZO added: update model with the estimated gradient
                     # Added zo_jaguar
-                    if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd", "zo_conserv", "jaguar_signsgd", "zo_muon", "zo_muon_sampling", "jaguar muon"]: # FIXME: why jaguar muon wasn't here?
+                    if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd", "zo_conserv", "jaguar_signsgd", "zo_muon", "zo_sampling_muon", "jaguar muon"]: # FIXME: why jaguar muon wasn't here?
                         self.zo_update(model)
                     elif args.trainer == "forward_grad":
                         self.forward_grad_update(model)
@@ -922,75 +922,7 @@ class OurTrainer(Trainer):
             # z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device, dtype=param.data.dtype)
             # if grad_sparsity is not None:
                 # z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-            param.data.add(scaling_factor * E * self.args.zo_tau)
-    
-    # Muon:
-    # @torch.compile()
-    @torch.no_grad()
-    def zo_muon_sampling_step(self, model, inputs, debug=False):
-        args = self.args
-        tau = args.zo_tau
-
-        named = [(n, p) for n, p in model.named_parameters() if p.requires_grad]
-        for _, p in named:
-            p.grad = None
-
-        seed = np.random.randint(1_000_000_000)
-        torch.manual_seed(seed)
-        if hasattr(self, 'sparse_grad_rng'):
-            self.sparse_grad_rng.manual_seed(seed)
-
-        # E
-        # shapes = [(name, tuple(param.shape)) for name, param in named if param.ndim >= 2 and param.size(0) < 10000]
-        # E_dict = create_random_matrix_fast(shapes, device=model.device)
-
-        # Perturb
-        def zo_muon_perturb_parameters(scaling_factor=1):
-            for name, param in named:
-                # if name in E_dict:
-                if param.ndim >= 2 and param.size(0) < 10000:
-                    E = sample_ortho_approx(param.data.shape, device=model.device)
-                    param.data.add_(tau * scaling_factor * E)
-                else:
-                    z = torch.randn_like(param)
-                    mask = getattr(self, 'get_grad_sparsity_by_name', lambda x: None)(name)
-                    if mask is not None:
-                        z[fast_random_mask_like(z, mask, generator=self.sparse_grad_rng)] = 0
-                    param.data.add_(tau * scaling_factor * z)
-
-        # f(z_+)
-        zo_muon_perturb_parameters(1)
-        loss1 = self.zo_forward(model, inputs)
-        # f(z_-)
-        zo_muon_perturb_parameters(-2)
-        loss2 = self.zo_forward(model, inputs)
-        zo_muon_perturb_parameters(1)
-
-        delta = (loss1 - loss2) / (2 * args.zo_eps)
-        # rho = sign(f(z_+) - f(z_-))
-        rho = torch.sign(loss1 - loss2)
-
-        self.optimizer.zero_grad()
-        for name, param in named:
-            # if name in E_dict:
-            if param.ndim >= 2 and param.size(0) < 10000:
-                # _, U, V = E_dict[name]
-                E = sample_ortho_approx(param.data.shape, device=model.device)
-                grad = rho * E
-            else:
-                z = torch.randn_like(param)
-                mask = getattr(self, 'get_grad_sparsity_by_name', lambda x: None)(name)
-                if mask is not None:
-                    z[fast_random_mask_like(z, mask, generator=self.sparse_grad_rng)] = 0
-                grad = (rho if args.trainer=='zo_signsgd' else delta) * z
-            param.grad = grad.to(param.dtype)
-
-        self.optimizer.step()
-
-        if debug:
-            print(f"loss1={loss1:.6f}, loss2={loss2:.6f}, delta={delta:.6f}, rho={rho:.2f}")
-
-        return loss1
+            param.data.add(scaling_factor * E * self.args.zo_tau) 
     
     def zo_update(self, model):
         """

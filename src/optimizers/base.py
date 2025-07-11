@@ -21,6 +21,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.named_parameters_all = []
         for group_idx, group in enumerate(self.param_groups): # FIXME: is it ok?
             for param_idx, param in enumerate(group['params']):
+                self.device = param.device
                 param_name = f"group_{group_idx}.param_{param_idx}" # create unique name
                 self.named_parameters_all.append((param_name, param))
 

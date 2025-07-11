@@ -672,3 +672,13 @@
 2025-07-11 14:15:24,037 DEBUG   HandlerThread:2308589 [handler.py:handle_request():146] handle_request: job_info
 2025-07-11 14:15:24,037 DEBUG   SenderThread:2308589 [sender.py:send_request():409] send_request: poll_exit
 2025-07-11 14:15:24,037 DEBUG   SenderThread:2308589 [sender.py:send_request():409] send_request: server_info
+2025-07-11 14:15:24,236 DEBUG   SenderThread:2308589 [sender.py:send_request():409] send_request: job_info
+2025-07-11 14:15:24,237 INFO    MainThread:2308589 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-07-11 14:15:24,238 INFO    MainThread:2308589 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-07-11 14:15:24,238 INFO    MainThread:2308589 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-07-11 14:15:24,238 DEBUG   HandlerThread:2308589 [handler.py:handle_request():146] handle_request: shutdown
+2025-07-11 14:15:24,238 INFO    HandlerThread:2308589 [handler.py:finish():866] shutting down handler
+2025-07-11 14:15:25,040 INFO    WriterThread:2308589 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250711_141448-lbmrx0zz/run-lbmrx0zz.wandb
+2025-07-11 14:15:25,237 INFO    SenderThread:2308589 [sender.py:finish():1548] shutting down sender
+2025-07-11 14:15:25,237 INFO    SenderThread:2308589 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 14:15:25,237 INFO    SenderThread:2308589 [file_pusher.py:join():181] waiting for file pusher
