@@ -335,9 +335,8 @@ class OurTrainer(Trainer):
                 'eps': args.zo_eps,
         }
         if args.trainer == "zo_adam":
-            self.optimizer = Adam(self.model.parameters(), lr=args.learning_rate)
+            self.optimizer = ZO_Adam(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_sgd":
-            # self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
             self.optimizer = ZO_SGD(self, self.model.parameters(), defaults)
         elif args.trainer == "jaguar_signsgd":
             self.optimizer = Jaguar_SignSGD(self, self.model.parameters(), defaults)
