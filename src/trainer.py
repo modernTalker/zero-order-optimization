@@ -540,12 +540,12 @@ class OurTrainer(Trainer):
                     tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "zo_muon":
                     tr_loss_step = self.optimizer.step(closure) # FIXME: the same for other optimizers
-                elif args.trainer == "zo_muon_sampling":
-                    tr_loss_step = self.zo_muon_sampling_step(model, inputs)
+                # elif args.trainer == "zo_muon_sampling":
+                #     tr_loss_step = self.zo_muon_sampling_step(model, inputs)
                 elif args.trainer == "jaguar_muon":
                     tr_loss_step = self.optimizer.step(closure)
                 elif args.trainer == "zo_conserv":
-                    tr_loss_step = self.optimizer.step(model, inputs)
+                    tr_loss_step = self.optimizer.step(closure)
                 # elif args.trainer == "forward_grad": # FIXME: do we need this method? 
                 #     tr_loss_step = self.forward_grad_step(model, inputs)
                 else: # FIXME: do we need this part? maybe just throw error
