@@ -1,0 +1,570 @@
+2025-07-11 12:15:57,651 INFO    StreamThr :687487 [internal.py:wandb_internal():86] W&B internal server running at pid: 687487, started at: 2025-07-11 12:15:57.650358
+2025-07-11 12:15:57,654 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: status
+2025-07-11 12:15:57,657 INFO    WriterThread:687487 [datastore.py:open_for_write():85] open: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/run-v31q33qs.wandb
+2025-07-11 12:15:57,658 DEBUG   SenderThread:687487 [sender.py:send():382] send: header
+2025-07-11 12:15:57,662 DEBUG   SenderThread:687487 [sender.py:send():382] send: run
+2025-07-11 12:15:58,190 INFO    SenderThread:687487 [dir_watcher.py:__init__():211] watching files in: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files
+2025-07-11 12:15:58,191 INFO    SenderThread:687487 [sender.py:_start_run_threads():1136] run started: v31q33qs with start time 1752225357.650102
+2025-07-11 12:15:58,200 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: check_version
+2025-07-11 12:15:58,201 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: check_version
+2025-07-11 12:15:58,486 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: run_start
+2025-07-11 12:15:58,500 DEBUG   HandlerThread:687487 [system_info.py:__init__():32] System info init
+2025-07-11 12:15:58,500 DEBUG   HandlerThread:687487 [system_info.py:__init__():47] System info init done
+2025-07-11 12:15:58,500 INFO    HandlerThread:687487 [system_monitor.py:start():194] Starting system monitor
+2025-07-11 12:15:58,500 INFO    SystemMonitor:687487 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2025-07-11 12:15:58,502 INFO    HandlerThread:687487 [system_monitor.py:probe():214] Collecting system info
+2025-07-11 12:15:58,503 INFO    SystemMonitor:687487 [interfaces.py:start():190] Started cpu monitoring
+2025-07-11 12:15:58,505 INFO    SystemMonitor:687487 [interfaces.py:start():190] Started disk monitoring
+2025-07-11 12:15:58,507 INFO    SystemMonitor:687487 [interfaces.py:start():190] Started gpu monitoring
+2025-07-11 12:15:58,508 INFO    SystemMonitor:687487 [interfaces.py:start():190] Started memory monitoring
+2025-07-11 12:15:58,510 INFO    SystemMonitor:687487 [interfaces.py:start():190] Started network monitoring
+2025-07-11 12:15:58,577 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,577 DEBUG   HandlerThread:687487 [system_info.py:probe():196] Probing system
+2025-07-11 12:15:58,578 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,580 DEBUG   HandlerThread:687487 [system_info.py:_probe_git():181] Probing git
+2025-07-11 12:15:58,587 DEBUG   HandlerThread:687487 [system_info.py:_probe_git():189] Probing git done
+2025-07-11 12:15:58,587 DEBUG   HandlerThread:687487 [system_info.py:probe():244] Probing system done
+2025-07-11 12:15:58,587 DEBUG   HandlerThread:687487 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-125-generic-x86_64-with-glibc2.31', 'python': '3.10.16', 'heartbeatAt': '2025-07-11T09:15:58.577845', 'startedAt': '2025-07-11T09:15:57.643908', 'docker': None, 'cuda': None, 'args': ('--model_name=facebook/opt-1.3b', '--task_name=SST2', '--output_dir=result/SST2-ft-', '--num_train_epochs=5', '--per_device_train_batch_size=16', '--load_best_model_at_end', '--evaluation_strategy=steps', '--save_strategy=steps', '--save_total_limit=1', '--eval_steps=1000', '--max_steps=20000', '--logging_steps=10', '--num_eval=1000', '--num_train=1000', '--num_dev=500', '--train_as_classification', '--perturbation_mode=two_side', '--trainer=zo_signsgd', '--train_set_seed=0', '--lr_scheduler_type=constant', '--save_steps=1000', '--load_float16', '--learning_rate=5e-1', '--zo_eps=0.001', '--momentum=0.9', '--weight_decay=0', '--module_wise_perturbation=False', '--zo_tau=0.1', '--zo_use_smoothing=true', '--zo_beta=1e-2', '--overwrite_output_dir'), 'state': 'running', 'program': '/home/rinya/zero-order-optimization/src/run.py', 'codePathLocal': 'run.py', 'codePath': 'src/run.py', 'git': {'remote': 'git@github.com:modernTalker/zero-order-optimization.git', 'commit': '327935a0e9596e156db7d844441fe803469a0dd6'}, 'email': 'evseevgrv@gmail.com', 'root': '/home/rinya/zero-order-optimization', 'host': 'opt-mipt', 'username': 'rinya', 'executable': '/home/rinya/anaconda3/envs/zollm/bin/python', 'cpu_count': 48, 'cpu_count_logical': 48, 'cpu_freq': {'current': 2195.856, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 132.80414581298828, 'used': 53.35595703125}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 8, 'memory': {'total': 503.8747673034668}}
+2025-07-11 12:15:58,587 INFO    HandlerThread:687487 [system_monitor.py:probe():224] Finished collecting system info
+2025-07-11 12:15:58,587 INFO    HandlerThread:687487 [system_monitor.py:probe():227] Publishing system info
+2025-07-11 12:15:58,587 DEBUG   HandlerThread:687487 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2025-07-11 12:15:58,588 DEBUG   HandlerThread:687487 [system_info.py:_save_pip():68] Saving pip packages done
+2025-07-11 12:15:58,588 DEBUG   HandlerThread:687487 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2025-07-11 12:15:58,590 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,593 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,595 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,602 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,607 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:15:58,624 DEBUG   HandlerThread:687487 [system_info.py:_save_conda():87] Saving conda packages done
+2025-07-11 12:15:58,625 INFO    HandlerThread:687487 [system_monitor.py:probe():229] Finished publishing system info
+2025-07-11 12:15:58,627 DEBUG   SenderThread:687487 [sender.py:send():382] send: files
+2025-07-11 12:15:58,627 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2025-07-11 12:15:58,632 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 12:15:58,633 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 12:15:58,634 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 12:15:58,915 DEBUG   SenderThread:687487 [sender.py:send():382] send: telemetry
+2025-07-11 12:15:59,192 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/requirements.txt
+2025-07-11 12:15:59,193 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-metadata.json
+2025-07-11 12:15:59,193 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/conda-environment.yaml
+2025-07-11 12:15:59,256 INFO    wandb-upload_0:687487 [upload_job.py:push():131] Uploaded file /tmp/tmp1jkqc2tgwandb/e0t1pdy4-wandb-metadata.json
+2025-07-11 12:16:00,608 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:00,608 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:00,611 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:00,613 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:00,614 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:00,620 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:00,624 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,625 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,625 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,628 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,631 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,632 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,636 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,641 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:02,917 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 12:16:04,642 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:04,642 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:04,645 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:04,648 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:04,649 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:04,653 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:04,658 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,679 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,696 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,717 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,734 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,739 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,750 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:06,756 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:07,196 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:08,756 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,756 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,760 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,762 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,763 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,767 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,772 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:08,804 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 12:16:09,197 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:10,773 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:10,773 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:10,776 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:10,779 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:10,780 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:10,784 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:10,789 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:11,602 DEBUG   SenderThread:687487 [sender.py:send():382] send: config
+2025-07-11 12:16:11,604 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:11,605 DEBUG   SenderThread:687487 [sender.py:send():382] send: telemetry
+2025-07-11 12:16:11,605 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:11,606 WARNING SenderThread:687487 [sender.py:send_metric():1343] Seen metric with glob (shouldn't happen)
+2025-07-11 12:16:12,122 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,125 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:12,126 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:12,126 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:12,127 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,127 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,129 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,129 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,130 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:12,130 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:12,130 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,130 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,131 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,199 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:12,349 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,354 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,356 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,356 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,360 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,361 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,361 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,361 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,557 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,557 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,559 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,559 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,560 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,560 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,560 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,561 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,752 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,753 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,755 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,755 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,755 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,756 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,756 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,756 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,790 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,790 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,793 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,796 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,797 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,804 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,809 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:12,941 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,942 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:12,944 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,945 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,945 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:12,946 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:12,946 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:12,946 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,141 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,143 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,144 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,145 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,145 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,147 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,148 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,148 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,200 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:13,200 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:13,337 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,338 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,340 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,340 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,340 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,341 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,341 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,341 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,528 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,529 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,530 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,530 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,531 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,531 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,531 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,532 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,632 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-11 12:16:13,633 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: stop_status
+2025-07-11 12:16:13,635 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 12:16:13,765 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,765 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,867 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,868 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,868 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 12:16:13,869 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,870 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,870 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,870 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,920 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,923 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,923 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:13,924 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:13,924 DEBUG   SenderThread:687487 [sender.py:send():382] send: metric
+2025-07-11 12:16:13,925 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,925 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,926 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,927 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,928 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,928 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:13,928 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:13,928 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:13,929 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,127 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,127 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,129 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,129 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,130 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,130 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,130 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,130 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,201 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:14,328 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,329 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,331 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,331 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,331 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,332 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,332 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,332 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,523 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,524 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,525 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,525 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,525 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,526 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,527 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,527 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,724 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,725 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,726 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,727 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,727 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,727 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,728 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,728 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,809 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,810 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,813 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,817 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,818 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,824 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,829 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:14,918 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,919 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:14,920 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,921 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,921 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:14,922 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:14,922 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:14,922 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,106 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,108 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,110 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,110 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,110 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,111 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,111 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,111 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,201 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:15,202 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:15,307 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,308 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,309 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,310 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,311 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,311 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,311 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,312 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,521 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,523 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,524 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,524 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,524 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,525 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,525 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,525 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,723 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,724 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,725 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,726 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,726 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,727 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,727 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,727 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,924 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,925 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,926 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:15,928 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,928 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,928 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,929 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,929 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,929 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:15,930 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:15,930 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:15,930 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,126 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,128 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,128 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,129 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,130 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,131 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,131 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,131 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,202 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:16,332 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,334 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,335 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,335 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,336 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,336 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,337 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,337 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,517 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,519 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,520 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,521 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,521 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,523 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,523 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,524 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,706 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,707 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,708 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,709 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,709 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,710 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,710 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,710 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,832 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,835 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,840 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,845 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,849 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,856 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,865 ERROR   gpu       :687487 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-11 12:16:16,904 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,904 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:16,906 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,906 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,906 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:16,906 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:16,907 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:16,907 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,086 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,088 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,089 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,089 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,089 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,090 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,090 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,090 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,202 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:17,203 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:17,298 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,300 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,301 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,301 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,302 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,303 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,303 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,303 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,489 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,491 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,497 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,497 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,497 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,498 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,498 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,498 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,691 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,693 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,694 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,695 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,695 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,696 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,696 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,696 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,879 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,881 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,883 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,883 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:17,883 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,885 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,886 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,886 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,886 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:17,886 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:17,887 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:17,887 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,075 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,076 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,077 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,077 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,078 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,078 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,078 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,079 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,203 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:18,276 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,277 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,278 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,279 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,279 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,279 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,280 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,280 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,494 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,496 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,497 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,497 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,498 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,498 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,498 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,498 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,683 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,685 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,686 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: partial_history
+2025-07-11 12:16:18,686 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,688 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,688 DEBUG   SenderThread:687487 [sender.py:send():382] send: history
+2025-07-11 12:16:18,689 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: summary_record
+2025-07-11 12:16:18,689 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,724 DEBUG   SenderThread:687487 [sender.py:send():382] send: exit
+2025-07-11 12:16:18,724 INFO    SenderThread:687487 [sender.py:send_exit():589] handling exit code: 255
+2025-07-11 12:16:18,725 INFO    SenderThread:687487 [sender.py:send_exit():591] handling runtime: 20
+2025-07-11 12:16:18,725 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,726 INFO    SenderThread:687487 [sender.py:send_exit():597] send defer
+2025-07-11 12:16:18,726 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,726 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 0
+2025-07-11 12:16:18,727 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,727 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 0
+2025-07-11 12:16:18,727 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 1
+2025-07-11 12:16:18,727 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,727 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 1
+2025-07-11 12:16:18,727 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,728 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 1
+2025-07-11 12:16:18,728 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 2
+2025-07-11 12:16:18,728 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,728 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 2
+2025-07-11 12:16:18,728 INFO    HandlerThread:687487 [system_monitor.py:finish():203] Stopping system monitor
+2025-07-11 12:16:18,728 INFO    HandlerThread:687487 [interfaces.py:finish():202] Joined cpu monitor
+2025-07-11 12:16:18,732 ERROR   gpu       :687487 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2025-07-11 12:16:18,732 DEBUG   SystemMonitor:687487 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2025-07-11 12:16:18,733 INFO    HandlerThread:687487 [interfaces.py:finish():202] Joined disk monitor
+2025-07-11 12:16:18,733 DEBUG   SystemMonitor:687487 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2025-07-11 12:16:18,733 INFO    HandlerThread:687487 [interfaces.py:finish():202] Joined gpu monitor
+2025-07-11 12:16:18,733 DEBUG   SystemMonitor:687487 [system_monitor.py:_start():183] Publishing last batch of metrics
+2025-07-11 12:16:18,733 INFO    HandlerThread:687487 [interfaces.py:finish():202] Joined memory monitor
+2025-07-11 12:16:18,735 INFO    HandlerThread:687487 [interfaces.py:finish():202] Joined network monitor
+2025-07-11 12:16:18,735 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,735 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 2
+2025-07-11 12:16:18,735 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 3
+2025-07-11 12:16:18,735 DEBUG   SenderThread:687487 [sender.py:send():382] send: stats
+2025-07-11 12:16:18,736 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,736 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 3
+2025-07-11 12:16:18,736 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,737 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 3
+2025-07-11 12:16:18,737 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 4
+2025-07-11 12:16:18,737 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,737 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 4
+2025-07-11 12:16:18,738 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,738 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 4
+2025-07-11 12:16:18,738 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 5
+2025-07-11 12:16:18,738 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,738 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 5
+2025-07-11 12:16:18,739 DEBUG   SenderThread:687487 [sender.py:send():382] send: summary
+2025-07-11 12:16:18,739 INFO    SenderThread:687487 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-11 12:16:18,739 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,739 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 5
+2025-07-11 12:16:18,739 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 6
+2025-07-11 12:16:18,739 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:18,740 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 6
+2025-07-11 12:16:18,740 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:18,740 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 6
+2025-07-11 12:16:18,744 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 12:16:18,999 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 7
+2025-07-11 12:16:19,000 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:19,000 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 7
+2025-07-11 12:16:19,001 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:19,001 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 7
+2025-07-11 12:16:19,204 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/config.yaml
+2025-07-11 12:16:19,204 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:19,205 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:19,721 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-11 12:16:20,840 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 8
+2025-07-11 12:16:20,840 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: poll_exit
+2025-07-11 12:16:20,841 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:20,841 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 8
+2025-07-11 12:16:20,842 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:20,842 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 8
+2025-07-11 12:16:20,842 INFO    SenderThread:687487 [job_builder.py:build():298] Attempting to build job artifact
+2025-07-11 12:16:20,844 INFO    SenderThread:687487 [job_builder.py:_get_source_type():428] is repo sourced job
+2025-07-11 12:16:20,857 INFO    SenderThread:687487 [job_builder.py:build():404] adding wandb-job metadata file
+2025-07-11 12:16:20,926 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 9
+2025-07-11 12:16:20,926 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:20,926 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 9
+2025-07-11 12:16:20,927 DEBUG   SenderThread:687487 [sender.py:send():382] send: artifact
+2025-07-11 12:16:21,205 INFO    Thread-12 :687487 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:22,219 INFO    wandb-upload_1:687487 [upload_job.py:push():86] Skipped uploading /home/rinya/.local/share/wandb/artifacts/staging/tmpwadbumiz
+2025-07-11 12:16:22,516 INFO    wandb-upload_0:687487 [upload_job.py:push():89] Uploaded file /home/rinya/.local/share/wandb/artifacts/staging/tmpzzg145ed
+2025-07-11 12:16:24,075 INFO    SenderThread:687487 [sender.py:send_artifact():1470] sent artifact job-git_github.com_modernTalker_zero-order-optimization.git_src_run.py - {'id': 'QXJ0aWZhY3Q6MTg3MTkzMjAwNA==', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjY4Mjk1NjQ1Mg==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTg3MTkzMDY5NA==', 'versionIndex': 15}}}
+2025-07-11 12:16:24,075 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:24,076 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 9
+2025-07-11 12:16:24,076 INFO    SenderThread:687487 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-07-11 12:16:24,076 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: status_report
+2025-07-11 12:16:24,207 INFO    SenderThread:687487 [dir_watcher.py:finish():388] scan: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files
+2025-07-11 12:16:24,207 INFO    SenderThread:687487 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/config.yaml config.yaml
+2025-07-11 12:16:24,208 INFO    SenderThread:687487 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log output.log
+2025-07-11 12:16:24,208 INFO    SenderThread:687487 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/conda-environment.yaml conda-environment.yaml
+2025-07-11 12:16:24,208 INFO    SenderThread:687487 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json wandb-summary.json
+2025-07-11 12:16:24,208 INFO    SenderThread:687487 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/requirements.txt requirements.txt
+2025-07-11 12:16:24,208 INFO    SenderThread:687487 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-metadata.json wandb-metadata.json
+2025-07-11 12:16:24,209 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 10
+2025-07-11 12:16:24,209 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:24,209 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 10
+2025-07-11 12:16:24,217 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:24,217 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 10
+2025-07-11 12:16:24,218 INFO    SenderThread:687487 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 12:16:24,654 INFO    wandb-upload_1:687487 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/output.log
+2025-07-11 12:16:24,723 INFO    wandb-upload_2:687487 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/config.yaml
+2025-07-11 12:16:24,725 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: keepalive
+2025-07-11 12:16:24,812 INFO    wandb-upload_3:687487 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/requirements.txt
+2025-07-11 12:16:24,825 INFO    wandb-upload_0:687487 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/files/wandb-summary.json
+2025-07-11 12:16:25,025 INFO    Thread-11 (_thread_body):687487 [sender.py:transition_state():617] send defer: 11
+2025-07-11 12:16:25,026 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:25,026 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 11
+2025-07-11 12:16:25,027 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:25,027 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 11
+2025-07-11 12:16:25,028 INFO    SenderThread:687487 [file_pusher.py:join():181] waiting for file pusher
+2025-07-11 12:16:25,028 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 12
+2025-07-11 12:16:25,028 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:25,028 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 12
+2025-07-11 12:16:25,028 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:25,028 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 12
+2025-07-11 12:16:25,029 INFO    SenderThread:687487 [file_stream.py:finish():595] file stream finish called
+2025-07-11 12:16:25,234 INFO    SenderThread:687487 [file_stream.py:finish():599] file stream finish is done
+2025-07-11 12:16:25,234 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 13
+2025-07-11 12:16:25,235 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:25,235 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 13
+2025-07-11 12:16:25,235 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:25,235 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 13
+2025-07-11 12:16:25,236 INFO    SenderThread:687487 [sender.py:transition_state():617] send defer: 14
+2025-07-11 12:16:25,236 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: defer
+2025-07-11 12:16:25,236 INFO    HandlerThread:687487 [handler.py:handle_request_defer():172] handle defer: 14
+2025-07-11 12:16:25,236 DEBUG   SenderThread:687487 [sender.py:send():382] send: final
+2025-07-11 12:16:25,237 DEBUG   SenderThread:687487 [sender.py:send():382] send: footer
+2025-07-11 12:16:25,237 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: defer
+2025-07-11 12:16:25,237 INFO    SenderThread:687487 [sender.py:send_request_defer():613] handle sender defer: 14
+2025-07-11 12:16:25,239 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-11 12:16:25,239 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: server_info
+2025-07-11 12:16:25,239 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: get_summary
+2025-07-11 12:16:25,240 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: sampled_history
+2025-07-11 12:16:25,240 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: poll_exit
+2025-07-11 12:16:25,241 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-11 12:16:25,242 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: server_info
+2025-07-11 12:16:25,245 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: job_info
+2025-07-11 12:16:25,423 DEBUG   SenderThread:687487 [sender.py:send_request():409] send_request: job_info
+2025-07-11 12:16:25,424 INFO    MainThread:687487 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-07-11 12:16:25,425 INFO    MainThread:687487 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-07-11 12:16:25,425 INFO    MainThread:687487 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-07-11 12:16:25,426 DEBUG   HandlerThread:687487 [handler.py:handle_request():146] handle_request: shutdown
+2025-07-11 12:16:25,426 INFO    HandlerThread:687487 [handler.py:finish():866] shutting down handler
+2025-07-11 12:16:26,246 INFO    WriterThread:687487 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250711_121557-v31q33qs/run-v31q33qs.wandb
+2025-07-11 12:16:26,423 INFO    SenderThread:687487 [sender.py:finish():1548] shutting down sender
+2025-07-11 12:16:26,424 INFO    SenderThread:687487 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-11 12:16:26,424 INFO    SenderThread:687487 [file_pusher.py:join():181] waiting for file pusher

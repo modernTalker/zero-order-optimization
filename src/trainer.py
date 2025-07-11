@@ -338,6 +338,8 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_Adam(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_sgd":
             self.optimizer = ZO_SGD(self, self.model.parameters(), defaults)
+        elif args.trainer == "zo_signsgd":
+            self.optimizer = ZO_SignSGD(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_conserv":
             self.optimizer = ZO_Conserv(self, self.model.parameters(), defaults)
         elif args.trainer == "jaguar_signsgd":
@@ -518,7 +520,7 @@ class OurTrainer(Trainer):
 
                 # MeZO added: estimate gradient
                 # Added zo_jaguar
-                if args.trainer in ["zo_sgd", "zo_adam", "zo_sign_opt"]:
+                if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd"]:
                     tr_loss_step = self.optimizer.step(model, inputs)
                     # if args.module_wise_perturbation:
                     #     assert args.q == 1, "module-wise perturbation only supports q=1"
@@ -579,7 +581,7 @@ class OurTrainer(Trainer):
                 ):
                     # MeZO added: update model with the estimated gradient
                     # Added zo_jaguar
-                    if args.trainer in ["zo_sgd", "zo_adam", "zo_sign_opt", "zo_conserv", "jaguar_signsgd", "zo_muon", "zo_muon_sampling"]:
+                    if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd", "zo_conserv", "jaguar_signsgd", "zo_muon", "zo_muon_sampling", "jaguar muon"]: # FIXME: why jaguar muon wasn't here?
                         self.zo_update(model)
                     elif args.trainer == "forward_grad":
                         self.forward_grad_update(model)
@@ -972,7 +974,7 @@ class OurTrainer(Trainer):
                 mask = getattr(self, 'get_grad_sparsity_by_name', lambda x: None)(name)
                 if mask is not None:
                     z[fast_random_mask_like(z, mask, generator=self.sparse_grad_rng)] = 0
-                grad = (rho if args.trainer=='zo_sign_opt' else delta) * z
+                grad = (rho if args.trainer=='zo_signsgd' else delta) * z
             param.grad = grad.to(param.dtype)
 
         self.optimizer.step()
