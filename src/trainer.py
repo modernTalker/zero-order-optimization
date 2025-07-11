@@ -336,13 +336,13 @@ class OurTrainer(Trainer):
             'eps': args.zo_eps,
         }
         if args.trainer == "zo_adam":
-            self.optimizer = ZO_Adam(self, self.model.parameters(), defaults)
+            self.optimizer = ZO_Adam(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_sgd":
-            self.optimizer = ZO_SGD(self, self.model.parameters(), defaults)
+            self.optimizer = ZO_SGD(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_signsgd":
-            self.optimizer = ZO_SignSGD(self, self.model.parameters(), defaults)
+            self.optimizer = ZO_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_conserv":
-            self.optimizer = ZO_Conserv(self, self.model.parameters(), defaults)
+            self.optimizer = ZO_Conserv(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "jaguar_signsgd":
             self.optimizer = Jaguar_SignSGD(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_muon":
@@ -523,7 +523,7 @@ class OurTrainer(Trainer):
                 # Added zo_jaguar
                 closure = self.create_closure(model, inputs)
                 if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd"]:
-                    tr_loss_step = self.optimizer.step(model, inputs)
+                    tr_loss_step = self.optimizer.step(closure)
                     # if args.module_wise_perturbation:
                     #     assert args.q == 1, "module-wise perturbation only supports q=1"
                     #     if args.coordinate_perturbation:

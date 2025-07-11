@@ -1,0 +1,30 @@
+2025-07-11 13:51:36,793 - INFO - Sample train set 1500/67349
+2025-07-11 13:51:36,793 - INFO - ... including dev set 500 samples
+2025-07-11 13:51:36,793 - INFO - Loading model with FP16...
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+37
+2025-07-11 13:51:40,809 - INFO - Done with 4.02s
+2025-07-11 13:51:41,111 - INFO - Dev samples: 500
+2025-07-11 13:51:41,112 - INFO - Train samples: 1000
+2025-07-11 13:51:41,112 - INFO - Eval sample length is 872
+2025-07-11 13:51:41,112 - INFO - Tokenizing training samples...
+2025-07-11 13:51:41,960 - INFO - Done with 0.85s
+/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 341, in _inner_training_loop
+    self.optimizer = ZO_SGD(self, self.model.parameters(), defaults)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sgd.py", line 12, in __init__
+    super().__init__(trainer, params, defaults)
+  File "/home/rinya/zero-order-optimization/src/optimizers/base.py", line 11, in __init__
+    'lr': args.learning_rate,
+AttributeError: 'list' object has no attribute 'learning_rate'
