@@ -1,15 +1,22 @@
-@torch.no_grad()
-    def zo_jaguar_step(self, model, inputs, debug=True):
-        args = self.args
+from .base import ZeroOrderOptimizer
+import torch
+from torch.optim import SGD
+import numpy as np
+from .opt_utils import *
+
+class Jaguar_SignSGD(ZeroOrderOptimizer):
+    def __init__(self, trainer, params, defaults):
+        params = list(params)
+        
+        self._inner_optimizer = SGD(params, lr=defaults["lr"], momentum=defaults["momentum"])
+        super().__init__(trainer, params, defaults)
+
+    @torch.no_grad()
+    def step(self, model, inputs):
+        args = self.trainer.args
         beta = args.zo_beta
         use_smoothing = args.zo_use_smoothing
         tau = args.zo_tau
-        # lr = self._get_learning_rate()
-        # if lr != 0:
-        #     tau = lr
-        # else:
-        #     tau = args.zo_tau
-        # print(tau)
         self.named_parameters_to_optim = [(name, param) for name, param in model.named_parameters() if param.requires_grad]
 
         self.zo_random_seed = np.random.randint(1_000_000_000)
@@ -18,7 +25,7 @@
         selected_indices = {}
         original_values = {}
 
-        self.optimizer.zero_grad()
+        self._inner_optimizer.zero_grad()
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
                 n_elements = param.data.shape[0]
@@ -42,7 +49,7 @@
             else:
                 selected_rows, selected_cols = selected_indices[name]
                 param.data[selected_rows[:, None], selected_cols] += tau
-        loss1 = self.zo_forward(model, inputs)
+        loss1 = self.trainer.zo_forward(model, inputs)
 
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
@@ -51,7 +58,7 @@
             else:
                 selected_rows, selected_cols = selected_indices[name]
                 param.data[selected_rows[:, None], selected_cols] = original_values[name] - tau
-        loss2 = self.zo_forward(model, inputs)
+        loss2 = self.trainer.zo_forward(model, inputs)
 
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
@@ -86,11 +93,7 @@
 
             param.grad = torch.sign(param.grad)
 
-        self.optimizer.step()
-        
-
-        if debug:
-            print(f"loss1={loss1.item():.4f}, loss2={loss2.item():.4f}, rho={rho:.2f}")
+        self._inner_optimizer.step()
 
         assert args.gradient_accumulation_steps == 1
         return loss1

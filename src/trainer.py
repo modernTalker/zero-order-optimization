@@ -344,17 +344,14 @@ class OurTrainer(Trainer):
             # self.optimizer = {name: SGD([param], lr=args.learning_rate) for name, param in self.model.named_parameters()}
             # print(f"### args.lr_scheduler: {args.lr_scheduler_type}")
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
-        elif args.trainer == "zo_jaguar":
+        elif args.trainer == "jaguar_signsgd":
             self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
-            # self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate)
-            # self.optimizer = {name: SGD([param], lr=args.learning_rate) for name, param in self.model.named_parameters()}
-            # print(f"### args.lr_scheduler: {args.lr_scheduler_type}")
-            # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
+            self.optimizer = Jaguar_SignSGD(self, self.model.parameters(), defaults)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self, self.model.parameters(), defaults) # TODO: add for other optimizers
         elif args.trainer == "zo_muon_sampling":
             self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
-        elif args.trainer == "zo_ns_jaguar":
+        elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self, self.model.parameters(), defaults)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
@@ -539,15 +536,13 @@ class OurTrainer(Trainer):
                         tr_loss_step = self.zo_step_v1(model, inputs)
                     else:
                         raise ValueError(f"q={args.q} is not supported.")
-                elif args.trainer == "zo_jaguar":
-                    tr_loss_step = self.zo_jaguar_step(model, inputs)
+                elif args.trainer == "jaguar_signsgd":
+                    tr_loss_step = self.optimizer.step(model, inputs)
                 elif args.trainer == "zo_muon":
                     tr_loss_step = self.optimizer.step(model, inputs) # FIXME: the same for other optimizers
-                    # tr_loss_step = self.zo_muon_step(model, inputs)
                 elif args.trainer == "zo_muon_sampling":
                     tr_loss_step = self.zo_muon_sampling_step(model, inputs)
-                elif args.trainer == "zo_ns_jaguar":
-                    # tr_loss_step = self.zo_ns_jaguar_step(model, inputs)
+                elif args.trainer == "jaguar_muon":
                     tr_loss_step = self.optimizer.step(model, inputs)
                 elif args.trainer == "zo_conserv":
                     tr_loss_step = self.zo_conserv_step(model, inputs)
@@ -588,7 +583,7 @@ class OurTrainer(Trainer):
                 ):
                     # MeZO added: update model with the estimated gradient
                     # Added zo_jaguar
-                    if args.trainer in ["zo_sgd", "zo_adam", "zo_sign_opt", "zo_conserv", "zo_jaguar", "zo_muon", "zo_muon_sampling"]:
+                    if args.trainer in ["zo_sgd", "zo_adam", "zo_sign_opt", "zo_conserv", "jaguar_signsgd", "zo_muon", "zo_muon_sampling"]:
                         self.zo_update(model)
                     elif args.trainer == "forward_grad":
                         self.forward_grad_update(model)
