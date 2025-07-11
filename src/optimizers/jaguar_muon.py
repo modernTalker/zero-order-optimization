@@ -95,5 +95,5 @@ class Jaguar_MUON(ZeroOrderOptimizer):
 
         self._inner_optimizer.step()
 
-        assert args.gradient_accumulation_steps == 1 # FIXME: for what?
+        assert args.gradient_accumulation_steps == 1 
         return loss1
