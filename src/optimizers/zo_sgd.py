@@ -3,6 +3,7 @@ import torch
 from torch.optim import SGD
 import numpy as np
 from .opt_utils import *
+from gradient_pruning import fast_random_mask_like
 
 class ZO_SGD(ZeroOrderOptimizer):
     def __init__(self, params, args, gradient_sparsity=None):

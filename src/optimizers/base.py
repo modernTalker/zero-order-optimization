@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from typing import Optional, Callable, List, Dict, Any, Tuple, Union
 import torch
 from .opt_utils import * 
+from gradient_pruning import fast_random_mask_like
 
 class ZeroOrderOptimizer(Optimizer, ABC):
     def __init__(self, params, args, gradient_sparsity=None):
