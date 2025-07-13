@@ -6,7 +6,13 @@ from .opt_utils import *
 from gradient_pruning import fast_random_mask_like
 
 class ZeroOrderOptimizer(Optimizer, ABC):
-    def __init__(self, params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], lr: Optional[float] = None, eps: Optional[float] = None, momentum: float = 0.0, gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None):
+    def __init__(self,
+            params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]],
+            lr: Optional[float] = None,
+            eps: Optional[float] = None,
+            momentum: float = 0.0,
+            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None
+    ):
         """
         Base class for zero-order optimizers.
 
@@ -82,7 +88,10 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         elif isinstance(self.gradient_sparsity, dict):
             return self.gradient_sparsity[name]
 
-    def zo_perturb_parameters(self, random_seed: Optional[int] = None, scaling_factor: float = 1.0):
+    def zo_perturb_parameters(self, 
+            random_seed: Optional[int] = None, 
+            scaling_factor: float = 1.0
+    ) -> None:
         """
         Perturb the parameters with random vector z.
         Input:
