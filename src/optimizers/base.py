@@ -50,7 +50,22 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 self.device = param.device
                 param_name = f"group_{group_idx}.param_{param_idx}" # create unique name
                 self.named_parameters_all.append((param_name, param))
+    
+        # NOTE: If eps is not common for all parameters, then we calculate the weighted average of all epsilons
+        self.zo_eps = self._calculate_zo_eps(eps=eps)
 
+    def _calculate_zo_eps(self, eps: Optional[float] = None):
+        """"Estimates zo_eps for accurate grad approx as a weighted sum of all epsilons"""
+        total_params = 0
+        eps_sum = 0.0
+        
+        for group in self.param_groups:
+            group_eps = group['eps']
+            group_params = sum(p.numel() for p in group['params'] if p.requires_grad)
+            eps_sum += group_eps * group_params
+            total_params += group_params
+        
+        return eps_sum / total_params if total_params > 0 else (eps if eps is not None else 1e-3)
 
     def _validate_hyperparameters(self):
         """Obligatory hyperparameters check"""
@@ -244,11 +259,12 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             Gradient estimation
         """
         # FIXME: Don't know, if we need to divide it by eps
+        # FIXED, but need a CHECK
         # I believe, we don't (as it is in the original code)
         if perturbation_mode == "one_side":
-            return (loss_perturbed - loss_original).item()
+            return ((loss_perturbed - loss_original) / self.zo_eps).item()
         elif perturbation_mode == "two_side":
-            return ((loss_perturbed - loss_original) / 2).item()
+            return ((loss_perturbed - loss_original) / (2 * self.zo_eps)).item()
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")
     
