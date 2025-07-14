@@ -17,7 +17,6 @@ class Jaguar_MUON(ZeroOrderOptimizer):
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
             perturbation_mode: str = "two_side",
-            q: int = 1
         ):
         super().__init__(
             params=params,
@@ -29,15 +28,9 @@ class Jaguar_MUON(ZeroOrderOptimizer):
         self.tau = tau 
         self.beta = beta
         self.use_smoothing = use_smoothing
-        self.perturbation_mode = perturbation_mode
-        self.q = q
 
-        # inner optimizer for each param_gropus
         self._inner_optimizers = []
         for group in self.param_groups:
-            # print(f"GROUP: {group.keys()}")
-            # print(f"LR: {group['lr']}")
-            # print(f"EPS: {group['eps']}")
             self._inner_optimizers.append(
                 SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
             )

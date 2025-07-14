@@ -2,24 +2,39 @@ from .base import ZeroOrderOptimizer
 import torch
 from torch.optim import SGD
 import numpy as np
+from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 from .opt_utils import *
 
 class ZO_SamplingMUON(ZeroOrderOptimizer):
-    def __init__(self, params, args, gradient_sparsity=None):
-        params = list(params)
-        self._inner_optimizer = SGD(params, lr=args.learning_rate, momentum=args.momentum)
-        super().__init__(params, args, gradient_sparsity)
+    def __init__(self, 
+            params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
+            tau: Optional[float] = None,
+            lr: Optional[float] = None,
+            eps: Optional[float] = None,
+            momentum: float = 0.0,
+            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+        ):
+        super().__init__(
+            params=params,
+            lr=lr,
+            eps=eps,
+            momentum=momentum,
+            gradient_sparsity=gradient_sparsity
+        )
+        self.tau = tau 
+        self.eps = eps
+        self._inner_optimizers = []
+        for group in self.param_groups:
+            self._inner_optimizers.append(
+                SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
+            )
 
     @torch.no_grad()
     def step(self, closure):
-        args = self.args
-        tau = args.zo_tau
+        tau = self.tau
+        self.zo_eps = self._calculate_zo_eps(eps=self.eps)
 
-        named_parameters_to_optim = []
-        for name, param in self.named_parameters_all:
-            if param.requires_grad:
-                named_parameters_to_optim.append((name, param))
-                param.grad = None  
+        self._prepare_parameters()  
 
         seed = np.random.randint(1_000_000_000)
         torch.manual_seed(seed)
@@ -27,8 +42,9 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             self.sparse_grad_rng.manual_seed(seed)
 
         # Perturb
+        # FIXME: what to do with this one?
         def zo_muon_perturb_parameters(scaling_factor=1):
-            for name, param in named_parameters_to_optim:
+            for name, param in self.named_parameters_to_optim:
                 # if name in E_dict:
                 if param.ndim >= 2 and param.size(0) < 10000:
                     E = sample_ortho_approx(param.data.shape, device=self.device)
@@ -48,25 +64,30 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
         loss2 = closure()
         zo_muon_perturb_parameters(1)
 
-        delta = (loss1 - loss2) / (2 * args.zo_eps)
+        delta = (loss1 - loss2) / (2 * self.zo_eps)
         # rho = sign(f(z_+) - f(z_-))
         rho = torch.sign(loss1 - loss2)
 
-        self._inner_optimizer.zero_grad()
-        for name, param in named_parameters_to_optim:
-            # if name in E_dict:
-            if param.ndim >= 2 and param.size(0) < 10000:
-                # _, U, V = E_dict[name]
-                E = sample_ortho_approx(param.data.shape, device=self.device)
-                grad = rho * E
-            else:
-                z = torch.randn_like(param)
-                mask = getattr(self, 'get_grad_sparsity_by_name', lambda x: None)(name)
-                if mask is not None:
-                    z[fast_random_mask_like(z, mask, generator=self.sparse_grad_rng)] = 0
-                grad = (rho if args.trainer=='zo_signsgd' else delta) * z
-            param.grad = grad.to(param.dtype)
+        for group_idx, group in enumerate(self.param_groups):
+            for param in group['params']:
+                name = next(name for name, p in self.named_parameters_to_optim if p is param)
+                # if name in E_dict:
+                if param.ndim >= 2 and param.size(0) < 10000:
+                    # _, U, V = E_dict[name]
+                    E = sample_ortho_approx(param.data.shape, device=self.device)
+                    grad = rho * E
+                else:
+                    z = torch.randn_like(param)
+                    mask = getattr(self, 'get_grad_sparsity_by_name', lambda x: None)(name)
+                    if mask is not None:
+                        z[fast_random_mask_like(z, mask, generator=self.sparse_grad_rng)] = 0
+                    # grad = (rho if args.trainer=='zo_signsgd' else delta) * z
+                    grad = rho * z
+                param.grad = grad.to(param.dtype)
 
-        self._inner_optimizer.step()
+                self._inner_optimizers[group_idx].step()
+                param.grad = None
 
+        for _, param in self.named_parameters_to_optim:
+                param.grad = None
         return loss1

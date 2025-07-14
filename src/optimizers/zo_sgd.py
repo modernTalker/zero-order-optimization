@@ -2,9 +2,9 @@ from .base import ZeroOrderOptimizer
 import torch
 from torch.optim import SGD
 import numpy as np
-from .opt_utils import *
 from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 from gradient_pruning import fast_random_mask_like
+from .opt_utils import *
 
 class ZO_SGD(ZeroOrderOptimizer):
     def __init__(self, 
