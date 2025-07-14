@@ -1,100 +1,120 @@
 from .base import ZeroOrderOptimizer
 import torch
-from torch.optim import SGD
 import numpy as np
+from typing import Optional, Callable, List, Dict, Any, Union, Iterable
+from gradient_pruning import fast_random_mask_like
 from .opt_utils import *
 
 class ZO_Conserv(ZeroOrderOptimizer):
-    def __init__(self, params, args, gradient_sparsity=None):
-        params = list(params)
-        self._inner_optimizer = SGD(params, lr=args.learning_rate, momentum=args.momentum)
-        super().__init__(params, args, gradient_sparsity)
+    def __init__(
+        self,
+        params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
+        lr: Optional[float] = None,
+        eps: Optional[float] = None,
+        momentum: float = 0.0,
+        gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+        perturbation_mode: str = "two_side"
+    ):
+        """
+        Zero-Order Conservative Optimizer (MeZO with conservative update).
+        
+        Args:
+            params: Parameters to optimize
+            lr: Learning rate (required)
+            eps: Perturbation magnitude (required)
+            momentum: Must be 0 (not supported)
+            gradient_sparsity: Gradient sparsity (float or dict per parameter)
+            perturbation_mode: 'one_side' or 'two_side' gradient estimation
+        """
+        super().__init__(
+            params=params,
+            lr=lr,
+            eps=eps,
+            momentum=momentum,
+            gradient_sparsity=gradient_sparsity
+        )
+        
+        # Validate momentum=0
+        for group in self.param_groups:
+            if group['momentum'] != 0:
+                raise ValueError("ZO_Conserv does not support momentum")
+                
+        self.perturbation_mode = perturbation_mode
+        self.projected_grad: Optional[float] = None
+        self.zo_random_seed: Optional[int] = None
 
     @torch.no_grad()
-    def step(self, closure):
-        """
-        Estimate gradient by MeZO. Return the loss from f(theta + z)
-        update in the conservative way, i.e. 
-        reject the update if it's not decreasing
-        """
-        args = self.args
+    def _apply_update(self, projected_grad: float, sign: float = 1.0) -> None:
+        """Apply parameter update using re-generated perturbation vectors."""
+        torch.manual_seed(self.zo_random_seed)
+        self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
+        
+        for group in self.param_groups:
+            lr = group['lr']
+            for p in group['params']:
+                if not p.requires_grad:
+                    continue
+                    
+                param_id = id(p)
+                name = next((name for name, param in self.named_parameters_all 
+                            if id(param) == param_id), None)
+                
+                z = torch.randn_like(p)
+                if name:
+                    sparsity = self.get_grad_sparsity_by_name(name)
+                    if sparsity is not None:
+                        mask = fast_random_mask_like(
+                            z, sparsity, generator=self.sparse_grad_rng
+                        )
+                        z[mask] = 0
+                
+                p.data.add_(sign * lr * projected_grad * z)
 
-        # What parameters to optimize
-        self.named_parameters_to_optim = []
-        for name, param in self.named_parameters_all:
-            if param.requires_grad:
-                self.named_parameters_to_optim.append((name, param))
-                param.grad = None  
-
+    @torch.no_grad()
+    def step(self, closure: Callable[[], torch.Tensor]) -> torch.Tensor:
+        """
+        Performs a single conservative optimization step.
+        
+        Args:
+            closure: Callable that returns the loss tensor
+        Returns:
+            Loss value of the final selected parameters
+        """
+        self._prepare_parameters()
+        
         loss0 = closure()
-
-        # Sample the random seed for sampling z
+        
         self.zo_random_seed = np.random.randint(1000000000)
-
-        # First function evaluation
+        
         self.zo_perturb_parameters(scaling_factor=1)
         loss1 = closure()
-
-        # Second function evaluation
-        if self.args.perturbation_mode == "one_side":
+        
+        if self.perturbation_mode == "one_side":
             self.zo_perturb_parameters(scaling_factor=-1)
             loss2 = closure()
-            self.projected_grad = ((loss1 - loss2) / self.args.zo_eps).item()
-        else:  # two side perturbation
+            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
+        else:  # two_side
             self.zo_perturb_parameters(scaling_factor=-2)
             loss2 = closure()
-            self.projected_grad = ((loss1 - loss2) / (2 * self.args.zo_eps)).item()
-
-            # Reset model back to its parameters at start of step
+            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
             self.zo_perturb_parameters(scaling_factor=1)
 
-        def update_params(sign=1.0):
-            # Set the random seed to ensure that we sample the same z for perturbation/update
-            torch.manual_seed(self.zo_random_seed)
-            for name, param in self.named_parameters_to_optim:
-                # Resample z
-                z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device,
-                                 dtype=param.data.dtype)
-
-                if args.trainer == "zo_sign_opt":
-                    # ----signOpt_orig
-                    # TODo why do we multiply lr here? We will multiply lr twice?
-                    graddiff_times_z = np.sign(self.projected_grad) * z
-                    # ----signOpt_mul_sign
-                    # graddiff_times_z = self._get_learning_rate() * torch.sign(self.projected_grad * z)
-                else:
-                    # ----mezo original
-                    graddiff_times_z = self.projected_grad * z
-
-                # # previous implementation
-                # # no param.grad involved
-                # param.data -= self._get_learning_rate() * self.projected_grad * z
-
-                # param.grad += graddiff_times_z.detach()
-                # more mem-efficient:
-                # run optimizer.step here to avoid caching all grad.
-                param.grad = sign * graddiff_times_z
-                # self._inner_optimizer[name].step()
-                self._inner_optimizer.step()
-                # param.data = param.data - graddiff_times_z / args.q
-                param.grad = None
-
-        update_params()
-        loss1 = closure()
-
-        update_params(sign=-2.0)
-        loss2 = closure()
-
-        # conduct the update in the conservative way
-        # choose from the three and take the minimum loss one
-        if loss1 > loss0:
-            if loss0 < loss2:
-                update_params()
+        # Trial update 1: positive direction (theta + update)
+        self._apply_update(self.projected_grad, sign=1.0)
+        loss1_after = closure()
+        
+        # Trial update 2: negative direction (theta - update)
+        self._apply_update(self.projected_grad, sign=-2.0)
+        loss2_after = closure()
+        
+        # Select best parameter state
+        if loss1_after > loss0 and loss0 < loss2_after:
+            self._apply_update(self.projected_grad, sign=1.0)
+            final_loss = loss0
+        elif loss1_after <= loss0 and loss1_after < loss2_after:
+            self._apply_update(self.projected_grad, sign=2.0)
+            final_loss = loss1_after
         else:
-            if loss1 < loss2:
-                update_params(2.0)
-
-        # No gradient accumulation support
-        assert self.args.gradient_accumulation_steps == 1
-
-        return loss1
+            final_loss = loss2_after
+            
+        return final_loss
