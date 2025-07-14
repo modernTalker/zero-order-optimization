@@ -2,25 +2,60 @@ from .base import ZeroOrderOptimizer
 import torch
 from torch.optim import SGD
 import numpy as np
+from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
+
 from .opt_utils import *
 
 class Jaguar_SignSGD(ZeroOrderOptimizer):
-    def __init__(self, params, args, gradient_sparsity=None):
-        params = list(params)
-        self._inner_optimizer = SGD(params, lr=args.learning_rate, momentum=args.momentum)
-        super().__init__(params, args, gradient_sparsity)
+    def __init__(self, 
+            params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
+            tau: Optional[float] = None,
+            beta: Optional[float] = None, 
+            use_smoothing: Optional[bool] = None,
+            lr: Optional[float] = None,
+            eps: Optional[float] = None,
+            momentum: float = 0.0,
+            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+            perturbation_mode: str = "two_side",
+            q: int = 1,
+            module_wise_perturbation: bool = False,
+            coordinate_perturbation: bool = False
+    ):
+        super().__init__(
+            params=params,
+            lr=lr,
+            eps=eps,
+            momentum=momentum,
+            gradient_sparsity=gradient_sparsity
+        )
+        self.tau = tau 
+        self.beta = beta 
+        self.use_smoothing = use_smoothing
+        self.perturbation_mode = perturbation_mode
+        self.q = q
+        self.module_wise_perturbation = module_wise_perturbation
+        self.coordinate_perturbation = coordinate_perturbation
+
+        # inner optimizer for each param_gropus
+        self._inner_optimizers = []
+        for group in self.param_groups:
+            # print(f"GROUP: {group.keys()}")
+            # print(f"LR: {group['lr']}")
+            # print(f"EPS: {group['eps']}")
+            self._inner_optimizers.append(
+                SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
+            )
+        # TODO: Maybe we need a random seed in the input
+        self.projected_grad: Optional[float] = None
+        self.zo_random_seed: Optional[int] = None
 
     @torch.no_grad()
     def step(self, closure):
-        args = self.args
-        beta = args.zo_beta
-        use_smoothing = args.zo_use_smoothing
-        tau = args.zo_tau
-        self.named_parameters_to_optim = []
-        for name, param in self.named_parameters_all:
-            if param.requires_grad:
-                self.named_parameters_to_optim.append((name, param))
-                param.grad = None  
+        tau = self.tau
+        beta = self.beta 
+        use_smoothing = self.use_smoothing
+
+        self._prepare_parameters()  
                 
         self.zo_random_seed = np.random.randint(1_000_000_000)
         torch.manual_seed(self.zo_random_seed)
@@ -28,7 +63,6 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         selected_indices = {}
         original_values = {}
 
-        self._inner_optimizer.zero_grad()
         for name, param in self.named_parameters_to_optim:
             if len(param.data.shape) == 1:
                 n_elements = param.data.shape[0]
@@ -74,29 +108,33 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         # rho = sign(f(z_+) - f(z_-))
         rho = (loss1 - loss2).item() / (2 * tau)
 
-        for name, param in self.named_parameters_to_optim:
-            if param.grad is None:
-                param.grad = torch.zeros_like(param)
-            else:
-                param.grad.zero_()
-
-            grad_update = rho
-            if len(param.data.shape) == 1:
-                indices = selected_indices[name]
-                if use_smoothing:
-                    param.grad[indices] = beta * param.grad[indices] + (1 - beta) * grad_update
+        for group_idx, group in enumerate(self.param_groups):
+            for param in group['params']:
+                name = next(name for name, p in self.named_parameters_to_optim if p is param)
+                if param.grad is None:
+                    param.grad = torch.zeros_like(param)
                 else:
-                    param.grad[indices] = grad_update
-            else:
-                selected_rows, selected_cols = selected_indices[name]
-                if use_smoothing:
-                    param.grad[selected_rows[:, None], selected_cols] = beta * param.grad[selected_rows[:, None], selected_cols] + (1 - beta) * grad_update
+                    param.grad.zero_()
+
+                grad_update = rho
+                if len(param.data.shape) == 1:
+                    indices = selected_indices[name]
+                    if use_smoothing:
+                        param.grad[indices] = beta * param.grad[indices] + (1 - beta) * grad_update
+                    else:
+                        param.grad[indices] = grad_update
                 else:
-                    param.grad[selected_rows[:, None], selected_cols] = grad_update
+                    selected_rows, selected_cols = selected_indices[name]
+                    if use_smoothing:
+                        param.grad[selected_rows[:, None], selected_cols] = beta * param.grad[selected_rows[:, None], selected_cols] + (1 - beta) * grad_update
+                    else:
+                        param.grad[selected_rows[:, None], selected_cols] = grad_update
 
-            param.grad = torch.sign(param.grad)
+                param.grad = torch.sign(param.grad)
 
-        self._inner_optimizer.step()
+                self._inner_optimizers[group_idx].step()
+                param.grad = None
+        for _, param in self.named_parameters_to_optim:
+            param.grad = None
 
-        assert args.gradient_accumulation_steps == 1
         return loss1

@@ -1,0 +1,30 @@
+2025-07-14 17:57:08,635 - INFO - Sample train set 1500/67349
+2025-07-14 17:57:08,635 - INFO - ... including dev set 500 samples
+2025-07-14 17:57:08,636 - INFO - Loading model with FP16...
+8
+2025-07-14 17:57:14,997 - INFO - Done with 6.36s
+2025-07-14 17:57:15,291 - INFO - Dev samples: 500
+2025-07-14 17:57:15,291 - INFO - Train samples: 1000
+2025-07-14 17:57:15,291 - INFO - Eval sample length is 872
+2025-07-14 17:57:15,291 - INFO - Tokenizing training samples...
+2025-07-14 17:57:16,250 - INFO - Done with 0.96s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 349, in _inner_training_loop
+    self.optimizer = Jaguar_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
+  File "/home/rinya/zero-order-optimization/src/optimizers/jaguar_signsgd.py", line 24, in __init__
+    super().__init__(
+  File "/home/rinya/zero-order-optimization/src/optimizers/base.py", line 42, in __init__
+    self._validate_hyperparameters()
+  File "/home/rinya/zero-order-optimization/src/optimizers/base.py", line 90, in _validate_hyperparameters
+    raise ValueError(f"Missing required hyperparameter: {key}")
+ValueError: Missing required hyperparameter: lr

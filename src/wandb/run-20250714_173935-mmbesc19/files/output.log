@@ -24,3 +24,35 @@
 {'peak_mem': 3.474902629852295, 'step_consumption': 160469.64263916016, 'epoch': 0.02}
   0%|                                                                                                                                                                            | 1/20000 [02:40<891:28:25, 160.47s/it]
 
+
+  0%|                                                                                                                                                                            | 3/20000 [08:01<891:12:07, 160.44s/it]
+
+  0%|                                                                                                                                                                            | 4/20000 [10:40<888:52:02, 160.03s/it]
+
+  0%|                                                                                                                                                                            | 5/20000 [13:20<888:32:20, 159.98s/it]
+
+  0%|                                                                                                                                                                            | 6/20000 [16:00<889:14:16, 160.11s/it]
+  0%|                                                                                                                                                                            | 6/20000 [16:00<889:14:16, 160.11s/it]Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 546, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sampling_muon.py", line 60, in step
+    zo_muon_perturb_parameters(1)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sampling_muon.py", line 50, in zo_muon_perturb_parameters
+    E = sample_ortho_approx(param.data.shape, device=self.device)
+  File "/home/rinya/zero-order-optimization/src/optimizers/opt_utils/sampling.py", line 326, in sample_ortho_approx
+    E = torch_ortho_rvs(p, device=device)
+  File "/home/rinya/zero-order-optimization/src/optimizers/opt_utils/sampling.py", line 92, in torch_ortho_rvs
+    q, r = torch.linalg.qr(z)
+KeyboardInterrupt

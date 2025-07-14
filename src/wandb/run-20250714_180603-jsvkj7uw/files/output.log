@@ -1,0 +1,61 @@
+2025-07-14 18:06:15,202 - INFO - Sample train set 1500/67349
+2025-07-14 18:06:15,203 - INFO - ... including dev set 500 samples
+2025-07-14 18:06:15,203 - INFO - Loading model with FP16...
+8
+2025-07-14 18:06:20,838 - INFO - Done with 5.63s
+2025-07-14 18:06:21,154 - INFO - Dev samples: 500
+2025-07-14 18:06:21,155 - INFO - Train samples: 1000
+2025-07-14 18:06:21,155 - INFO - Eval sample length is 872
+2025-07-14 18:06:21,155 - INFO - Tokenizing training samples...
+2025-07-14 18:06:22,017 - INFO - Done with 0.86s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-07-14 18:06:22,030 - INFO - ***** Running training *****
+2025-07-14 18:06:22,030 - INFO -   Num examples = 1000
+2025-07-14 18:06:22,030 - INFO -   Num Epochs = 318
+2025-07-14 18:06:22,030 - INFO -   Instantaneous batch size per device = 16
+2025-07-14 18:06:22,030 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-07-14 18:06:22,030 - INFO -   Gradient Accumulation steps = 1
+2025-07-14 18:06:22,030 - INFO -   Total optimization steps = 20000
+2025-07-14 18:06:22,031 - INFO -   Number of trainable parameters = 1315758080
+  0%|                                                                                                                                                                                         | 0/20000 [00:00<?, ?it/s]You're using a GPT2TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+{'peak_mem': 2.8865814208984375, 'step_consumption': 707.2854042053223, 'epoch': 0.02}
+{'peak_mem': 3.083731174468994, 'step_consumption': 461.7881774902344, 'epoch': 0.03}
+  0%|                                                                                                                                                                               | 4/20000 [00:02<3:00:46,  1.84it/s]
+{'peak_mem': 3.2018747329711914, 'step_consumption': 538.1011962890625, 'epoch': 0.05}
+{'peak_mem': 3.2018747329711914, 'step_consumption': 521.4138031005859, 'epoch': 0.06}
+{'peak_mem': 3.2018747329711914, 'step_consumption': 488.9073371887207, 'epoch': 0.08}
+  0%|                                                                                                                                                                               | 8/20000 [00:04<2:48:31,  1.98it/s]Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 542, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/jaguar_signsgd.py", line 98, in step
+    loss2 = closure()
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 765, in closure
+    def closure(): return self.zo_forward(model, inputs)
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 779, in zo_forward
+    inputs = self._prepare_inputs(inputs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2637, in _prepare_inputs
+    inputs = self._prepare_input(inputs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2619, in _prepare_input
+    return type(data)({k: self._prepare_input(v) for k, v in data.items()})
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2619, in <dictcomp>
+    return type(data)({k: self._prepare_input(v) for k, v in data.items()})
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2629, in _prepare_input
+    return data.to(**kwargs)
+KeyboardInterrupt
+{'peak_mem': 3.2018747329711914, 'step_consumption': 510.71763038635254, 'epoch': 0.11}
+{'peak_mem': 3.2018747329711914, 'step_consumption': 473.34980964660645, 'epoch': 0.13}

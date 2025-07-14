@@ -346,7 +346,7 @@ class OurTrainer(Trainer):
         elif args.trainer == "zo_conserv":
             self.optimizer = ZO_Conserv(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "jaguar_signsgd":
-            self.optimizer = Jaguar_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
+            self.optimizer = Jaguar_SignSGD(self.model.parameters(), tau=1e-1, beta=1e-2, use_smoothing=True, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "zo_sampling_muon":
