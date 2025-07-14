@@ -30,7 +30,7 @@ class ZO_Adam(ZO_SGD):
             module_wise_perturbation: Whether to perturb modules separately
             coordinate_perturbation: Whether to update immediately after perturbation
         """
-        params = list(params)
+        # params = list(params)
         # self._inner_optimizer = Adam(params, lr=args.learning_rate)
         super().__init__(
             params = params, 
@@ -42,9 +42,4 @@ class ZO_Adam(ZO_SGD):
             q = q,
             module_wise_perturbation = module_wise_perturbation,
             coordinate_perturbation = coordinate_perturbation
-            )
-        self._inner_optimizers = []
-        for group in self.param_groups:
-            self._inner_optimizers.append(
-                Adam(group['params'], lr=group['lr'], momentum=group['momentum'])
             )
