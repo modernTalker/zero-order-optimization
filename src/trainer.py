@@ -338,7 +338,8 @@ class OurTrainer(Trainer):
         if args.trainer == "zo_adam":
             self.optimizer = ZO_Adam(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_sgd":
-            self.optimizer = ZO_SGD(self.model.parameters(), self.args, self.gradient_sparsity)
+            # self.optimizer = ZO_SGD(self.model.parameters(), self.args, self.gradient_sparsity)
+            self.optimizer = ZO_SGD(self.model.parameters(), lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "zo_signsgd":
             self.optimizer = ZO_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_conserv":

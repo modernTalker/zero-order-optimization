@@ -1,0 +1,32 @@
+2025-07-14 03:35:19,727 - INFO - Sample train set 1500/67349
+2025-07-14 03:35:19,742 - INFO - ... including dev set 500 samples
+2025-07-14 03:35:19,742 - INFO - Loading model with FP16...
+/home/moderntalker/anaconda3/envs/zollm/lib/python3.10/site-packages/huggingface_hub/file_download.py:943: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+10
+2025-07-14 03:35:24,130 - INFO - Done with 4.39s
+2025-07-14 03:35:24,427 - INFO - Dev samples: 500
+2025-07-14 03:35:24,429 - INFO - Train samples: 1000
+2025-07-14 03:35:24,430 - INFO - Eval sample length is 872
+2025-07-14 03:35:24,431 - INFO - Tokenizing training samples...
+Super Init DONE
+GROUP: dict_keys(['params', 'lr', 'eps', 'momentum'])
+2025-07-14 03:35:25,455 - INFO - Done with 1.02s
+/home/moderntalker/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/moderntalker/anaconda3/envs/zollm/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/trainer.py", line 341, in _inner_training_loop
+    self.optimizer = ZO_SGD(self.model.parameters(), self.args, self.gradient_sparsity)
+  File "/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/optimizers/zo_sgd.py", line 54, in __init__
+    SGD([group['params']], lr=group['lr'], momentum=group['momentum'])
+  File "/home/moderntalker/anaconda3/envs/zollm/lib/python3.10/site-packages/torch/optim/sgd.py", line 13, in __init__
+    if lr is not required and lr < 0.0:
+TypeError: '<' not supported between instances of 'OurArguments' and 'float'

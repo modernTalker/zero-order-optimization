@@ -28,6 +28,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         # NOTE: This code allows us to have different lr's for param_groups,
         # NOTE: eg. we can use lr=1e-3 and lr=1e-5 for different model layers
         if lr is not None or eps is not None:
+            # print(f"LR: {lr}, EPS: {eps}")
             defaults = {
                 'lr': lr,
                 'eps': eps,
@@ -35,7 +36,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             }
         else:
             defaults = {'momentum': momentum}
+        # print("DONE defaults")
         super().__init__(params, defaults)
+        # print("DONE super.init")
         self._validate_hyperparameters()
         self.gradient_sparsity = gradient_sparsity
 
@@ -53,6 +56,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
     
         # NOTE: If eps is not common for all parameters, then we calculate the weighted average of all epsilons
         self.zo_eps = self._calculate_zo_eps(eps=eps)
+        # print("DONE init")
 
     def _calculate_zo_eps(self, eps: Optional[float] = None):
         """"Estimates zo_eps for accurate grad approx as a weighted sum of all epsilons"""
@@ -61,9 +65,10 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         
         for group in self.param_groups:
             group_eps = group['eps']
-            group_params = sum(p.numel() for p in group['params'] if p.requires_grad)
-            eps_sum += group_eps * group_params
-            total_params += group_params
+            if group_eps is not None:
+                group_params = sum(p.numel() for p in group['params'] if p.requires_grad)
+                eps_sum += group_eps * group_params
+                total_params += group_params
         
         return eps_sum / total_params if total_params > 0 else (eps if eps is not None else 1e-3)
 
@@ -175,7 +180,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 if original_perturb_func:
                     z = original_perturb_func(param)
                 else:
-                    z = torch.randn_like(param, generator=generator)
+                    # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
+                    z = torch.randn_like(param)
+                    # z = torch.randn(size=param.size(), dtype=param.dtype, device=param.device, generator=generator)
                 
                 param_id = id(param)
                 if param_id in sparsity_dict:
@@ -203,7 +210,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     if spec[0] == '1d':
                         idx = spec[1]
                         if element_wise:
-                            perturb = torch.randn_like(p.data[idx], generator=generator) * eps
+                            # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
+                            perturb = torch.randn_like(p.data[idx]) * eps
                             # if custom_perturb_func:
                                 # perturbations = custom_perturb_func(p.data[idx]) * eps
                             # else:
@@ -225,7 +233,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                             # p.data[rows[:, None], cols] += scaling_factor * perturbations
                         # else:
                             # p.data[rows[:, None], cols] += scaling_factor * eps
-                            perturb = torch.randn_like(slice_data, generator=generator) * eps
+                            # perturb = torch.randn_like(slice_data, generator=generator) * eps
+                            # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
+                            perturb = torch.randn_like(slice_data) * eps
                         else:
                             perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
                         p.data[rows[:, None], cols].add_(scaling_factor * perturb)
@@ -237,7 +247,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         # z = torch.randn_like(p, generator=generator)
                         # perturbation = z * eps
                     if perturb is None:
-                        z = torch.randn_like(p, generator=generator)
+                        # z = torch.randn_like(p, generator=generator)
+                        z = torch.randn_like(p)
                         perturb = z * eps
                     p.data.add_(scaling_factor * perturb)
 

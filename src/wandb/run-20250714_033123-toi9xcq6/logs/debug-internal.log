@@ -1,0 +1,254 @@
+2025-07-14 03:31:23,220 INFO    StreamThr :1223276 [internal.py:wandb_internal():86] W&B internal server running at pid: 1223276, started at: 2025-07-14 03:31:23.207750
+2025-07-14 03:31:23,248 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: status
+2025-07-14 03:31:23,249 INFO    WriterThread:1223276 [datastore.py:open_for_write():85] open: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/run-toi9xcq6.wandb
+2025-07-14 03:31:23,249 DEBUG   SenderThread:1223276 [sender.py:send():382] send: header
+2025-07-14 03:31:23,250 DEBUG   SenderThread:1223276 [sender.py:send():382] send: run
+2025-07-14 03:31:23,783 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: check_version
+2025-07-14 03:31:23,784 INFO    SenderThread:1223276 [dir_watcher.py:__init__():211] watching files in: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files
+2025-07-14 03:31:23,784 INFO    SenderThread:1223276 [sender.py:_start_run_threads():1136] run started: toi9xcq6 with start time 1752453083.207934
+2025-07-14 03:31:23,785 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: check_version
+2025-07-14 03:31:24,078 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: run_start
+2025-07-14 03:31:24,100 DEBUG   HandlerThread:1223276 [system_info.py:__init__():32] System info init
+2025-07-14 03:31:24,100 DEBUG   HandlerThread:1223276 [system_info.py:__init__():47] System info init done
+2025-07-14 03:31:24,100 INFO    HandlerThread:1223276 [system_monitor.py:start():194] Starting system monitor
+2025-07-14 03:31:24,109 INFO    SystemMonitor:1223276 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2025-07-14 03:31:24,110 INFO    HandlerThread:1223276 [system_monitor.py:probe():214] Collecting system info
+2025-07-14 03:31:24,124 INFO    SystemMonitor:1223276 [interfaces.py:start():190] Started cpu monitoring
+2025-07-14 03:31:24,149 DEBUG   HandlerThread:1223276 [system_info.py:probe():196] Probing system
+2025-07-14 03:31:24,175 INFO    SystemMonitor:1223276 [interfaces.py:start():190] Started disk monitoring
+2025-07-14 03:31:24,178 DEBUG   HandlerThread:1223276 [system_info.py:_probe_git():181] Probing git
+2025-07-14 03:31:24,192 DEBUG   HandlerThread:1223276 [system_info.py:_probe_git():189] Probing git done
+2025-07-14 03:31:24,192 DEBUG   HandlerThread:1223276 [system_info.py:probe():244] Probing system done
+2025-07-14 03:31:24,192 DEBUG   HandlerThread:1223276 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-125-generic-x86_64-with-glibc2.31', 'python': '3.10.16', 'heartbeatAt': '2025-07-14T00:31:24.149327', 'startedAt': '2025-07-14T00:31:23.202804', 'docker': None, 'cuda': None, 'args': ('--model_name=facebook/opt-1.3b', '--task_name=SST2', '--output_dir=result/SST2-ft-', '--num_train_epochs=5', '--per_device_train_batch_size=16', '--load_best_model_at_end', '--evaluation_strategy=steps', '--save_strategy=steps', '--save_total_limit=1', '--eval_steps=1000', '--max_steps=20000', '--logging_steps=10', '--num_eval=1000', '--num_train=1000', '--num_dev=500', '--train_as_classification', '--perturbation_mode=two_side', '--trainer=zo_sgd', '--train_set_seed=0', '--lr_scheduler_type=constant', '--save_steps=1000', '--load_float16', '--learning_rate=5e-1', '--zo_eps=0.001', '--momentum=0.9', '--weight_decay=0', '--module_wise_perturbation=False', '--zo_tau=0.1', '--zo_use_smoothing=true', '--zo_beta=1e-2', '--overwrite_output_dir'), 'state': 'running', 'program': '/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/run.py', 'codePathLocal': 'run.py', 'codePath': 'src/run.py', 'git': {'remote': 'git@github.com:modernTalker/zero-order-optimization.git', 'commit': 'f220908ab59e988fd69771498d7f377dc66aac8a'}, 'email': 'petrov.egor.d@phystech.edu', 'root': '/home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization', 'host': 'opt-mipt', 'username': 'moderntalker', 'executable': '/home/moderntalker/anaconda3/envs/zollm/bin/python', 'cpu_count': 48, 'cpu_count_logical': 48, 'cpu_freq': {'current': 2195.856, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 132.80414581298828, 'used': 53.725830078125}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 8, 'memory': {'total': 503.8747673034668}}
+2025-07-14 03:31:24,192 INFO    HandlerThread:1223276 [system_monitor.py:probe():224] Finished collecting system info
+2025-07-14 03:31:24,192 INFO    HandlerThread:1223276 [system_monitor.py:probe():227] Publishing system info
+2025-07-14 03:31:24,192 DEBUG   HandlerThread:1223276 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2025-07-14 03:31:24,193 DEBUG   HandlerThread:1223276 [system_info.py:_save_pip():68] Saving pip packages done
+2025-07-14 03:31:24,193 DEBUG   HandlerThread:1223276 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2025-07-14 03:31:24,194 INFO    SystemMonitor:1223276 [interfaces.py:start():190] Started gpu monitoring
+2025-07-14 03:31:24,195 INFO    SystemMonitor:1223276 [interfaces.py:start():190] Started memory monitoring
+2025-07-14 03:31:24,195 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,210 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,215 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,216 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,217 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,221 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,224 INFO    SystemMonitor:1223276 [interfaces.py:start():190] Started network monitoring
+2025-07-14 03:31:24,225 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:24,775 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/conda-environment.yaml
+2025-07-14 03:31:24,776 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/requirements.txt
+2025-07-14 03:31:26,226 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,226 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,228 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,229 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,230 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,231 DEBUG   HandlerThread:1223276 [system_info.py:_save_conda():87] Saving conda packages done
+2025-07-14 03:31:26,232 INFO    HandlerThread:1223276 [system_monitor.py:probe():229] Finished publishing system info
+2025-07-14 03:31:26,235 DEBUG   SenderThread:1223276 [sender.py:send():382] send: files
+2025-07-14 03:31:26,235 INFO    SenderThread:1223276 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2025-07-14 03:31:26,235 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,238 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:26,246 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-14 03:31:26,246 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: stop_status
+2025-07-14 03:31:26,284 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-14 03:31:26,510 DEBUG   SenderThread:1223276 [sender.py:send():382] send: telemetry
+2025-07-14 03:31:26,774 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/conda-environment.yaml
+2025-07-14 03:31:26,775 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/wandb-metadata.json
+2025-07-14 03:31:26,882 INFO    wandb-upload_0:1223276 [upload_job.py:push():131] Uploaded file /tmp/tmpq5dom8rbwandb/n97j8ya9-wandb-metadata.json
+2025-07-14 03:31:28,239 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,239 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,242 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,244 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,244 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,247 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,250 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:28,511 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 03:31:30,250 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:30,250 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:30,252 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:30,254 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:30,254 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:30,257 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:30,261 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,261 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,262 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,264 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,265 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,266 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,268 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:32,272 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:33,512 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 03:31:34,280 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,280 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,282 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,284 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,284 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,287 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,289 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:34,778 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log
+2025-07-14 03:31:36,290 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,290 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,292 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,294 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,295 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,299 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,301 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:36,779 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log
+2025-07-14 03:31:37,779 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log
+2025-07-14 03:31:38,302 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,302 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,304 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,305 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,306 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,309 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,311 ERROR   gpu       :1223276 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 03:31:38,792 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 03:31:39,827 DEBUG   SenderThread:1223276 [sender.py:send():382] send: exit
+2025-07-14 03:31:39,827 INFO    SenderThread:1223276 [sender.py:send_exit():589] handling exit code: 1
+2025-07-14 03:31:39,827 INFO    SenderThread:1223276 [sender.py:send_exit():591] handling runtime: 15
+2025-07-14 03:31:39,828 INFO    SenderThread:1223276 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-14 03:31:39,829 INFO    SenderThread:1223276 [sender.py:send_exit():597] send defer
+2025-07-14 03:31:39,829 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,829 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 0
+2025-07-14 03:31:39,829 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,829 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 0
+2025-07-14 03:31:39,830 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 1
+2025-07-14 03:31:39,830 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,830 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 1
+2025-07-14 03:31:39,830 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,830 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 1
+2025-07-14 03:31:39,830 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 2
+2025-07-14 03:31:39,830 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,830 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 2
+2025-07-14 03:31:39,830 INFO    HandlerThread:1223276 [system_monitor.py:finish():203] Stopping system monitor
+2025-07-14 03:31:39,831 DEBUG   SystemMonitor:1223276 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2025-07-14 03:31:39,832 DEBUG   SystemMonitor:1223276 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2025-07-14 03:31:39,832 DEBUG   SystemMonitor:1223276 [system_monitor.py:_start():183] Publishing last batch of metrics
+2025-07-14 03:31:39,832 ERROR   gpu       :1223276 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2025-07-14 03:31:39,844 INFO    HandlerThread:1223276 [interfaces.py:finish():202] Joined cpu monitor
+2025-07-14 03:31:39,845 INFO    HandlerThread:1223276 [interfaces.py:finish():202] Joined disk monitor
+2025-07-14 03:31:39,845 INFO    HandlerThread:1223276 [interfaces.py:finish():202] Joined gpu monitor
+2025-07-14 03:31:39,845 INFO    HandlerThread:1223276 [interfaces.py:finish():202] Joined memory monitor
+2025-07-14 03:31:39,845 INFO    HandlerThread:1223276 [interfaces.py:finish():202] Joined network monitor
+2025-07-14 03:31:39,846 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,846 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 2
+2025-07-14 03:31:39,846 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 3
+2025-07-14 03:31:39,846 DEBUG   SenderThread:1223276 [sender.py:send():382] send: stats
+2025-07-14 03:31:39,847 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,847 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 3
+2025-07-14 03:31:39,847 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,847 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 3
+2025-07-14 03:31:39,847 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 4
+2025-07-14 03:31:39,848 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,848 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 4
+2025-07-14 03:31:39,848 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,848 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 4
+2025-07-14 03:31:39,848 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 5
+2025-07-14 03:31:39,848 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,848 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 5
+2025-07-14 03:31:39,849 DEBUG   SenderThread:1223276 [sender.py:send():382] send: summary
+2025-07-14 03:31:39,849 INFO    SenderThread:1223276 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-14 03:31:39,850 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,850 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 5
+2025-07-14 03:31:39,850 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 6
+2025-07-14 03:31:39,850 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:39,850 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 6
+2025-07-14 03:31:39,851 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:39,851 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 6
+2025-07-14 03:31:39,854 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 03:31:40,082 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 7
+2025-07-14 03:31:40,082 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:40,082 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 7
+2025-07-14 03:31:40,083 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:40,083 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 7
+2025-07-14 03:31:40,781 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log
+2025-07-14 03:31:40,782 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/config.yaml
+2025-07-14 03:31:40,782 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/wandb-summary.json
+2025-07-14 03:31:40,827 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 03:31:40,839 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 8
+2025-07-14 03:31:40,839 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 03:31:40,839 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:40,839 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 8
+2025-07-14 03:31:40,840 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:40,840 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 8
+2025-07-14 03:31:40,840 INFO    SenderThread:1223276 [job_builder.py:build():298] Attempting to build job artifact
+2025-07-14 03:31:40,841 INFO    SenderThread:1223276 [job_builder.py:_get_source_type():428] is repo sourced job
+2025-07-14 03:31:40,889 INFO    SenderThread:1223276 [job_builder.py:build():404] adding wandb-job metadata file
+2025-07-14 03:31:40,903 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 9
+2025-07-14 03:31:40,903 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:40,903 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 9
+2025-07-14 03:31:40,904 DEBUG   SenderThread:1223276 [sender.py:send():382] send: artifact
+2025-07-14 03:31:41,783 INFO    Thread-12 :1223276 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log
+2025-07-14 03:31:41,817 INFO    SenderThread:1223276 [sender.py:send_artifact():1470] sent artifact job-git_github.com_modernTalker_zero-order-optimization.git_src_run.py - {'id': 'QXJ0aWZhY3Q6MTg3ODA0NDQyNQ==', 'state': 'COMMITTED', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjY4NjA4ODY0OA==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTg3ODA0NDQyNQ==', 'versionIndex': 0}}}
+2025-07-14 03:31:41,817 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:41,817 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 9
+2025-07-14 03:31:41,817 INFO    SenderThread:1223276 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-07-14 03:31:41,828 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 03:31:42,784 INFO    SenderThread:1223276 [dir_watcher.py:finish():388] scan: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files
+2025-07-14 03:31:42,785 INFO    SenderThread:1223276 [dir_watcher.py:finish():402] scan save: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/conda-environment.yaml conda-environment.yaml
+2025-07-14 03:31:42,785 INFO    SenderThread:1223276 [dir_watcher.py:finish():402] scan save: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/config.yaml config.yaml
+2025-07-14 03:31:42,785 INFO    SenderThread:1223276 [dir_watcher.py:finish():402] scan save: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/requirements.txt requirements.txt
+2025-07-14 03:31:42,785 INFO    SenderThread:1223276 [dir_watcher.py:finish():402] scan save: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/wandb-metadata.json wandb-metadata.json
+2025-07-14 03:31:42,785 INFO    SenderThread:1223276 [dir_watcher.py:finish():402] scan save: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/wandb-summary.json wandb-summary.json
+2025-07-14 03:31:42,785 INFO    SenderThread:1223276 [dir_watcher.py:finish():402] scan save: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log output.log
+2025-07-14 03:31:42,786 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 10
+2025-07-14 03:31:42,786 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 03:31:42,786 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:42,790 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 10
+2025-07-14 03:31:42,796 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:42,796 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 10
+2025-07-14 03:31:42,796 INFO    SenderThread:1223276 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-14 03:31:42,829 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 03:31:42,830 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 03:31:43,255 INFO    wandb-upload_0:1223276 [upload_job.py:push():131] Uploaded file /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/conda-environment.yaml
+2025-07-14 03:31:43,308 INFO    wandb-upload_1:1223276 [upload_job.py:push():131] Uploaded file /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/config.yaml
+2025-07-14 03:31:43,384 INFO    wandb-upload_2:1223276 [upload_job.py:push():131] Uploaded file /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/requirements.txt
+2025-07-14 03:31:43,485 INFO    wandb-upload_4:1223276 [upload_job.py:push():131] Uploaded file /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/output.log
+2025-07-14 03:31:43,504 INFO    wandb-upload_3:1223276 [upload_job.py:push():131] Uploaded file /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/files/wandb-summary.json
+2025-07-14 03:31:43,705 INFO    Thread-11 (_thread_body):1223276 [sender.py:transition_state():617] send defer: 11
+2025-07-14 03:31:43,706 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:43,706 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 11
+2025-07-14 03:31:43,706 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:43,707 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 11
+2025-07-14 03:31:43,707 INFO    SenderThread:1223276 [file_pusher.py:join():181] waiting for file pusher
+2025-07-14 03:31:43,707 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 12
+2025-07-14 03:31:43,707 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:43,707 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 12
+2025-07-14 03:31:43,707 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:43,707 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 12
+2025-07-14 03:31:43,707 INFO    SenderThread:1223276 [file_stream.py:finish():595] file stream finish called
+2025-07-14 03:31:43,829 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 03:31:43,886 INFO    SenderThread:1223276 [file_stream.py:finish():599] file stream finish is done
+2025-07-14 03:31:43,887 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 13
+2025-07-14 03:31:43,887 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 03:31:43,887 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:43,887 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 13
+2025-07-14 03:31:43,888 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:43,888 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 13
+2025-07-14 03:31:43,888 INFO    SenderThread:1223276 [sender.py:transition_state():617] send defer: 14
+2025-07-14 03:31:43,888 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 03:31:43,888 INFO    HandlerThread:1223276 [handler.py:handle_request_defer():172] handle defer: 14
+2025-07-14 03:31:43,888 DEBUG   SenderThread:1223276 [sender.py:send():382] send: final
+2025-07-14 03:31:43,889 DEBUG   SenderThread:1223276 [sender.py:send():382] send: footer
+2025-07-14 03:31:43,889 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: defer
+2025-07-14 03:31:43,889 INFO    SenderThread:1223276 [sender.py:send_request_defer():613] handle sender defer: 14
+2025-07-14 03:31:43,889 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 03:31:43,890 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 03:31:43,890 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: server_info
+2025-07-14 03:31:43,890 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: get_summary
+2025-07-14 03:31:43,890 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: sampled_history
+2025-07-14 03:31:43,890 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-14 03:31:43,890 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: job_info
+2025-07-14 03:31:43,890 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 03:31:43,891 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 03:31:43,891 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: server_info
+2025-07-14 03:31:44,071 DEBUG   SenderThread:1223276 [sender.py:send_request():409] send_request: job_info
+2025-07-14 03:31:44,071 INFO    MainThread:1223276 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-07-14 03:31:44,071 INFO    MainThread:1223276 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-07-14 03:31:44,071 INFO    MainThread:1223276 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-07-14 03:31:44,073 DEBUG   HandlerThread:1223276 [handler.py:handle_request():146] handle_request: shutdown
+2025-07-14 03:31:44,073 INFO    HandlerThread:1223276 [handler.py:finish():866] shutting down handler
+2025-07-14 03:31:44,891 INFO    WriterThread:1223276 [datastore.py:close():294] close: /home/moderntalker/opt_projects/zero-order-optim/zero-order-optimization/src/wandb/run-20250714_033123-toi9xcq6/run-toi9xcq6.wandb
+2025-07-14 03:31:45,071 INFO    SenderThread:1223276 [sender.py:finish():1548] shutting down sender
+2025-07-14 03:31:45,071 INFO    SenderThread:1223276 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-14 03:31:45,071 INFO    SenderThread:1223276 [file_pusher.py:join():181] waiting for file pusher

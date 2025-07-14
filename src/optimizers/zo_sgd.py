@@ -40,6 +40,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             gradient_sparsity=gradient_sparsity
         )
         # params = list(params)
+        # print("Super Init DONE")
         self.perturbation_mode = perturbation_mode
         self.q = q
         self.module_wise_perturbation = module_wise_perturbation
@@ -48,8 +49,11 @@ class ZO_SGD(ZeroOrderOptimizer):
         # inner optimizer for each param_gropus
         self._inner_optimizers = []
         for group in self.param_groups:
+            # print(f"GROUP: {group.keys()}")
+            # print(f"LR: {group['lr']}")
+            # print(f"EPS: {group['eps']}")
             self._inner_optimizers.append(
-                SGD([group['params']], lr=group['lr'], momentum=group['momentum'])
+                SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
             )
         # TODO: Maybe we need a random seed in the input
         self.projected_grad: Optional[float] = None
@@ -66,25 +70,25 @@ class ZO_SGD(ZeroOrderOptimizer):
             Loss tensor or None
         """
         # NOTE: In the original code, the zo_step_v2 isn't used anywhere
-        args = self.args
-        if args.module_wise_perturbation:
-            assert args.q == 1, "module-wise perturbation only supports q=1"
-            if args.coordinate_perturbation:
+        # args = self.args
+        if self.module_wise_perturbation:
+            assert self.q == 1, "module-wise perturbation only supports q=1"
+            if self.coordinate_perturbation:
                 return self.zo_step_with_module_wise_perturbation_coordinate(closure)
             return self.zo_step_with_module_wise_perturbation(closure)
-        elif args.q == 1:
+        elif self.q == 1:
             return self.zo_step(closure)
-        elif args.q > 1:
+        elif self.q > 1:
             return self.zo_step_v1(closure)
         else:
-            raise ValueError(f"q={args.q} is not supported.")
+            raise ValueError(f"q={self.q} is not supported.")
 
     @torch.no_grad()
     def zo_step(self, closure: Callable[[], torch.Tensor]) -> torch.Tensor:
         """
         Estimate gradient by MeZO. Return the loss from f(theta + z)
         """
-        args = self.args
+        # args = self.args
         self._prepare_parameters()
         
         # What parameters to optimize
@@ -107,9 +111,9 @@ class ZO_SGD(ZeroOrderOptimizer):
 
         # Second function evaluation
         # NOTE: Since q == 1 for the method we need the loop no more
-        assert args.q == 1, "Only support q=1 for the memory efficiency."
+        assert self.q == 1, "Only support q=1 for the memory efficiency."
         # for _ in range(args.q):  # TODO: shall we change the seed?
-        if self.args.perturbation_mode == "one_side":
+        if self.perturbation_mode == "one_side":
             self.zo_perturb_parameters(scaling_factor=-1)
             loss2 = closure()
             self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
