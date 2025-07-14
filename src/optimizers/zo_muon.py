@@ -96,8 +96,8 @@ class ZO_MUON(ZeroOrderOptimizer):
                 self._inner_optimizers[group_idx].step()
                 param.grad = None
 
-            for _, param in self.named_parameters_to_optim:
-                param.grad = None
+        for _, param in self.named_parameters_to_optim:
+            param.grad = None
 
             # assert args.gradient_accumulation_steps == 1
 
