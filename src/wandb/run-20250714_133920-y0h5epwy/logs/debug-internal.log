@@ -1,0 +1,256 @@
+2025-07-14 13:39:20,846 INFO    StreamThr :592482 [internal.py:wandb_internal():86] W&B internal server running at pid: 592482, started at: 2025-07-14 13:39:20.845352
+2025-07-14 13:39:20,849 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: status
+2025-07-14 13:39:20,852 INFO    WriterThread:592482 [datastore.py:open_for_write():85] open: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/run-y0h5epwy.wandb
+2025-07-14 13:39:20,853 DEBUG   SenderThread:592482 [sender.py:send():382] send: header
+2025-07-14 13:39:20,859 DEBUG   SenderThread:592482 [sender.py:send():382] send: run
+2025-07-14 13:39:21,444 INFO    SenderThread:592482 [dir_watcher.py:__init__():211] watching files in: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files
+2025-07-14 13:39:21,444 INFO    SenderThread:592482 [sender.py:_start_run_threads():1136] run started: y0h5epwy with start time 1752489560.848515
+2025-07-14 13:39:21,450 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: check_version
+2025-07-14 13:39:21,451 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: check_version
+2025-07-14 13:39:21,736 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: run_start
+2025-07-14 13:39:21,749 DEBUG   HandlerThread:592482 [system_info.py:__init__():32] System info init
+2025-07-14 13:39:21,749 DEBUG   HandlerThread:592482 [system_info.py:__init__():47] System info init done
+2025-07-14 13:39:21,749 INFO    HandlerThread:592482 [system_monitor.py:start():194] Starting system monitor
+2025-07-14 13:39:21,749 INFO    SystemMonitor:592482 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2025-07-14 13:39:21,751 INFO    HandlerThread:592482 [system_monitor.py:probe():214] Collecting system info
+2025-07-14 13:39:21,751 INFO    SystemMonitor:592482 [interfaces.py:start():190] Started cpu monitoring
+2025-07-14 13:39:21,753 INFO    SystemMonitor:592482 [interfaces.py:start():190] Started disk monitoring
+2025-07-14 13:39:21,756 INFO    SystemMonitor:592482 [interfaces.py:start():190] Started gpu monitoring
+2025-07-14 13:39:21,758 INFO    SystemMonitor:592482 [interfaces.py:start():190] Started memory monitoring
+2025-07-14 13:39:21,759 INFO    SystemMonitor:592482 [interfaces.py:start():190] Started network monitoring
+2025-07-14 13:39:21,818 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,818 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,819 DEBUG   HandlerThread:592482 [system_info.py:probe():196] Probing system
+2025-07-14 13:39:21,821 DEBUG   HandlerThread:592482 [system_info.py:_probe_git():181] Probing git
+2025-07-14 13:39:21,832 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,833 DEBUG   HandlerThread:592482 [system_info.py:_probe_git():189] Probing git done
+2025-07-14 13:39:21,834 DEBUG   HandlerThread:592482 [system_info.py:probe():244] Probing system done
+2025-07-14 13:39:21,834 DEBUG   HandlerThread:592482 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-125-generic-x86_64-with-glibc2.31', 'python': '3.10.16', 'heartbeatAt': '2025-07-14T10:39:21.819206', 'startedAt': '2025-07-14T10:39:20.839913', 'docker': None, 'cuda': None, 'args': ('--model_name=facebook/opt-1.3b', '--task_name=SST2', '--output_dir=result/SST2-ft-', '--num_train_epochs=5', '--per_device_train_batch_size=16', '--load_best_model_at_end', '--evaluation_strategy=steps', '--save_strategy=steps', '--save_total_limit=1', '--eval_steps=1000', '--max_steps=20000', '--logging_steps=10', '--num_eval=1000', '--num_train=1000', '--num_dev=500', '--train_as_classification', '--perturbation_mode=two_side', '--trainer=zo_muon', '--train_set_seed=0', '--lr_scheduler_type=constant', '--save_steps=1000', '--load_float16', '--learning_rate=5e-1', '--zo_eps=0.001', '--momentum=0.9', '--weight_decay=0', '--module_wise_perturbation=False', '--zo_tau=0.1', '--zo_use_smoothing=true', '--zo_beta=1e-2', '--overwrite_output_dir'), 'state': 'running', 'program': '/home/rinya/zero-order-optimization/src/run.py', 'codePathLocal': 'run.py', 'codePath': 'src/run.py', 'git': {'remote': 'git@github.com:modernTalker/zero-order-optimization.git', 'commit': '6289b86a2bdbcd68e2ebbc25ff62ff5cdf6e2be2'}, 'email': 'evseevgrv@gmail.com', 'root': '/home/rinya/zero-order-optimization', 'host': 'opt-mipt', 'username': 'rinya', 'executable': '/home/rinya/anaconda3/envs/zollm/bin/python', 'cpu_count': 48, 'cpu_count_logical': 48, 'cpu_freq': {'current': 2195.856, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}, {'current': 2195.856, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 132.80414581298828, 'used': 53.57029342651367}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 8, 'memory': {'total': 503.8747673034668}}
+2025-07-14 13:39:21,834 INFO    HandlerThread:592482 [system_monitor.py:probe():224] Finished collecting system info
+2025-07-14 13:39:21,834 INFO    HandlerThread:592482 [system_monitor.py:probe():227] Publishing system info
+2025-07-14 13:39:21,834 DEBUG   HandlerThread:592482 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2025-07-14 13:39:21,834 DEBUG   HandlerThread:592482 [system_info.py:_save_pip():68] Saving pip packages done
+2025-07-14 13:39:21,834 DEBUG   HandlerThread:592482 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2025-07-14 13:39:21,837 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,843 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,849 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,855 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:21,916 DEBUG   HandlerThread:592482 [system_info.py:_save_conda():87] Saving conda packages done
+2025-07-14 13:39:21,917 INFO    HandlerThread:592482 [system_monitor.py:probe():229] Finished publishing system info
+2025-07-14 13:39:21,925 DEBUG   SenderThread:592482 [sender.py:send():382] send: files
+2025-07-14 13:39:21,926 INFO    SenderThread:592482 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2025-07-14 13:39:21,930 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-14 13:39:21,931 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: stop_status
+2025-07-14 13:39:21,934 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-14 13:39:22,229 DEBUG   SenderThread:592482 [sender.py:send():382] send: telemetry
+2025-07-14 13:39:22,445 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/requirements.txt
+2025-07-14 13:39:22,446 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/conda-environment.yaml
+2025-07-14 13:39:22,446 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/wandb-metadata.json
+2025-07-14 13:39:22,712 INFO    wandb-upload_0:592482 [upload_job.py:push():131] Uploaded file /tmp/tmp0gpjk5fxwandb/hzs7s2ln-wandb-metadata.json
+2025-07-14 13:39:23,856 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:23,856 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:23,858 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:23,859 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:23,860 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:23,862 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:23,865 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,866 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,866 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,868 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,869 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,870 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,873 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:25,876 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:26,231 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 13:39:27,876 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:27,876 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:27,878 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:27,880 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:27,881 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:27,886 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:27,891 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,893 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,898 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,909 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,914 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,924 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,930 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:29,935 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:30,448 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/output.log
+2025-07-14 13:39:31,935 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:31,935 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:31,939 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:31,943 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:31,944 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:31,948 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:31,952 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:32,029 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 13:39:32,449 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/output.log
+2025-07-14 13:39:33,952 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:33,952 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:33,956 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:33,959 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:33,959 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:33,963 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:33,967 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,967 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,967 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,969 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,970 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,971 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,976 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:35,989 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:36,931 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: stop_status
+2025-07-14 13:39:36,932 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: stop_status
+2025-07-14 13:39:36,934 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-14 13:39:37,215 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 13:39:37,989 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:37,990 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:37,992 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:37,994 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:37,995 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:37,999 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:38,004 ERROR   gpu       :592482 [interfaces.py:monitor():144] Failed to sample metric: Unknown Error
+2025-07-14 13:39:38,228 DEBUG   SenderThread:592482 [sender.py:send():382] send: exit
+2025-07-14 13:39:38,228 INFO    SenderThread:592482 [sender.py:send_exit():589] handling exit code: 1
+2025-07-14 13:39:38,228 INFO    SenderThread:592482 [sender.py:send_exit():591] handling runtime: 16
+2025-07-14 13:39:38,230 INFO    SenderThread:592482 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-14 13:39:38,231 INFO    SenderThread:592482 [sender.py:send_exit():597] send defer
+2025-07-14 13:39:38,231 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,231 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 0
+2025-07-14 13:39:38,232 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,232 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 0
+2025-07-14 13:39:38,232 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 1
+2025-07-14 13:39:38,232 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,232 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 1
+2025-07-14 13:39:38,232 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,233 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 1
+2025-07-14 13:39:38,233 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 2
+2025-07-14 13:39:38,233 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,233 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 2
+2025-07-14 13:39:38,233 INFO    HandlerThread:592482 [system_monitor.py:finish():203] Stopping system monitor
+2025-07-14 13:39:38,233 DEBUG   SystemMonitor:592482 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2025-07-14 13:39:38,234 INFO    HandlerThread:592482 [interfaces.py:finish():202] Joined cpu monitor
+2025-07-14 13:39:38,234 DEBUG   SystemMonitor:592482 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2025-07-14 13:39:38,234 ERROR   gpu       :592482 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2025-07-14 13:39:38,235 INFO    HandlerThread:592482 [interfaces.py:finish():202] Joined disk monitor
+2025-07-14 13:39:38,235 DEBUG   SystemMonitor:592482 [system_monitor.py:_start():183] Publishing last batch of metrics
+2025-07-14 13:39:38,235 INFO    HandlerThread:592482 [interfaces.py:finish():202] Joined gpu monitor
+2025-07-14 13:39:38,236 INFO    HandlerThread:592482 [interfaces.py:finish():202] Joined memory monitor
+2025-07-14 13:39:38,236 INFO    HandlerThread:592482 [interfaces.py:finish():202] Joined network monitor
+2025-07-14 13:39:38,237 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,237 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 2
+2025-07-14 13:39:38,237 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 3
+2025-07-14 13:39:38,237 DEBUG   SenderThread:592482 [sender.py:send():382] send: stats
+2025-07-14 13:39:38,238 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,238 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 3
+2025-07-14 13:39:38,238 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,238 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 3
+2025-07-14 13:39:38,238 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 4
+2025-07-14 13:39:38,238 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,238 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 4
+2025-07-14 13:39:38,239 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,239 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 4
+2025-07-14 13:39:38,239 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 5
+2025-07-14 13:39:38,239 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,239 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 5
+2025-07-14 13:39:38,240 DEBUG   SenderThread:592482 [sender.py:send():382] send: summary
+2025-07-14 13:39:38,240 INFO    SenderThread:592482 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-07-14 13:39:38,240 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,240 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 5
+2025-07-14 13:39:38,240 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 6
+2025-07-14 13:39:38,240 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,240 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 6
+2025-07-14 13:39:38,241 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,241 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 6
+2025-07-14 13:39:38,246 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: status_report
+2025-07-14 13:39:38,452 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/wandb-summary.json
+2025-07-14 13:39:38,488 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 7
+2025-07-14 13:39:38,489 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:38,489 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 7
+2025-07-14 13:39:38,489 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:38,489 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 7
+2025-07-14 13:39:39,226 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 13:39:39,452 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/config.yaml
+2025-07-14 13:39:40,039 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 8
+2025-07-14 13:39:40,039 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 13:39:40,039 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:40,040 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 8
+2025-07-14 13:39:40,040 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:40,041 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 8
+2025-07-14 13:39:40,041 INFO    SenderThread:592482 [job_builder.py:build():298] Attempting to build job artifact
+2025-07-14 13:39:40,042 INFO    SenderThread:592482 [job_builder.py:_get_source_type():428] is repo sourced job
+2025-07-14 13:39:40,056 INFO    SenderThread:592482 [job_builder.py:build():404] adding wandb-job metadata file
+2025-07-14 13:39:40,070 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 9
+2025-07-14 13:39:40,071 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:40,072 DEBUG   SenderThread:592482 [sender.py:send():382] send: artifact
+2025-07-14 13:39:40,072 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 9
+2025-07-14 13:39:40,228 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 13:39:40,453 INFO    Thread-12 :592482 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/output.log
+2025-07-14 13:39:41,878 INFO    wandb-upload_1:592482 [upload_job.py:push():89] Uploaded file /home/rinya/.local/share/wandb/artifacts/staging/tmpsagr6uzf
+2025-07-14 13:39:41,910 INFO    wandb-upload_0:592482 [upload_job.py:push():89] Uploaded file /home/rinya/.local/share/wandb/artifacts/staging/tmpi2koknew
+2025-07-14 13:39:43,222 INFO    SenderThread:592482 [sender.py:send_artifact():1470] sent artifact job-git_github.com_modernTalker_zero-order-optimization.git_src_run.py - {'id': 'QXJ0aWZhY3Q6MTg3OTE3NTUxOQ==', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjY4Mjk1NjQ1Mg==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTg3MjM5NTEzMg==', 'versionIndex': 36}}}
+2025-07-14 13:39:43,223 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:43,223 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 9
+2025-07-14 13:39:43,223 INFO    SenderThread:592482 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-07-14 13:39:43,454 INFO    SenderThread:592482 [dir_watcher.py:finish():388] scan: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files
+2025-07-14 13:39:43,455 INFO    SenderThread:592482 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/wandb-metadata.json wandb-metadata.json
+2025-07-14 13:39:43,455 INFO    SenderThread:592482 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/wandb-summary.json wandb-summary.json
+2025-07-14 13:39:43,455 INFO    SenderThread:592482 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/output.log output.log
+2025-07-14 13:39:43,458 INFO    SenderThread:592482 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/requirements.txt requirements.txt
+2025-07-14 13:39:43,459 INFO    SenderThread:592482 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/config.yaml config.yaml
+2025-07-14 13:39:43,461 INFO    SenderThread:592482 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/conda-environment.yaml conda-environment.yaml
+2025-07-14 13:39:43,462 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 10
+2025-07-14 13:39:43,462 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 13:39:43,466 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:43,467 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 10
+2025-07-14 13:39:43,469 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:43,469 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 10
+2025-07-14 13:39:43,470 INFO    SenderThread:592482 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-14 13:39:43,921 INFO    wandb-upload_0:592482 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/output.log
+2025-07-14 13:39:43,959 INFO    wandb-upload_1:592482 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/wandb-summary.json
+2025-07-14 13:39:44,084 INFO    wandb-upload_3:592482 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/config.yaml
+2025-07-14 13:39:44,091 INFO    wandb-upload_2:592482 [upload_job.py:push():131] Uploaded file /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/files/requirements.txt
+2025-07-14 13:39:44,292 INFO    Thread-11 (_thread_body):592482 [sender.py:transition_state():617] send defer: 11
+2025-07-14 13:39:44,293 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:44,293 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 11
+2025-07-14 13:39:44,294 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:44,294 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 11
+2025-07-14 13:39:44,294 INFO    SenderThread:592482 [file_pusher.py:join():181] waiting for file pusher
+2025-07-14 13:39:44,294 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 12
+2025-07-14 13:39:44,294 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:44,294 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 12
+2025-07-14 13:39:44,294 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:44,295 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 12
+2025-07-14 13:39:44,295 INFO    SenderThread:592482 [file_stream.py:finish():595] file stream finish called
+2025-07-14 13:39:44,522 INFO    SenderThread:592482 [file_stream.py:finish():599] file stream finish is done
+2025-07-14 13:39:44,522 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 13
+2025-07-14 13:39:44,523 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:44,523 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 13
+2025-07-14 13:39:44,523 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:44,524 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 13
+2025-07-14 13:39:44,524 INFO    SenderThread:592482 [sender.py:transition_state():617] send defer: 14
+2025-07-14 13:39:44,524 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: defer
+2025-07-14 13:39:44,524 INFO    HandlerThread:592482 [handler.py:handle_request_defer():172] handle defer: 14
+2025-07-14 13:39:44,525 DEBUG   SenderThread:592482 [sender.py:send():382] send: final
+2025-07-14 13:39:44,525 DEBUG   SenderThread:592482 [sender.py:send():382] send: footer
+2025-07-14 13:39:44,525 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: defer
+2025-07-14 13:39:44,525 INFO    SenderThread:592482 [sender.py:send_request_defer():613] handle sender defer: 14
+2025-07-14 13:39:44,526 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: poll_exit
+2025-07-14 13:39:44,526 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: server_info
+2025-07-14 13:39:44,527 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: get_summary
+2025-07-14 13:39:44,527 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: sampled_history
+2025-07-14 13:39:44,528 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: poll_exit
+2025-07-14 13:39:44,528 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: internal_messages
+2025-07-14 13:39:44,529 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: server_info
+2025-07-14 13:39:44,532 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: job_info
+2025-07-14 13:39:44,708 DEBUG   SenderThread:592482 [sender.py:send_request():409] send_request: job_info
+2025-07-14 13:39:44,709 INFO    MainThread:592482 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-07-14 13:39:44,709 INFO    MainThread:592482 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-07-14 13:39:44,709 INFO    MainThread:592482 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-07-14 13:39:44,710 DEBUG   HandlerThread:592482 [handler.py:handle_request():146] handle_request: shutdown
+2025-07-14 13:39:44,710 INFO    HandlerThread:592482 [handler.py:finish():866] shutting down handler
+2025-07-14 13:39:45,533 INFO    WriterThread:592482 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250714_133920-y0h5epwy/run-y0h5epwy.wandb
+2025-07-14 13:39:45,709 INFO    SenderThread:592482 [sender.py:finish():1548] shutting down sender
+2025-07-14 13:39:45,709 INFO    SenderThread:592482 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-14 13:39:45,709 INFO    SenderThread:592482 [file_pusher.py:join():181] waiting for file pusher

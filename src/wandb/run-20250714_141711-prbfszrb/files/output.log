@@ -1,0 +1,21 @@
+2025-07-14 14:17:23,736 - INFO - Sample train set 1500/67349
+2025-07-14 14:17:23,737 - INFO - ... including dev set 500 samples
+2025-07-14 14:17:23,737 - INFO - Loading model with FP16...
+7
+2025-07-14 14:17:25,814 - INFO - Done with 2.08s
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 652, in main
+    framework = Framework(args, task)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 185, in __init__
+    self.model, self.tokenizer = self.load_model()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 249, in load_model
+    model = AutoModelForCausalLM.from_pretrained(self.args.model_name, config=config, device_map='auto',
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 471, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 2795, in from_pretrained
+    ) = cls._load_pretrained_model(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 2889, in _load_pretrained_model
+    raise ValueError(
+ValueError: The current `device_map` had weights offloaded to the disk. Please provide an `offload_folder` for them. Alternatively, make sure you have `safetensors` installed if the model you are using offers the weights in this format.

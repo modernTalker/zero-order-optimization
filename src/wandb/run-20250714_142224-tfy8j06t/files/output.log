@@ -1,0 +1,28 @@
+2025-07-14 14:22:36,616 - INFO - Sample train set 1500/67349
+2025-07-14 14:22:36,617 - INFO - ... including dev set 500 samples
+2025-07-14 14:22:36,617 - INFO - Loading model with FP16...
+7
+2025-07-14 14:22:58,174 - WARNING - Some parameters are on the meta device device because they were offloaded to the disk.
+2025-07-14 14:22:58,175 - INFO - Done with 21.56s
+2025-07-14 14:22:58,601 - INFO - Dev samples: 500
+2025-07-14 14:22:58,602 - INFO - Train samples: 1000
+2025-07-14 14:22:58,602 - INFO - Eval sample length is 872
+2025-07-14 14:22:58,602 - INFO - Tokenizing training samples...
+2025-07-14 14:22:59,520 - INFO - Done with 0.92s
+2025-07-14 14:22:59,522 - WARNING - You shouldn't move a model when it is dispatched on multiple devices.
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 543, in train
+    trainer = OurTrainer(model=self.model,
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 143, in __init__
+    super().__init__(*args, **kwargs)  # Initialize the base class
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 498, in __init__
+    self._move_model_to_device(model, args.device)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 740, in _move_model_to_device
+    model = model.to(device)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/accelerate/big_modeling.py", line 425, in wrapper
+    raise RuntimeError("You can't move a model that has some modules offloaded to cpu or disk.")
+RuntimeError: You can't move a model that has some modules offloaded to cpu or disk.

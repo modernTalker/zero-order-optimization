@@ -516,15 +516,6 @@ class ZO_SGD(ZeroOrderOptimizer):
 
     #     return loss1
     
-    def _prepare_parameters(self) -> None:
-        """Prepares parameters for optimization. Common for all optimizer's steps"""
-        self.named_parameters_to_optim = [
-            (name, param) for name, param in self.named_parameters_all 
-            if param.requires_grad
-        ]
-        for _, param in self.named_parameters_to_optim:
-            param.grad = None
-    
     def _apply_gradients(self, random_seeds: Optional[List[int]] = None) -> None:
         """
         Applies gradients using per-group hyperparameters.

@@ -1,0 +1,23 @@
+2025-07-14 15:06:09,889 - INFO - Sample train set 1500/67349
+2025-07-14 15:06:09,890 - INFO - ... including dev set 500 samples
+2025-07-14 15:06:09,890 - INFO - Loading model with FP16...
+9
+2025-07-14 15:06:12,629 - INFO - Done with 2.74s
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 747, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 659, in main
+    framework = Framework(args, task)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 185, in __init__
+    self.model, self.tokenizer = self.load_model()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 256, in load_model
+    model = AutoModelForCausalLM.from_pretrained(self.args.model_name, config=config, device_map=device_map,
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 471, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 2795, in from_pretrained
+    ) = cls._load_pretrained_model(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 3123, in _load_pretrained_model
+    new_error_msgs, offload_index, state_dict_index = _load_state_dict_into_meta_model(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 689, in _load_state_dict_into_meta_model
+    raise ValueError(f"{param_name} doesn't have any device set.")
+ValueError: model.decoder.embed_tokens.weight doesn't have any device set.

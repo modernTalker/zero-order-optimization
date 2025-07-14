@@ -58,6 +58,15 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.zo_eps = self._calculate_zo_eps(eps=eps)
         # print("DONE init")
 
+    def _prepare_parameters(self) -> None:
+        """Prepares parameters for optimization. Common for all optimizer's steps"""
+        self.named_parameters_to_optim = [
+            (name, param) for name, param in self.named_parameters_all 
+            if param.requires_grad
+        ]
+        for _, param in self.named_parameters_to_optim:
+            param.grad = None
+
     def _calculate_zo_eps(self, eps: Optional[float] = None):
         """"Estimates zo_eps for accurate grad approx as a weighted sum of all epsilons"""
         total_params = 0

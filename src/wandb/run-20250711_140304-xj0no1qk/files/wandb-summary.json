@@ -1,1 +1,0 @@
-{"train/peak_mem": 8.186124801635742, "train/step_consumption": 249.1016387939453, "train/epoch": 0.35, "train/global_step": 22, "_timestamp": 1752231807.1466093, "_runtime": 22.19100332260132, "_step": 45, "peak_mem": 8.186124801635742, "step_consumption": 249.1016387939453, "train/loss": 0.0, "train/learning_rate": 0.5, "_wandb": {"runtime": 21}}

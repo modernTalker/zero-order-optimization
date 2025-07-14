@@ -1,0 +1,28 @@
+2025-07-14 15:09:03,186 - INFO - Sample train set 1500/67349
+2025-07-14 15:09:03,187 - INFO - ... including dev set 500 samples
+2025-07-14 15:09:03,187 - INFO - Loading model with FP16...
+8
+2025-07-14 15:09:09,076 - INFO - Done with 5.89s
+2025-07-14 15:09:09,372 - INFO - Dev samples: 500
+2025-07-14 15:09:09,372 - INFO - Train samples: 1000
+2025-07-14 15:09:09,372 - INFO - Eval sample length is 872
+2025-07-14 15:09:09,373 - INFO - Tokenizing training samples...
+2025-07-14 15:09:10,255 - INFO - Done with 0.88s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 350, in _inner_training_loop
+    self.optimizer = ZO_MUON(self.model.parameters(), self.args, self.gradient_sparsity)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_muon.py", line 38, in __init__
+    SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/sgd.py", line 13, in __init__
+    if lr is not required and lr < 0.0:
+TypeError: '<' not supported between instances of 'OurArguments' and 'float'
