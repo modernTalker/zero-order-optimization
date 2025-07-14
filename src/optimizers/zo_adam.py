@@ -43,3 +43,9 @@ class ZO_Adam(ZO_SGD):
             module_wise_perturbation = module_wise_perturbation,
             coordinate_perturbation = coordinate_perturbation
             )
+
+        self._inner_optimizers = []
+        for group in self.param_groups:
+            self._inner_optimizers.append(
+                Adam(group['params'], lr=group['lr'])
+            )
