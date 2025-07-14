@@ -39,8 +39,6 @@ class ZO_SGD(ZeroOrderOptimizer):
             momentum=momentum,
             gradient_sparsity=gradient_sparsity
         )
-        # params = list(params)
-        # print("Super Init DONE")
         self.perturbation_mode = perturbation_mode
         self.q = q
         self.module_wise_perturbation = module_wise_perturbation
@@ -49,9 +47,6 @@ class ZO_SGD(ZeroOrderOptimizer):
         # inner optimizer for each param_gropus
         self._inner_optimizers = []
         for group in self.param_groups:
-            # print(f"GROUP: {group.keys()}")
-            # print(f"LR: {group['lr']}")
-            # print(f"EPS: {group['eps']}")
             self._inner_optimizers.append(
                 SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
             )
@@ -88,16 +83,7 @@ class ZO_SGD(ZeroOrderOptimizer):
         """
         Estimate gradient by MeZO. Return the loss from f(theta + z)
         """
-        # args = self.args
         self._prepare_parameters()
-        
-        # What parameters to optimize
-        # NOTE: This part is in the function self._prepare_parameters()
-        # self.named_parameters_to_optim = []
-        # for name, param in self.named_parameters_all:
-            # if param.requires_grad:
-                # self.named_parameters_to_optim.append((name, param))
-                # param.grad = None  
 
         # Sample the random seed for sampling z
         # FIXME: We definitly shoul fix the seed :)
@@ -112,7 +98,6 @@ class ZO_SGD(ZeroOrderOptimizer):
         # Second function evaluation
         # NOTE: Since q == 1 for the method we need the loop no more
         assert self.q == 1, "Only support q=1 for the memory efficiency."
-        # for _ in range(args.q):  # TODO: shall we change the seed?
         if self.perturbation_mode == "one_side":
             self.zo_perturb_parameters(scaling_factor=-1)
             loss2 = closure()
@@ -120,8 +105,6 @@ class ZO_SGD(ZeroOrderOptimizer):
         else:  # two side perturbation
             self.zo_perturb_parameters(scaling_factor=-2)
             loss2 = closure()
-            # FIXME: May be we can calculate weighted_avg(eps) to estimate the gradient correctly
-            # self.projected_grad = ((loss1 - loss2) / (2 * self.args.zo_eps)).item()
             self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
 
             # Reset model back to its parameters at start of step
@@ -129,38 +112,6 @@ class ZO_SGD(ZeroOrderOptimizer):
         
         # NOTE: The while functional is common for all steps and is now in self._apply_gradients()
         self._apply_gradients()
-
-        # Set the random seed to ensure that we sample the same z for perturbation/update
-        # torch.manual_seed(self.zo_random_seed)
-        # self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
-        # for name, param in self.named_parameters_to_optim:
-        #     # Resample z
-        #     z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device,
-        #                         dtype=param.data.dtype)
-        #     grad_sparsity = self.get_grad_sparsity_by_name(name)
-        #     if grad_sparsity is not None:
-        #         z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-
-        #     if args.trainer == "zo_sign_opt":
-        #         # ----signOpt_orig
-        #         # TODO: why do we multiply lr here? We will multiply lr twice?
-        #         graddiff_times_z = np.sign(self.projected_grad) * z
-        #     else:
-        #         # ----mezo original
-        #         graddiff_times_z = self.projected_grad * z
-
-        #     # # previous implementation
-        #     # # no param.grad involved
-        #     # param.data -= self._get_learning_rate() * self.projected_grad * z
-
-        #     # more mem-efficient:
-        #     # run optimizer.step here to avoid caching all grad.
-        #     param.grad = graddiff_times_z / args.q  # NOTE this q division does not work for q>1.
-        #     self._inner_optimizer.step()  # will only update grad that is not None.
-        #     param.grad = None  # avoid further update.
-                
-        # # No gradient accumulation support
-        # assert self.args.gradient_accumulation_steps == 1
 
         return loss1
     
@@ -170,13 +121,10 @@ class ZO_SGD(ZeroOrderOptimizer):
         Update the parameters right after perturbing the parameters.
         Module-wise perturbation with immediate updates.
         """
-        # args = self.args
-        # perturbed_module_level = args.perturbed_module_level
 
         # Sample the random seed for sampling z
         self.zo_random_seed = np.random.randint(1000000000)
 
-        # all_losses = []
 
         losses = []
 
@@ -190,64 +138,11 @@ class ZO_SGD(ZeroOrderOptimizer):
             losses.append(loss)
             self._apply_gradients()  # therefore the changes are here
         
-        # Second function evaluation
-        # assert args.q == 1, "only support q=1 for the memory efficiency. If you want to implement q>1, need to store random seeds to save memory. In addition, we need to set different random seed for different z in the q-loop."
-        # for module_name, module in self.grouped_module_iter(model, perturbed_module_level):
-        #     self.named_parameters_to_optim = []
-        #     for name, param in self.named_parameters_all:
-        #         if param.requires_grad:
-        #             self.named_parameters_to_optim.append((name, param))
-        #             param.grad = None  
-
-        #     self.zo_perturb_parameters(scaling_factor=1)
-        #     loss1 = closure()
-
-        #     all_losses.append(loss1)
-
-        #     for _ in range(args.q):
-        #         if self.args.perturbation_mode == "one_side":
-        #             self.zo_perturb_parameters(scaling_factor=-1)
-        #             loss2 = closure()
-        #             self.projected_grad = ((loss1 - loss2) / self.args.zo_eps).item()
-        #         else:  # two side perturbation
-        #             self.zo_perturb_parameters(scaling_factor=-2)
-        #             loss2 = closure()
-        #             self.projected_grad = ((loss1 - loss2) / (2 * self.args.zo_eps)).item()
-
-        #             # Reset model back to its parameters at start of step
-        #             self.zo_perturb_parameters(scaling_factor=1)
-
-        #         # Set the random seed to ensure that we sample the same z for perturbation/update
-        #         torch.manual_seed(self.zo_random_seed)
-        #         self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
-        #         for name, param in self.named_parameters_to_optim:
-        #             # Resample z
-        #             z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device,
-        #                              dtype=param.data.dtype)
-        #             grad_sparsity = self.get_grad_sparsity_by_name(name)
-        #             if grad_sparsity is not None:
-        #                 z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-
-        #             if args.trainer == "zo_sign_opt":
-        #                 graddiff_times_z = np.sign(self.projected_grad) * z
-        #             else:
-        #                 graddiff_times_z = self.projected_grad * z
-
-        #             param.grad = graddiff_times_z / args.q  # NOTE this q division does not work for q>1.
-        #             self.optimizer.step()  # will only update grad that is not None.
-        #             param.grad = None  # avoid further update.
-
-        # assert self.args.gradient_accumulation_steps == 1
-
-        # print(f"[debugging] num blocks: {len(all_losses)}")
-
         return torch.stack(losses).mean()
 
     @torch.no_grad()
     def zo_step_with_module_wise_perturbation(self, closure: Callable[[], torch.Tensor]) -> torch.Tensor:
         """Update all parameters once after perturbing all the parameters."""
-        # args = self.args
-        # perturbed_module_level = args.perturbed_module_level
     
         losses = []
         grad_dict = {}
@@ -255,8 +150,6 @@ class ZO_SGD(ZeroOrderOptimizer):
         # Sample the random seed for sampling z
         self.zo_random_seed = np.random.randint(1000000000)
 
-        # all_losses = []
-        # module_name_to_projected_grads = {}
 
         # First function evaluation
         # NOTE: when sparse_grad is set to True, it will also check the args.gradient_sparsity,
@@ -272,68 +165,6 @@ class ZO_SGD(ZeroOrderOptimizer):
             self.named_parameters_to_optim = module_params
             self.projected_grad = grad_dict[module_name]
             self._apply_gradients()
-        
-        # TODO: Got rid of huge code part, needs carefull checks
-        # Second function evaluation
-        # assert args.q == 1, "only support q=1 for the memory efficiency. If you want to implement q>1, need to store random seeds to save memory. In addition, we need to set different random seed for different z in the q-loop."
-        # for module_name, module in self.grouped_module_iter(model, perturbed_module_level):
-        #     self.named_parameters_to_optim = []
-        #     for name, param in self.named_parameters_all:
-        #         if param.requires_grad:
-        #             self.named_parameters_to_optim.append((name, param))
-        #             param.grad = None  
-                    
-        #     self.zo_perturb_parameters(scaling_factor=1)
-        #     loss1 = closure()
-
-        #     all_losses.append(loss1)
-
-        #     if self.args.perturbation_mode == "one_side":
-        #         self.zo_perturb_parameters(scaling_factor=-1)
-        #         loss2 = closure()
-        #         self.projected_grad = ((loss1 - loss2) / self.args.zo_eps).item()
-        #     else:  # two side perturbation
-        #         self.zo_perturb_parameters(scaling_factor=-2)
-        #         loss2 = closure()
-        #         self.projected_grad = ((loss1 - loss2) / (2 * self.args.zo_eps)).item()
-
-        #         # Reset model back to its parameters at start of step
-        #         self.zo_perturb_parameters(scaling_factor=1)
-
-        #     module_name_to_projected_grads[module_name] = self.projected_grad
-
-        # for module_name, module in self.grouped_module_iter(model, perturbed_module_level):
-        #     self.named_parameters_to_optim = []
-        #     for name, param in module.named_parameters():
-        #         if param.requires_grad:
-        #             self.named_parameters_to_optim.append((f"{module_name}.{name}", param))
-        #             param.grad = None  # Make sure the grad is empty and will not be updated.
-
-        #     self.projected_grad = module_name_to_projected_grads[module_name]
-
-        #     # Set the random seed to ensure that we sample the same z for perturbation/update
-        #     torch.manual_seed(self.zo_random_seed)
-        #     self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
-        #     for name, param in self.named_parameters_to_optim:
-        #         # Resample z
-        #         z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device,
-        #                          dtype=param.data.dtype)
-        #         grad_sparsity = self.get_grad_sparsity_by_name(name)
-        #         if grad_sparsity is not None:
-        #             z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-
-        #         if args.trainer == "zo_sign_opt":
-        #             graddiff_times_z = np.sign(self.projected_grad) * z
-        #         else:
-        #             graddiff_times_z = self.projected_grad * z
-
-        #         param.grad = graddiff_times_z / args.q  # NOTE this q division does not work for q>1.
-        #         self.optimizer.step()  # will only update grad that is not None.
-        #         param.grad = None  # avoid further update.
-
-        # assert self.args.gradient_accumulation_steps == 1
-
-        # print(f"[debugging] num blocks: {len(all_losses)}")
 
         return torch.stack(losses).mean()
 
@@ -344,23 +175,12 @@ class ZO_SGD(ZeroOrderOptimizer):
         Estimate gradient by MeZO. Return the loss from f(theta + z)
         Multi-direction gradient estimation (q > 1).
         """
-        # args = self.args
 
         self._prepare_parameters()
         projected_grads = []
 
-        # What parameters to optimize
-        # NOTE: This part is in the function self._prepare_parameters()
-        # self.named_parameters_to_optim = []
-        # for name, param in self.named_parameters_all:
-            # if param.requires_grad:
-                # self.named_parameters_to_optim.append((name, param))
-                # param.grad = None  
-
         for i_q in range(self.q):  # TODO: shall we change the seed?
             # Sample the random seed for sampling z
-            # self.zo_random_seed = np.random.randint(1000000000)
-
             seed = np.random.randint(1000000000)
 
             # First function evaluation
@@ -382,139 +202,13 @@ class ZO_SGD(ZeroOrderOptimizer):
 
             projected_grads.append(grad)
 
-            # we alwaya return loss1, now need to return loss1 from the first itersstion
+            # we alwayas return loss1, now need to return loss1 from the first itersstion
             if i_q == 0:
                 first_loss = loss1
             
         self.projected_grad = sum(projected_grads) / self.q
         self._apply_gradients(random_seeds=[np.random.randint(1000000000) for _ in range(self.q)])
-
-            # Set the random seed to ensure that we sample the same z for perturbation/update
-        #     torch.manual_seed(self.zo_random_seed)
-        #     for name, param in self.named_parameters_to_optim:
-        #         # Resample z
-        #         z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device,
-        #                          dtype=param.data.dtype)
-
-        #         if args.trainer == "zo_sign_opt":
-        #             # ----signOpt_orig
-        #             graddiff_times_z = np.sign(self.projected_grad) * z
-        #             # ----signOpt_mul_sign
-        #             # graddiff_times_z = self._get_learning_rate() * torch.sign(self.projected_grad * z)
-        #         else:
-        #             # ----mezo original
-        #             graddiff_times_z = self.projected_grad * z
-
-        #         # # previous implementation
-        #         # # no param.grad involved
-        #         # param.data -= self._get_learning_rate() * self.projected_grad * z
-
-        #         # param.grad += graddiff_times_z.detach()
-        #         # more mem-efficient:
-        #         # run optimizer.step here to avoid caching all grad.
-        #         if i_q == 0:
-        #             param.grad = graddiff_times_z / args.q
-        #         else:
-        #             param.grad += graddiff_times_z / args.q
-        #         # if i_q == args.q - 1:
-        #         #     self.optimizer.step()  # TODO: If q > 1, We cannot use this trick anymore. This will cause repeated update.
-        #         #     # param.data = param.data - graddiff_times_z / args.q  # NOTE this q division does not work for q>1.
-        #         #     param.grad = None
-
-        # # for name, param in self.named_parameters_to_optim:
-        # #     param.grad = param.grad / args.q
-        # self.optimizer.step()
-        # self.optimizer.zero_grad()
-
-        # # No gradient accumulation support
-        # assert self.args.gradient_accumulation_steps == 1
-
         return first_loss
-
-    # @torch.no_grad()
-    # def zo_step_v2(self, closure):
-    #     """
-    #     Estimate gradient by MeZO. Return the loss from f(theta + z)
-    #     Works with q > 1. But for q > 1, it is not memory efficient.
-    #     """
-    #     args = self.args
-
-    #     # What parameters to optimize
-    #     self.named_parameters_to_optim = []
-    #     for name, param in self.named_parameters_all:
-    #         if param.requires_grad:
-    #             self.named_parameters_to_optim.append((name, param))
-    #             param.grad = None  
-
-    #     seed_list = []
-    #     projected_grad_list = []
-    #     for i_q in range(args.q):  # TODO: shall we change the seed?
-    #         # Sample the random seed for sampling z
-    #         self.zo_random_seed = np.random.randint(1000000000)
-    #         seed_list.append(self.zo_random_seed)
-
-    #         # First function evaluation
-    #         self.zo_perturb_parameters(scaling_factor=1)
-    #         loss1 = closure()
-
-    #         # Second function evaluation
-    #         if self.args.perturbation_mode == "one_side":
-    #             self.zo_perturb_parameters(scaling_factor=-1)
-    #             loss2 = closure()
-    #             self.projected_grad = ((loss1 - loss2) / self.args.zo_eps).item()
-    #         else:  # two side perturbation
-    #             self.zo_perturb_parameters(scaling_factor=-2)
-    #             loss2 = closure()
-    #             self.projected_grad = ((loss1 - loss2) / (2 * self.args.zo_eps)).item()
-
-    #             # Reset model back to its parameters at start of step
-    #             self.zo_perturb_parameters(scaling_factor=1)
-
-    #         projected_grad_list.append(self.projected_grad)
-
-    #     # difference from v1: switch the order of for loop
-    #     # to save memory
-    #     for name, param in self.named_parameters_to_optim:
-    #         for i_q in range(args.q):
-    #             # Set the random seed to ensure that we sample the same z for perturbation/update
-    #             torch.manual_seed(seed_list[i_q])
-
-    #             graddiff_times_z = torch.zeros_like(param.data, device=param.data.device,
-    #                                                 dtype=param.data.dtype)
-
-    #             # Resample z
-    #             z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device,
-    #                                 dtype=param.data.dtype)
-
-    #             if args.trainer == "zo_sign_opt":
-    #                 # ----signOpt_orig
-    #                 graddiff_times_z += np.sign(projected_grad_list[i_q]) * z
-    #                 # ----signOpt_mul_sign
-    #                 # graddiff_times_z = torch.sign(projected_grad_list[i_q] * z)
-    #             else:
-    #                 # ----mezo original
-    #                 graddiff_times_z += projected_grad_list[i_q] * z
-
-    #             # # previous implementation
-    #             # # no param.grad involved
-    #             # param.data -= self._get_learning_rate() * self.projected_grad * z
-
-    #             # param.grad += graddiff_times_z.detach()
-    #             # more mem-efficient:
-    #             # run optimizer.step here to avoid caching all grad.
-    #             if i_q == args.q - 1:
-    #                 param.grad = graddiff_times_z.detach()
-    #                 self.optimizer[name].step()
-    #                 # param.data = param.data - graddiff_times_z / args.q  # NOTE this q division does not work for q>1.
-    #                 param.grad = None
-
-    #     # for name, param in self.named_parameters_to_optim:
-    #     #     param.grad = param.grad / args.q
-
-    #     # No gradient accumulation support
-    #     assert self.args.gradient_accumulation_steps == 1
-
-    #     return loss1
     
     def _apply_gradients(self, random_seeds: Optional[List[int]] = None) -> None:
         """
@@ -559,11 +253,11 @@ class ZO_SGD(ZeroOrderOptimizer):
         if self.perturbation_mode == "one_side":
             self.zo_perturb_parameters(scaling_factor=-1)
             loss2 = closure()
-            self.projected_grad = (loss1 - loss2).item()
+            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
         else:  # two_side
             self.zo_perturb_parameters(scaling_factor=-2)
             loss2 = closure()
-            self.projected_grad = ((loss1 - loss2) / 2).item()
+            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
             self.zo_perturb_parameters(scaling_factor=1)
         
         return loss1
