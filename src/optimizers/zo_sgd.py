@@ -71,49 +71,13 @@ class ZO_SGD(ZeroOrderOptimizer):
             if self.coordinate_perturbation:
                 return self.zo_step_with_module_wise_perturbation_coordinate(closure)
             return self.zo_step_with_module_wise_perturbation(closure)
-        elif self.q == 1:
+        # elif self.q == 1:
+        elif self.q >= 1:
             return self.zo_step(closure)
-        elif self.q > 1:
-            return self.zo_step_v1(closure)
+        # elif self.q > 1:
+        #     return self.zo_step_v1(closure)
         else:
             raise ValueError(f"q={self.q} is not supported.")
-
-    @torch.no_grad()
-    def zo_step(self, closure: Callable[[], torch.Tensor]) -> torch.Tensor:
-        """
-        Estimate gradient by MeZO. Return the loss from f(theta + z)
-        """
-        self._prepare_parameters()
-
-        # Sample the random seed for sampling z
-        # FIXME: We definitly shoul fix the seed :)
-        self.zo_random_seed = np.random.randint(1000000000)
-
-        # First function evaluation
-        # NOTE: when sparse_grad is set to True, it will also check the args.gradient_sparsity,
-        # so it does not necessarily use sparse grad.
-        self.zo_perturb_parameters(scaling_factor=1)
-        loss1 = closure()
-
-        # Second function evaluation
-        # NOTE: Since q == 1 for the method we need the loop no more
-        assert self.q == 1, "Only support q=1 for the memory efficiency."
-        if self.perturbation_mode == "one_side":
-            self.zo_perturb_parameters(scaling_factor=-1)
-            loss2 = closure()
-            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
-        else:  # two side perturbation
-            self.zo_perturb_parameters(scaling_factor=-2)
-            loss2 = closure()
-            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
-
-            # Reset model back to its parameters at start of step
-            self.zo_perturb_parameters(scaling_factor=1)
-        
-        # NOTE: The while functional is common for all steps and is now in self._apply_gradients()
-        self._apply_gradients()
-
-        return loss1
     
     @torch.no_grad()
     def zo_step_with_module_wise_perturbation_coordinate(self, closure: Callable[[], torch.Tensor]) -> torch.Tensor:
@@ -124,7 +88,6 @@ class ZO_SGD(ZeroOrderOptimizer):
 
         # Sample the random seed for sampling z
         self.zo_random_seed = np.random.randint(1000000000)
-
 
         losses = []
 
@@ -170,7 +133,7 @@ class ZO_SGD(ZeroOrderOptimizer):
 
     
     @torch.no_grad()
-    def zo_step_v1(self, closure):
+    def zo_step(self, closure):
         """
         Estimate gradient by MeZO. Return the loss from f(theta + z)
         Multi-direction gradient estimation (q > 1).
@@ -188,7 +151,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             loss1 = closure()
 
             # Second function evaluation
-            if self.args.perturbation_mode == "one_side":
+            if self.perturbation_mode == "one_side":
                 self.zo_perturb_parameters(scaling_factor=-1)
                 loss2 = closure()
                 grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")

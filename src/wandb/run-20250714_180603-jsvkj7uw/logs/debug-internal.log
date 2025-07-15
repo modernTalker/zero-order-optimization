@@ -349,3 +349,6 @@
 2025-07-14 18:06:32,841 DEBUG   HandlerThread:3154466 [handler.py:handle_request():146] handle_request: shutdown
 2025-07-14 18:06:32,841 INFO    HandlerThread:3154466 [handler.py:finish():866] shutting down handler
 2025-07-14 18:06:33,653 INFO    WriterThread:3154466 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250714_180603-jsvkj7uw/run-jsvkj7uw.wandb
+2025-07-14 18:06:33,839 INFO    SenderThread:3154466 [sender.py:finish():1548] shutting down sender
+2025-07-14 18:06:33,840 INFO    SenderThread:3154466 [file_pusher.py:finish():175] shutting down file pusher
+2025-07-14 18:06:33,840 INFO    SenderThread:3154466 [file_pusher.py:join():181] waiting for file pusher

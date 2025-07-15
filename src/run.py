@@ -16,7 +16,7 @@ from transformers import (
 )
 
 from metrics import calculate_metric
-from models import (
+from models.modeling_mistral import (
     MistralForCausalLM,
     MistralConfig
 )
@@ -204,7 +204,7 @@ class Framework:
                     torch_dtype = torch.bfloat16
                 # Head tuning
                 if "opt" in self.args.model_name.lower():
-                    from models import OPTForCausalLM
+                    from models.modeling_opt import OPTForCausalLM
                     model = OPTForCausalLM.from_pretrained(
                         self.args.model_name,
                         config=config,
@@ -214,7 +214,7 @@ class Framework:
                                     range(torch.cuda.device_count())},
                     )
                 elif "llama" in self.args.model_name.lower():
-                    from models import LlamaForCausalLMWithHeadTuning
+                    from models.modeling_llama import LlamaForCausalLMWithHeadTuning
                     model = LlamaForCausalLMWithHeadTuning.from_pretrained(
                         self.args.model_name,
                         config=config,

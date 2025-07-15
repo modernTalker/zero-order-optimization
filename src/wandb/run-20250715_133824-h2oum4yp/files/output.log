@@ -1,0 +1,109 @@
+2025-07-15 13:38:36,460 - INFO - Sample train set 1500/67349
+2025-07-15 13:38:36,462 - INFO - ... including dev set 500 samples
+2025-07-15 13:38:36,463 - INFO - Loading model with FP16...
+35
+2025-07-15 13:38:41,018 - INFO - Done with 4.55s
+2025-07-15 13:38:41,389 - INFO - Dev samples: 500
+2025-07-15 13:38:41,390 - INFO - Train samples: 1000
+2025-07-15 13:38:41,390 - INFO - Eval sample length is 872
+2025-07-15 13:38:41,390 - INFO - Tokenizing training samples...
+2025-07-15 13:38:42,297 - INFO - Done with 0.91s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-07-15 13:38:42,311 - INFO - ***** Running training *****
+2025-07-15 13:38:42,311 - INFO -   Num examples = 1000
+2025-07-15 13:38:42,312 - INFO -   Num Epochs = 318
+2025-07-15 13:38:42,312 - INFO -   Instantaneous batch size per device = 16
+2025-07-15 13:38:42,313 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-07-15 13:38:42,314 - INFO -   Gradient Accumulation steps = 1
+2025-07-15 13:38:42,314 - INFO -   Total optimization steps = 20000
+2025-07-15 13:38:42,315 - INFO -   Number of trainable parameters = 1315758080
+  0%|                                                                                                                                                       | 0/20000 [00:00<?, ?it/s]You're using a GPT2TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+  0%|                                                                                                                                             | 5/20000 [00:01<1:29:08,  3.74it/s]
+{'peak_mem': 3.801133632659912, 'step_consumption': 486.3240718841553, 'epoch': 0.02}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 233.23416709899902, 'epoch': 0.03}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 229.73942756652832, 'epoch': 0.05}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 250.20122528076172, 'epoch': 0.06}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 247.7881908416748, 'epoch': 0.08}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 244.17996406555176, 'epoch': 0.1}
+
+  0%|                                                                                                                                            | 14/20000 [00:03<1:22:24,  4.04it/s]
+{'peak_mem': 3.8011341094970703, 'step_consumption': 185.76812744140625, 'epoch': 0.13}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 183.78734588623047, 'epoch': 0.14}
+{'loss': 0.8281, 'learning_rate': 0.5, 'epoch': 0.16}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 207.79943466186523, 'epoch': 0.16}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 209.33818817138672, 'epoch': 0.17}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 266.7841911315918, 'epoch': 0.19}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 263.7956142425537, 'epoch': 0.21}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 249.0684986114502, 'epoch': 0.22}
+
+  0%|▏                                                                                                                                           | 22/20000 [00:05<1:21:53,  4.07it/s]
+{'peak_mem': 3.8011341094970703, 'step_consumption': 226.8965244293213, 'epoch': 0.25}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 201.385498046875, 'epoch': 0.27}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 233.86740684509277, 'epoch': 0.29}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 215.5892848968506, 'epoch': 0.3}
+{'loss': 0.907, 'learning_rate': 0.5, 'epoch': 0.32}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 249.4056224822998, 'epoch': 0.32}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 252.20966339111328, 'epoch': 0.33}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 238.023042678833, 'epoch': 0.35}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 239.11666870117188, 'epoch': 0.37}
+  0%|▏                                                                                                                                           | 28/20000 [00:06<1:11:31,  4.65it/s]Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 528, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sgd.py", line 76, in step
+    return self.zo_step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sgd.py", line 198, in zo_step
+    loss2 = closure()
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 765, in closure
+    def closure(): return self.zo_forward(model, inputs)
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 781, in zo_forward
+    loss = self.compute_loss(model, inputs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2731, in compute_loss
+    outputs = model(**inputs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/utils.py", line 67, in forward_wrap_with_option_len
+    outputs = self.original_forward(input_ids=input_ids, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/opt/modeling_opt.py", line 938, in forward
+    outputs = self.model.decoder(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/opt/modeling_opt.py", line 704, in forward
+    layer_outputs = decoder_layer(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/opt/modeling_opt.py", line 355, in forward
+    hidden_states = self.fc2(hidden_states)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+KeyboardInterrupt
+{'peak_mem': 3.8011341094970703, 'step_consumption': 239.1514778137207, 'epoch': 0.4}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 184.6632957458496, 'epoch': 0.41}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 213.74773979187012, 'epoch': 0.43}
+{'peak_mem': 3.8011341094970703, 'step_consumption': 182.20925331115723, 'epoch': 0.44}
