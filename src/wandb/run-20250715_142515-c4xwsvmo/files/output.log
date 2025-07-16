@@ -1,0 +1,26 @@
+2025-07-15 14:25:27,947 - INFO - Sample train set 1500/67349
+2025-07-15 14:25:27,949 - INFO - ... including dev set 500 samples
+2025-07-15 14:25:27,949 - INFO - Loading model with FP16...
+35
+Loading checkpoint shards:   0%|                                                                                                                                | 0/2 [00:02<?, ?it/s]
+2025-07-15 14:25:40,637 - INFO - Done with 12.69s
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 652, in main
+    framework = Framework(args, task)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 185, in __init__
+    self.model, self.tokenizer = self.load_model()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 249, in load_model
+    model = AutoModelForCausalLM.from_pretrained(self.args.model_name, config=config, device_map='auto',
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 471, in from_pretrained
+    return model_class.from_pretrained(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 2795, in from_pretrained
+    ) = cls._load_pretrained_model(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 3123, in _load_pretrained_model
+    new_error_msgs, offload_index, state_dict_index = _load_state_dict_into_meta_model(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/modeling_utils.py", line 698, in _load_state_dict_into_meta_model
+    set_module_tensor_to_device(model, param_name, param_device, **set_module_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/accelerate/utils/modeling.py", line 317, in set_module_tensor_to_device
+    new_value = value.to(device)
+KeyboardInterrupt

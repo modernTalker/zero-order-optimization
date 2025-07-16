@@ -1,0 +1,45 @@
+2025-07-16 21:37:58,682 - INFO - Sample train set 1500/67349
+2025-07-16 21:37:58,683 - INFO - ... including dev set 500 samples
+2025-07-16 21:37:58,683 - INFO - Loading model with FP16...
+37
+
+Loading checkpoint shards: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:02<00:00,  1.41s/it]
+2025-07-16 21:38:06,288 - INFO - Done with 7.60s
+2025-07-16 21:38:06,492 - INFO - Dev samples: 500
+2025-07-16 21:38:06,493 - INFO - Train samples: 1000
+2025-07-16 21:38:06,493 - INFO - Eval sample length is 872
+2025-07-16 21:38:06,493 - INFO - Tokenizing training samples...
+2025-07-16 21:38:07,300 - INFO - Done with 0.81s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-07-16 21:38:07,312 - INFO - ***** Running training *****
+2025-07-16 21:38:07,312 - INFO -   Num examples = 1000
+2025-07-16 21:38:07,312 - INFO -   Num Epochs = 318
+2025-07-16 21:38:07,312 - INFO -   Instantaneous batch size per device = 16
+2025-07-16 21:38:07,312 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-07-16 21:38:07,312 - INFO -   Gradient Accumulation steps = 1
+2025-07-16 21:38:07,312 - INFO -   Total optimization steps = 20000
+2025-07-16 21:38:07,313 - INFO -   Number of trainable parameters = 6738415616
+  0%|                                                                                                                                                       | 0/20000 [00:00<?, ?it/s]You're using a LlamaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 546, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sampling_muon.py", line 47, in step
+    E_dict = self.sampler.sample(shapes)
+  File "/home/rinya/zero-order-optimization/src/optimizers/opt_utils/sampling.py", line 51, in sample
+    E_dict[name] = (E_k.clone(), U_k.clone(), S_k.clone(), V_k.clone())
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 64.00 MiB. GPU 0 has a total capacty of 39.49 GiB of which 63.00 MiB is free. Process 514830 has 2.05 GiB memory in use. Including non-PyTorch memory, this process has 37.37 GiB memory in use. Of the allocated memory 36.87 GiB is allocated by PyTorch, and 5.35 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF

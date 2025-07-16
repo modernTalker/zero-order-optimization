@@ -1,0 +1,43 @@
+2025-07-16 21:33:59,080 - INFO - Sample train set 1500/67349
+2025-07-16 21:33:59,081 - INFO - ... including dev set 500 samples
+2025-07-16 21:33:59,081 - INFO - Loading model with FP16...
+37
+
+Loading checkpoint shards: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [01:24<00:00, 42.23s/it]
+2025-07-16 21:35:28,441 - INFO - Done with 89.36s
+2025-07-16 21:35:28,657 - INFO - Dev samples: 500
+2025-07-16 21:35:28,658 - INFO - Train samples: 1000
+2025-07-16 21:35:28,658 - INFO - Eval sample length is 872
+2025-07-16 21:35:28,658 - INFO - Tokenizing training samples...
+2025-07-16 21:35:29,510 - INFO - Done with 0.85s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-07-16 21:35:29,574 - INFO - ***** Running training *****
+2025-07-16 21:35:29,575 - INFO -   Num examples = 1000
+2025-07-16 21:35:29,575 - INFO -   Num Epochs = 318
+2025-07-16 21:35:29,575 - INFO -   Instantaneous batch size per device = 16
+2025-07-16 21:35:29,575 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-07-16 21:35:29,575 - INFO -   Gradient Accumulation steps = 1
+2025-07-16 21:35:29,575 - INFO -   Total optimization steps = 20000
+2025-07-16 21:35:29,576 - INFO -   Number of trainable parameters = 6738415616
+  0%|                                                                                                                                                       | 0/20000 [00:00<?, ?it/s]You're using a LlamaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 740, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 692, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 577, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 546, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sampling_muon.py", line 46, in step
+    E_dict = self.sampler.sample(shapes)
+NameError: name 'shapes' is not defined
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
