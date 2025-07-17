@@ -140,11 +140,12 @@ class ZO_SGD(ZeroOrderOptimizer):
         """
 
         self._prepare_parameters()
-        projected_grads = []
+        sum_projected_grads = 0
+        
+        seed = np.random.randint(1000000000) # FIXME: is it ok?
 
         for i_q in range(self.q):  # TODO: shall we change the seed?
             # Sample the random seed for sampling z
-            seed = np.random.randint(1000000000)
 
             # First function evaluation
             self.zo_perturb_parameters(scaling_factor=1, random_seed=seed)
@@ -162,14 +163,14 @@ class ZO_SGD(ZeroOrderOptimizer):
 
                 # Reset model back to its parameters at start of step
                 self.zo_perturb_parameters(scaling_factor=1, random_seed=seed)
-
-            projected_grads.append(grad)
+            
+            sum_projected_grads = sum_projected_grads + grad
 
             # we alwayas return loss1, now need to return loss1 from the first itersstion
             if i_q == 0:
                 first_loss = loss1
             
-        self.projected_grad = sum(projected_grads) / self.q
+        self.projected_grad = sum_projected_grads / self.q
         self._apply_gradients(random_seeds=[np.random.randint(1000000000) for _ in range(self.q)])
         return first_loss
     
@@ -195,7 +196,7 @@ class ZO_SGD(ZeroOrderOptimizer):
                     torch.manual_seed(seed)
                     self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
                     
-                    z = torch.normal(mean=0, std=1, size=param.shape, device=param.device)
+                    z = self.vector_sampler.sample(param.shape)
                     name = next(name for name, p in self.named_parameters_to_optim if p is param)
                     sparsity = self.get_grad_sparsity_by_name(name)
                     if sparsity is not None:

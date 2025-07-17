@@ -5,13 +5,11 @@ import random
 import scipy.stats as sps
 from collections import defaultdict
 
-
-
-class Sampler:
+class MatrixSampler:
     
-    def __init__(self, type, device='cuda'):
+    def __init__(self, sampler_type, device='cuda'):
         
-        self.sampler_type = type
+        self.sampler_type = sampler_type
         self.device = device
 
     def sample(self, param_shapes):

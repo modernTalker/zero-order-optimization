@@ -11,7 +11,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             lr: Optional[float] = None,
             eps: Optional[float] = None,
             momentum: float = 0.0,
-            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None
+            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+            vector_sampling_type: str = "standard_normal",
+            device: str = "cuda", # FIXME: maybe change it
     ):
         """
         Base class for zero-order optimizers.
@@ -46,6 +48,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         # FIXME: don't we like to have a atrribute "random_seed" to set it directly?
         self.sparse_grad_rng = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
         self.sparse_grad_random_seed = np.random.randint(1000000000)  # FIXME: is it ok? don't know yet
+
+        self.vector_sampler = VectorSampler(vector_sampling_type, device=device)
 
         self.named_parameters_all = []
         for group_idx, group in enumerate(self.param_groups):  # NOTE: it's ok, self.param_groups is set by torch.optim.Optimizer FIXED: is it ok?

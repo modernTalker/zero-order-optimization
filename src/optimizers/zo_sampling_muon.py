@@ -13,13 +13,18 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             eps: Optional[float] = None,
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+            matrix_sampling_type: str = "Householder_reflection",
+            vector_sampling_type: str = "standard_normal",
+            device: str = "cuda", # FIXME: maybe change it
         ):
         super().__init__(
             params=params,
             lr=lr,
             eps=eps,
             momentum=momentum,
-            gradient_sparsity=gradient_sparsity
+            gradient_sparsity=gradient_sparsity,
+            vector_sampling_type=vector_sampling_type,
+            device=device
         )
         self.tau = tau 
         self.eps = eps
@@ -28,8 +33,7 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             self._inner_optimizers.append(
                 SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
             )
-        self.sampler = Sampler("Householder_reflection", device='cuda' if torch.cuda.is_available() else 'cpu')
-        # self.sampler = Sampler(self.args.sampling_type, device=model.device)
+        self.matrix_sampler = MatrixSampler(matrix_sampling_type, device=device)
 
     @torch.no_grad()
     def step(self, closure):
@@ -44,7 +48,7 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             self.sparse_grad_rng.manual_seed(seed)
         
         shapes = [(name, tuple(param.shape)) for name, param in self.named_parameters_to_optim if param.ndim >= 2 and param.size(0) < 10000]
-        E_dict = self.sampler.sample(shapes)
+        E_dict = self.matrix_sampler.sample(shapes)
 
         # Perturb
         # FIXME: what to do with this one?
