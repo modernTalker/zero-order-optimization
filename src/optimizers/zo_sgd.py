@@ -13,6 +13,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             eps: Optional[float] = None,
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+            vector_sampling_type: str = "standard_normal",
             perturbation_mode: str = "two_side",
             q: int = 1,
             module_wise_perturbation: bool = False,
@@ -37,7 +38,8 @@ class ZO_SGD(ZeroOrderOptimizer):
             lr=lr,
             eps=eps,
             momentum=momentum,
-            gradient_sparsity=gradient_sparsity
+            gradient_sparsity=gradient_sparsity,
+            vector_sampling_type=vector_sampling_type
         )
         self.perturbation_mode = perturbation_mode
         self.q = q

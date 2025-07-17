@@ -2,7 +2,8 @@ from torch.optim import Optimizer
 from abc import ABC, abstractmethod
 from typing import Optional, Callable, List, Dict, Any, Tuple, Union, Iterable
 import torch
-from .opt_utils import * 
+import numpy as np
+from .opt_utils import VectorSampler
 from gradient_pruning import fast_random_mask_like
 
 class ZeroOrderOptimizer(Optimizer, ABC):
@@ -146,13 +147,6 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 # in the perturbation function (haven't found a way to search for (name, param) in current implementation)
                 sparsity_dict[id(param)] = self.get_grad_sparsity_by_name(name)
 
-        # NOTE: This part is transfered to self.pertrub_parameters()
-        # for name, param in self.named_parameters_to_optim:
-            # grad_sparsity = self.get_grad_sparsity_by_name(name) # NOTE: call trainer. instead of self. ??? FIXED.
-            # z = torch.normal(mean=0, std=1, size=param.data.size(), device=param.data.device, dtype=param.data.dtype)
-            # if grad_sparsity is not None:
-                # z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0
-            # param.data = param.data + scaling_factor * z * self.args.zo_eps # FIXMED: change to defaults["eps"] ???
         self.perturb_parameters(
             scaling_factor=scaling_factor,
             random_seed=self.zo_random_seed,
@@ -194,8 +188,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     z = original_perturb_func(param)
                 else:
                     # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
-                    z = torch.randn_like(param)
+                    # z = torch.randn_like(param)  # it outputs only normal distribution
                     # z = torch.randn(size=param.size(), dtype=param.dtype, device=param.device, generator=generator)
+                    z = self.vector_sampler.sample(param.shape)
                 
                 param_id = id(param)
                 if param_id in sparsity_dict:
@@ -224,12 +219,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         idx = spec[1]
                         if element_wise:
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
-                            perturb = torch.randn_like(p.data[idx]) * eps
-                            # if custom_perturb_func:
-                                # perturbations = custom_perturb_func(p.data[idx]) * eps
-                            # else:
-                                # perturbations = torch.randn_like(p.data[idx], generator=generator) * eps
-                            # p.data[idx] += scaling_factor * perturbations
+                            # perturb = torch.randn_like(p.data[idx]) * eps
+                            perturb = self.vector_sampler.sample(p.data[idx].shape) * eps
                         else:
                             perturb = torch.ones_like(p.data[idx]) * eps
 
@@ -239,29 +230,17 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         rows, cols = spec[1], spec[2]
                         if element_wise:
                             slice_data = p.data[rows[:, None], cols]
-                            # if custom_perturb_func:
-                                # perturbations = custom_perturb_func(slice_data) * eps
-                            # else:
-                                # perturbations = torch.randn_like(slice_data, generator=generator) * eps
-                            # p.data[rows[:, None], cols] += scaling_factor * perturbations
-                        # else:
-                            # p.data[rows[:, None], cols] += scaling_factor * eps
-                            # perturb = torch.randn_like(slice_data, generator=generator) * eps
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
-                            perturb = torch.randn_like(slice_data) * eps
+                            # perturb = torch.randn_like(slice_data) * eps
+                            perturb = self.vector_sampler.sample(slice_data.shape) * eps
                         else:
                             perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
                         p.data[rows[:, None], cols].add_(scaling_factor * perturb)
                 
                 else:
-                    # if custom_perturb_func:
-                        # perturbation = custom_perturb_func(p) * eps
-                    # else:
-                        # z = torch.randn_like(p, generator=generator)
-                        # perturbation = z * eps
                     if perturb is None:
-                        # z = torch.randn_like(p, generator=generator)
-                        z = torch.randn_like(p)
+                        # z = torch.randn_like(p)
+                        z = self.vector_sampler.sample(p.shape)
                         perturb = z * eps
                     p.data.add_(scaling_factor * perturb)
 
