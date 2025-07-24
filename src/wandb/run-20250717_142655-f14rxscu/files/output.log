@@ -40,3 +40,4 @@ Loading checkpoint shards: 100%|████████████████
     return inner_training_loop(
   File "/home/rinya/zero-order-optimization/src/trainer.py", line 568, in _inner_training_loop
     and (torch.isnan(tr_loss_step) or torch.isinf(tr_loss_step))
+KeyboardInterrupt

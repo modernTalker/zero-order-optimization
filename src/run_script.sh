@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 export WANDB_DISABLED="false"        
 export WANDB_PROJECT="zo-llm-ft"    
 export WANDB_API_KEY=$(cat ~/.wandb_api_key)
@@ -13,4 +13,4 @@ python run.py --model_name="meta-llama/Llama-2-7b-hf" \
             --num_eval=1000 --num_train=1000 --num_dev=500 --train_as_classification --perturbation_mode=two_side  \
             --trainer=zo_sgd --train_set_seed=0 --lr_scheduler_type=constant --save_steps=1000 --load_float16  \
             --learning_rate=5e-1 --zo_eps=0.001 --momentum=0.9 --weight_decay=0 --module_wise_perturbation=False \
-            --zo_tau=0.1 --zo_use_smoothing=true --zo_beta=1e-2 --overwrite_output_dir
+            --zo_tau=0.1 --zo_use_smoothing=true --zo_beta=1e-2 --overwrite_output_dir --report_to="clearml"

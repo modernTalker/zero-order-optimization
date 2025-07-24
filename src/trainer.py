@@ -85,6 +85,7 @@ from transformers.utils import (
 
 # from torch.optim.optimizer import StateDict, params_t
 import wandb
+from clearml import Task
 from gradient_pruning.pruning_utils import (
     fast_random_mask_like,
     estimate_pretrained_model_magnitude_pruning_threshold,
@@ -164,6 +165,8 @@ class OurTrainer(Trainer):
         # Data loader and number of training steps
         train_dataloader = self.get_train_dataloader()
         eval_dataloader = self.get_eval_dataloader()  # ----newly-added
+
+        clearml_task = Task.current_task()
 
         # MeZO added: Linear probing
         if self.args.linear_probing:
@@ -613,7 +616,12 @@ class OurTrainer(Trainer):
                     test_metrics = self.evaluate_func([], self.eval_samples)
                     if "accuracy" in test_metrics:
                         self.log({"test_acc": test_metrics["accuracy"], "val_acc": val_metrics["accuracy"]})
-                        wandb.log({"test_acc": test_metrics["accuracy"], "val_acc": val_metrics["accuracy"]})
+                        # wandb.log({"test_acc": test_metrics["accuracy"], "val_acc": val_metrics["accuracy"]})
+                        if clearml_task:
+                            clearml_task.get_logger().report_scalar(
+                                "Accuracy", "test", test_metrics["accuracy"], total_steps + 1)
+                            clearml_task.get_logger().report_scalar(
+                                "Accuracy", "val", val_metrics["accuracy"], total_steps + 1)
                     else:
                         keys = list(test_metrics.keys())
                         log_dict = {}
@@ -621,7 +629,11 @@ class OurTrainer(Trainer):
                             log_dict['test_' + k] = test_metrics[k]
                             log_dict['val_' + k] = val_metrics[k]
                         self.log(log_dict)
-                        wandb.log(log_dict)
+                        # wandb.log(log_dict)
+                        if clearml_task:
+                            for k, v in log_dict.items():
+                                clearml_task.get_logger().report_scalar(
+                                    k.split('_')[0], k, v, total_steps + 1)
 
                 max_memory_allocated = 0
                 for device_id in range(torch.cuda.device_count()):
@@ -629,8 +641,13 @@ class OurTrainer(Trainer):
                     max_memory_allocated += torch.cuda.max_memory_allocated(device_id)
                 self.log({"peak_mem": max_memory_allocated / 1024 ** 3,
                           "step_consumption": train_step_duration * 1000})
-                wandb.log({"peak_mem": max_memory_allocated / 1024 ** 3,
-                           "step_consumption": train_step_duration * 1000})
+                # wandb.log({"peak_mem": max_memory_allocated / 1024 ** 3,
+                #            "step_consumption": train_step_duration * 1000})
+                if clearml_task:
+                    clearml_task.get_logger().report_scalar(
+                        "Memory", "peak_mem", max_memory_allocated / 1024 ** 3, total_steps)
+                    clearml_task.get_logger().report_scalar(
+                        "Time", "step_consumption", train_step_duration * 1000, total_steps)
 
             if step < 0:
                 # Why would this happen? I don't know, but let's be safe.
@@ -685,8 +702,12 @@ class OurTrainer(Trainer):
 
         self._memory_tracker.stop_and_update_metrics(metrics)
 
-        wandb.log(metrics)
+        # wandb.log(metrics)
         self.log(metrics)
+        if clearml_task:
+            for key, value in metrics.items():
+                clearml_task.get_logger().report_scalar(
+                    "Training", key, value, self.state.global_step)
 
         run_dir = self._get_output_dir(trial)
         checkpoints_sorted = self._sorted_checkpoints(use_mtime=False, output_dir=run_dir)

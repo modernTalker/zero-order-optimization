@@ -3,6 +3,7 @@ import os
 import random
 
 import wandb
+from clearml import Task
 from torch.distributed.fsdp.fully_sharded_data_parallel import FullyShardedDataParallel as FSDP
 from torch.utils.data import Dataset
 from tqdm import tqdm
@@ -162,6 +163,7 @@ class OurArguments(TrainingArguments):
     """
     matrix_sampling_type: str = "Rotation"
     vector_sampling_type: str = "standard_normal"
+    report_to: str = "clearml"
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -639,7 +641,9 @@ def main():
     args.logging_dir = os.path.join(args.output_dir, "logs")
     os.makedirs(args.logging_dir, exist_ok=True)
 
-    wandb.init(project='zo-bench', name=args.tag, config=args)
+    # wandb.init(project='zo-bench', name=args.tag, config=args)
+    clearml_task = Task.init(project_name='zo-bench', task_name=args.tag)
+    clearml_task.connect(args)
 
     set_seed(args.seed)
     task = get_task(args.task_name)
@@ -709,12 +713,26 @@ def main():
                 # Zero-shot / in-context learning
                 metrics = framework.evaluate(train_samples, eval_samples)
             logger.info(metrics)
-            wandb.log(metrics)
+            # wandb.log(metrics)
+            for key, value in metrics.items():
+                clearml_task.get_logger().report_scalar(
+                    title=key,
+                    series=key,
+                    value=value,
+                    iteration=train_set_id if 'train_set_id' in locals() else 0
+                )
 
             if not args.no_eval:
                 logger.info("===== Train set %d =====" % train_set_seed)
                 logger.info(metrics)
-                wandb.log(metrics)
+                # wandb.log(metrics)
+                for key, value in metrics.items():
+                    clearml_task.get_logger().report_scalar(
+                        title=key,
+                        series=key,
+                        value=value,
+                        iteration=train_set_id if 'train_set_id' in locals() else 0
+                    )
                 if args.local_rank <= 0:
                     write_metrics_to_file(metrics, "result/" + result_file_tag(
                         args) + f"-trainset{train_set_id}.json" if args.result_file is None else args.result_file)
@@ -731,7 +749,14 @@ def main():
             eval_samples = task.valid_samples
         metrics = framework.evaluate(train_sets, eval_samples, one_train_set_per_eval_sample=True)
         logger.info(metrics)
-        wandb.log(metrics)
+        # wandb.log(metrics)
+        for key, value in metrics.items():
+            clearml_task.get_logger().report_scalar(
+                title=key,
+                series=key,
+                value=value,
+                iteration=train_set_id if 'train_set_id' in locals() else 0
+            )
         if args.local_rank <= 0:
             write_metrics_to_file(metrics, "result/" + result_file_tag(
                 args) + "-onetrainpereval.json" if args.result_file is None else args.result_file)
