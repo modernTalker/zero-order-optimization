@@ -49,7 +49,6 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         self.projected_grad: Optional[float] = None
         self.zo_random_seed: Optional[int] = None
 
-    @torch.no_grad()
     def step(self, closure):
         tau = self.tau
         beta = self.beta 
@@ -78,32 +77,34 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                 selected_cols = torch.randperm(n_cols, device=param.device)[:m]
                 selected_indices[name] = (selected_rows, selected_cols)
                 original_values[name] = param.data[selected_rows[:, None], selected_cols].clone()
-
-        for name, param in self.named_parameters_to_optim:
-            if len(param.data.shape) == 1:
-                indices = selected_indices[name]
-                param.data[indices] += tau
-            else:
-                selected_rows, selected_cols = selected_indices[name]
-                param.data[selected_rows[:, None], selected_cols] += tau
+        with torch.no_grad():
+            for name, param in self.named_parameters_to_optim:
+                if len(param.data.shape) == 1:
+                    indices = selected_indices[name]
+                    param.data[indices] += tau
+                else:
+                    selected_rows, selected_cols = selected_indices[name]
+                    param.data[selected_rows[:, None], selected_cols] += tau
         loss1 = closure()
 
-        for name, param in self.named_parameters_to_optim:
-            if len(param.data.shape) == 1:
-                indices = selected_indices[name]
-                param.data[indices] = original_values[name] - tau
-            else:
-                selected_rows, selected_cols = selected_indices[name]
-                param.data[selected_rows[:, None], selected_cols] = original_values[name] - tau
+        with torch.no_grad():
+            for name, param in self.named_parameters_to_optim:
+                if len(param.data.shape) == 1:
+                    indices = selected_indices[name]
+                    param.data[indices] = original_values[name] - tau
+                else:
+                    selected_rows, selected_cols = selected_indices[name]
+                    param.data[selected_rows[:, None], selected_cols] = original_values[name] - tau
         loss2 = closure()
 
-        for name, param in self.named_parameters_to_optim:
-            if len(param.data.shape) == 1:
-                indices = selected_indices[name]
-                param.data[indices] = original_values[name]
-            else:
-                selected_rows, selected_cols = selected_indices[name]
-                param.data[selected_rows[:, None], selected_cols] = original_values[name]
+        with torch.no_grad():
+            for name, param in self.named_parameters_to_optim:
+                if len(param.data.shape) == 1:
+                    indices = selected_indices[name]
+                    param.data[indices] = original_values[name]
+                else:
+                    selected_rows, selected_cols = selected_indices[name]
+                    param.data[selected_rows[:, None], selected_cols] = original_values[name]
 
         # rho = sign(f(z_+) - f(z_-))
         rho = (loss1 - loss2).item() / (2 * tau)
@@ -113,8 +114,6 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                 name = next(name for name, p in self.named_parameters_to_optim if p is param)
                 if param.grad is None:
                     param.grad = torch.zeros_like(param)
-                else:
-                    param.grad.zero_()
 
                 grad_update = rho
                 if len(param.data.shape) == 1:
