@@ -218,7 +218,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 perturb = None
                 if custom_perturb_func:
                     perturb = custom_perturb_func(p) * eps
-                    print("Sampled vector:\n", perturb/eps)
+                    # print("Sampled vector:\n", perturb/eps)
 
                 elif indices is not None and param_id in indices:
                     spec = indices[param_id]
@@ -229,7 +229,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                             # perturb = torch.randn_like(p.data[idx]) * eps
                             perturb = self.vector_sampler.sample(p.data[idx].shape, generator=generator) * eps
-                            print("Sampled vector:\n", perturb/eps)
+                            # print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[idx]) * eps
 
@@ -242,7 +242,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                             # perturb = torch.randn_like(slice_data) * eps
                             perturb = self.vector_sampler.sample(slice_data.shape, generator=generator) * eps
-                            print("Sampled vector:\n", perturb/eps)
+                            # print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
                         p.data[rows[:, None], cols].add_(scaling_factor * perturb)
@@ -252,7 +252,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         # z = torch.randn_like(p)
                         z = self.vector_sampler.sample(p.shape, generator=generator)
                         perturb = z * eps
-                        print("Sampled vector:\n", perturb/eps)
+                        # print("Sampled vector:\n", perturb/eps)
                     p.data.add_(scaling_factor * perturb)
 
     def grad_approx(

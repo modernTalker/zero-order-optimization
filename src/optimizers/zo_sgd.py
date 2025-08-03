@@ -225,7 +225,7 @@ class ZO_SGD(ZeroOrderOptimizer):
                     # self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
                     
                     z = self.vector_sampler.sample(param.shape, generator=self.generator)
-                    print("Update vector:\n", z)
+                    # print("Update vector:\n", z)
                     name = next(name for name, p in self.named_parameters_to_optim if p is param)
                     sparsity = self.get_grad_sparsity_by_name(name)
                     if sparsity is not None:
