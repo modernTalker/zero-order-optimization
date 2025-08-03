@@ -47,8 +47,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
 
         # init random generators
         # FIXME: don't we like to have a atrribute "random_seed" to set it directly?
-        self.sparse_grad_rng = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
-        self.sparse_grad_random_seed = np.random.randint(1000000000)  # FIXME: is it ok? don't know yet
+        # self.generator = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
+        self.generator = torch.Generator(device=device)
+        # self.sparse_grad_random_seed = np.random.randint(1000000000)  # FIXME: is it ok? don't know yet
 
         self.vector_sampler = VectorSampler(vector_sampling_type, device=device)
 
@@ -137,8 +138,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         # and in it the self.perturb_parameters() is called
         self.zo_random_seed = random_seed if random_seed is not None else np.random.randint(1000000000)
         # Set the random seed to ensure that we sample the same z for perturbation/update
-        torch.manual_seed(random_seed if random_seed is not None else self.zo_random_seed)
-        self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed) # NOTE: call trainer. instead of self. ??? FIXED.
+        # torch.manual_seed(random_seed if random_seed is not None else self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed) # NOTE: call trainer. instead of self. ??? FIXED.
 
         sparsity_dict = {}
         for name, param in self.named_parameters_all:
@@ -150,7 +151,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.perturb_parameters(
             scaling_factor=scaling_factor,
             random_seed=self.zo_random_seed,
-            generator=self.sparse_grad_rng,
+            generator=self.generator,
             sparsity_dict=sparsity_dict,
             element_wise=True
         )
@@ -177,8 +178,12 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             element_wise: Whether to apply perturbations element-wise (for indices mode)
             sparsity_dict: {param_id: sparsity} for gradient sparsity
         """
-        if random_seed is not None:
-            torch.manual_seed(random_seed)
+        if random_seed is None:
+            # torch.manual_seed(random_seed)
+            random_seed = np.random.randint(1000000)
+            # generator.manual_seed(random_seed)
+        
+        generator.manual_seed(random_seed)
         
         # The code that was transfered from the previous function
         if sparsity_dict is not None:
@@ -190,13 +195,15 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                     # z = torch.randn_like(param)  # it outputs only normal distribution
                     # z = torch.randn(size=param.size(), dtype=param.dtype, device=param.device, generator=generator)
-                    z = self.vector_sampler.sample(param.shape)
+                    z = self.vector_sampler.sample(param.shape, generator=generator)
                 
                 param_id = id(param)
+                generator.manual_seed(random_seed)
                 if param_id in sparsity_dict:
                     sparsity = sparsity_dict[param_id]
                     if sparsity is not None:
                         mask = fast_random_mask_like(z, sparsity, generator=generator)
+                        generator.manual_seed(random_seed)
                         z[mask] = 0
                 return z
             custom_perturb_func = sparse_perturb_func
@@ -211,6 +218,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 perturb = None
                 if custom_perturb_func:
                     perturb = custom_perturb_func(p) * eps
+                    print("Sampled vector:\n", perturb/eps)
 
                 elif indices is not None and param_id in indices:
                     spec = indices[param_id]
@@ -220,7 +228,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         if element_wise:
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                             # perturb = torch.randn_like(p.data[idx]) * eps
-                            perturb = self.vector_sampler.sample(p.data[idx].shape) * eps
+                            perturb = self.vector_sampler.sample(p.data[idx].shape, generator=generator) * eps
+                            print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[idx]) * eps
 
@@ -232,7 +241,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                             slice_data = p.data[rows[:, None], cols]
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                             # perturb = torch.randn_like(slice_data) * eps
-                            perturb = self.vector_sampler.sample(slice_data.shape) * eps
+                            perturb = self.vector_sampler.sample(slice_data.shape, generator=generator) * eps
+                            print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
                         p.data[rows[:, None], cols].add_(scaling_factor * perturb)
@@ -240,8 +250,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 else:
                     if perturb is None:
                         # z = torch.randn_like(p)
-                        z = self.vector_sampler.sample(p.shape)
+                        z = self.vector_sampler.sample(p.shape, generator=generator)
                         perturb = z * eps
+                        print("Sampled vector:\n", perturb/eps)
                     p.data.add_(scaling_factor * perturb)
 
     def grad_approx(

@@ -90,6 +90,8 @@ class ZO_SGD(ZeroOrderOptimizer):
 
         # Sample the random seed for sampling z
         self.zo_random_seed = np.random.randint(1000000000)
+        # torch.manual_seed(self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed)
 
         losses = []
 
@@ -100,8 +102,12 @@ class ZO_SGD(ZeroOrderOptimizer):
         for _, module_params in self._get_module_parameters():
             self.named_parameters_to_optim = module_params
             loss = self._module_perturbation_step(closure)
+            # torch.manual_seed(self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
             losses.append(loss)
             self._apply_gradients()  # therefore the changes are here
+            # torch.manual_seed(self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
         
         return torch.stack(losses).mean()
 
@@ -114,6 +120,8 @@ class ZO_SGD(ZeroOrderOptimizer):
 
         # Sample the random seed for sampling z
         self.zo_random_seed = np.random.randint(1000000000)
+        # torch.manual_seed(self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed)
 
 
         # First function evaluation
@@ -123,6 +131,8 @@ class ZO_SGD(ZeroOrderOptimizer):
         for module_name, module_params in self._get_module_parameters():
             self.named_parameters_to_optim = module_params
             loss = self._module_perturbation_step(closure)
+            # torch.manual_seed(self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
             losses.append(loss)
             grad_dict[module_name] = self.projected_grad
         
@@ -130,6 +140,8 @@ class ZO_SGD(ZeroOrderOptimizer):
             self.named_parameters_to_optim = module_params
             self.projected_grad = grad_dict[module_name]
             self._apply_gradients()
+            # torch.manual_seed(self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
 
         return torch.stack(losses).mean()
 
@@ -151,28 +163,33 @@ class ZO_SGD(ZeroOrderOptimizer):
             seed = np.random.randint(1000000000) # FIXME: is it ok?
             random_seeds.append(seed)
             # set the torch state
-            torch.manual_seed(seed)
+            # torch.manual_seed(seed)
+            self.generator.manual_seed(seed)
 
             # First function evaluation
             self.zo_perturb_parameters(scaling_factor=1, random_seed=seed)
             loss1 = closure()
-            torch.manual_seed(seed)  # return to the same state
+            # torch.manual_seed(seed)  # return to the same state
+            self.generator.manual_seed(seed)
 
             # Second function evaluation
             if self.perturbation_mode == "one_side":
                 self.zo_perturb_parameters(scaling_factor=-1, random_seed=seed)
-                torch.manual_seed(seed)  # return to the same state
+                # torch.manual_seed(seed)  # return to the same state
+                self.generator.manual_seed(seed)
                 loss2 = closure()
                 grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
             else:  # two side perturbation
                 self.zo_perturb_parameters(scaling_factor=-2, random_seed=seed)
                 loss2 = closure()
                 grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
-                torch.manual_seed(seed)  # return to the same state
+                # torch.manual_seed(seed)  # return to the same state
+                self.generator.manual_seed(seed)
 
                 # Reset model back to its parameters at start of step
                 self.zo_perturb_parameters(scaling_factor=1, random_seed=seed)
-                torch.manual_seed(seed)  # return to the same state
+                # torch.manual_seed(seed)  # return to the same state
+                self.generator.manual_seed(seed)
             
             sum_projected_grads = sum_projected_grads + grad
 
@@ -203,15 +220,18 @@ class ZO_SGD(ZeroOrderOptimizer):
                 eps = group['eps']
                 
                 for seed in random_seeds:
-                    torch.manual_seed(seed)
-                    self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
+                    # torch.manual_seed(seed)
+                    self.generator.manual_seed(seed)
+                    # self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
                     
-                    z = self.vector_sampler.sample(param.shape)
+                    z = self.vector_sampler.sample(param.shape, generator=self.generator)
+                    print("Update vector:\n", z)
                     name = next(name for name, p in self.named_parameters_to_optim if p is param)
                     sparsity = self.get_grad_sparsity_by_name(name)
                     if sparsity is not None:
                         z[fast_random_mask_like(z, sparsity, generator=self.sparse_grad_rng)] = 0
-                    
+                        self.generator.manual_seed(seed)
+
                     grad += (self.projected_grad * z * eps) / len(random_seeds)
                 
                 param.grad = grad
@@ -221,21 +241,27 @@ class ZO_SGD(ZeroOrderOptimizer):
     def _module_perturbation_step(self, closure: Callable[[], torch.Tensor]) -> torch.Tensor:
         """Performs single module perturbation step."""
         self.zo_random_seed = np.random.randint(1000000000)
-        torch.manual_seed(self.zo_random_seed)
+        # torch.manual_seed(self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed)
         self.zo_perturb_parameters(scaling_factor=1)
         loss1 = closure()
-        torch.manual_seed(self.zo_random_seed)
+        # torch.manual_seed(self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed)
         
         if self.perturbation_mode == "one_side":
             self.zo_perturb_parameters(scaling_factor=-1)
+            self.generator.manual_seed(self.zo_random_seed)
             loss2 = closure()
             self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
         else:  # two_side
             self.zo_perturb_parameters(scaling_factor=-2)
-            torch.manual_seed(self.zo_random_seed)
+            # torch.manual_seed(self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
             loss2 = closure()
             self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
             self.zo_perturb_parameters(scaling_factor=1)
+            # torch.manual_seed(self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
         
         return loss1
 
