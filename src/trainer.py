@@ -86,6 +86,8 @@ from transformers.utils import (
 # from torch.optim.optimizer import StateDict, params_t
 import wandb
 from clearml import Task
+from training_utils import * 
+
 from gradient_pruning.pruning_utils import (
     fast_random_mask_like,
     estimate_pretrained_model_magnitude_pruning_threshold,
@@ -166,7 +168,7 @@ class OurTrainer(Trainer):
         train_dataloader = self.get_train_dataloader()
         eval_dataloader = self.get_eval_dataloader()  # ----newly-added
 
-        clearml_task = Task.current_task()
+        # clearml_task = Task.current_task()
 
         # MeZO added: Linear probing
         if self.args.linear_probing:
@@ -356,12 +358,20 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_SamplingMUON(self.model.parameters(), tau=1e-1, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self.model.parameters(), tau=1e-1, beta=1e-2, use_smoothing=True, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
+            inner_optimizers = optimizer._inner_optimizers
+            schedulers = [
+                StepLR(opt, step_size=30, gamma=0.1) 
+                for opt in inner_optimizers
+            ]
+            optimizer.set_lr_schedulers(schedulers)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
                 self.optimizer = Adam(self.model.parameters(), lr=args.learning_rate)
             elif args.optimizer == "sgd":
                 self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
+            else: 
+                raise NotImplementedError(f"Optimizer {args.optimizer} is not implemented")
 
         # self.scheduler = CosineAnnealingLR(self.optimizer, T_max=self.args.max_steps, eta_min=1e-8)
         # important: at this point:
@@ -524,46 +534,13 @@ class OurTrainer(Trainer):
                 if step % args.gradient_accumulation_steps == 0:
                     self.control = self.callback_handler.on_step_begin(args, self.state, self.control)
 
-                # MeZO added: estimate gradient
-                # Added zo_jaguar
                 closure = self.create_closure(model, inputs)
-                if args.trainer in ["zo_sgd", "zo_adam", "zo_signsgd"]:
-                    tr_loss_step = self.optimizer.step(closure)
-                    # if args.module_wise_perturbation:
-                    #     assert args.q == 1, "module-wise perturbation only supports q=1"
-                    #     if args.coordinate_perturbation:
-                    #         tr_loss_step = self.zo_step_with_module_wise_perturbation_coordinate(model, inputs)
-                    #     else:
-                    #         tr_loss_step = self.zo_step_with_module_wise_perturbation(model, inputs)
-                    # elif args.q == 1:
-                    #     tr_loss_step = self.zo_step(model, inputs)
-                    # elif args.q > 1:
-                    #     tr_loss_step = self.zo_step_v1(model, inputs)
-                    # else:
-                    #     raise ValueError(f"q={args.q} is not supported.")
-                elif args.trainer == "jaguar_signsgd":
-                    tr_loss_step = self.optimizer.step(closure)
-                elif args.trainer == "zo_muon":
-                    tr_loss_step = self.optimizer.step(closure) # FIXME: the same for other optimizers
-                elif args.trainer == "zo_sampling_muon":
-                    tr_loss_step = self.optimizer.step(closure)
-                elif args.trainer == "jaguar_muon":
-                    tr_loss_step = self.optimizer.step(closure)
-                elif args.trainer == "zo_conserv":
-                    tr_loss_step = self.optimizer.step(closure)
-                # elif args.trainer == "forward_grad": # FIXME: do we need this method? 
-                #     tr_loss_step = self.forward_grad_step(model, inputs)
-                else: # FIXME: do we need this part? maybe just throw error
-                    if (
-                            ((step + 1) % args.gradient_accumulation_steps != 0)
-                            and args.local_rank != -1
-                            and args._no_sync_in_gradient_accumulation
-                    ):
-                        # Avoid unnecessary DDP synchronization since there will be no backward pass on this example.
-                        with model.no_sync():
-                            tr_loss_step = self.training_step(model, inputs)
-                    else:
-                        tr_loss_step = self.training_step(model, inputs)
+                tr_loss_step = self.optimizer.step(closure)       
+                if args.trainer == "jaguar_muon":            
+                    for scheduler in schedulers:
+                        scheduler.step()
+                self.scheduler.step()
+                print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']:.2e}")
 
                 if (
                         args.logging_nan_inf_filter
@@ -616,12 +593,12 @@ class OurTrainer(Trainer):
                     test_metrics = self.evaluate_func([], self.eval_samples)
                     if "accuracy" in test_metrics:
                         self.log({"test_acc": test_metrics["accuracy"], "val_acc": val_metrics["accuracy"]})
-                        # wandb.log({"test_acc": test_metrics["accuracy"], "val_acc": val_metrics["accuracy"]})
-                        if clearml_task:
-                            clearml_task.get_logger().report_scalar(
-                                "Accuracy", "test", test_metrics["accuracy"], total_steps + 1)
-                            clearml_task.get_logger().report_scalar(
-                                "Accuracy", "val", val_metrics["accuracy"], total_steps + 1)
+                        wandb.log({"test_acc": test_metrics["accuracy"], "val_acc": val_metrics["accuracy"]})
+                        # if clearml_task:
+                        #     clearml_task.get_logger().report_scalar(
+                        #         "Accuracy", "test", test_metrics["accuracy"], total_steps + 1)
+                        #     clearml_task.get_logger().report_scalar(
+                        #         "Accuracy", "val", val_metrics["accuracy"], total_steps + 1)
                     else:
                         keys = list(test_metrics.keys())
                         log_dict = {}
@@ -629,11 +606,11 @@ class OurTrainer(Trainer):
                             log_dict['test_' + k] = test_metrics[k]
                             log_dict['val_' + k] = val_metrics[k]
                         self.log(log_dict)
-                        # wandb.log(log_dict)
-                        if clearml_task:
-                            for k, v in log_dict.items():
-                                clearml_task.get_logger().report_scalar(
-                                    k.split('_')[0], k, v, total_steps + 1)
+                        wandb.log(log_dict)
+                        # if clearml_task:
+                        #     for k, v in log_dict.items():
+                        #         clearml_task.get_logger().report_scalar(
+                        #             k.split('_')[0], k, v, total_steps + 1)
 
                 max_memory_allocated = 0
                 for device_id in range(torch.cuda.device_count()):
@@ -641,13 +618,13 @@ class OurTrainer(Trainer):
                     max_memory_allocated += torch.cuda.max_memory_allocated(device_id)
                 self.log({"peak_mem": max_memory_allocated / 1024 ** 3,
                           "step_consumption": train_step_duration * 1000})
-                # wandb.log({"peak_mem": max_memory_allocated / 1024 ** 3,
-                #            "step_consumption": train_step_duration * 1000})
-                if clearml_task:
-                    clearml_task.get_logger().report_scalar(
-                        "Memory", "peak_mem", max_memory_allocated / 1024 ** 3, total_steps)
-                    clearml_task.get_logger().report_scalar(
-                        "Time", "step_consumption", train_step_duration * 1000, total_steps)
+                wandb.log({"peak_mem": max_memory_allocated / 1024 ** 3,
+                           "step_consumption": train_step_duration * 1000})
+                # if clearml_task:
+                #     clearml_task.get_logger().report_scalar(
+                #         "Memory", "peak_mem", max_memory_allocated / 1024 ** 3, total_steps)
+                #     clearml_task.get_logger().report_scalar(
+                #         "Time", "step_consumption", train_step_duration * 1000, total_steps)
 
             if step < 0:
                 # Why would this happen? I don't know, but let's be safe.
@@ -702,12 +679,12 @@ class OurTrainer(Trainer):
 
         self._memory_tracker.stop_and_update_metrics(metrics)
 
-        # wandb.log(metrics)
+        wandb.log(metrics)
         self.log(metrics)
-        if clearml_task:
-            for key, value in metrics.items():
-                clearml_task.get_logger().report_scalar(
-                    "Training", key, value, self.state.global_step)
+        # if clearml_task:
+        #     for key, value in metrics.items():
+        #         clearml_task.get_logger().report_scalar(
+        #             "Training", key, value, self.state.global_step)
 
         run_dir = self._get_output_dir(trial)
         checkpoints_sorted = self._sorted_checkpoints(use_mtime=False, output_dir=run_dir)
