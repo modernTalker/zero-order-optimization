@@ -358,12 +358,12 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_SamplingMUON(self.model.parameters(), tau=1e-1, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self.model.parameters(), tau=1e-1, beta=1e-2, use_smoothing=True, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
-            inner_optimizers = optimizer._inner_optimizers
+            inner_optimizers = self.optimizer._inner_optimizers
             schedulers = [
-                StepLR(opt, step_size=30, gamma=0.1) 
+                get_scheduler(opt, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps, warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio) 
                 for opt in inner_optimizers
             ]
-            optimizer.set_lr_schedulers(schedulers)
+            self.optimizer.set_lr_schedulers(schedulers)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
