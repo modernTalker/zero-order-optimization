@@ -5,6 +5,7 @@ import torch
 import numpy as np
 from .opt_utils import VectorSampler
 from gradient_pruning import fast_random_mask_like
+from torch.optim import SGD
 
 class ZeroOrderOptimizer(Optimizer, ABC):
     def __init__(self,
@@ -63,6 +64,21 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         # NOTE: If eps is not common for all parameters, then we calculate the weighted average of all epsilons
         self.zo_eps = self._calculate_zo_eps(eps=eps)
         # print("DONE init")
+
+        self._inner_optimizers = []
+        for group in self.param_groups:
+            self._inner_optimizers.append(
+                SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
+            )
+       
+        self._lr_schedulers = None
+
+    def set_lr_schedulers(self, lr_schedulers: List):
+        """        
+        Args:
+            lr_schedulers: list of schedulers
+        """
+        self._lr_schedulers = lr_schedulers
 
     def _prepare_parameters(self) -> None:
         """Prepares parameters for optimization. Common for all optimizer's steps"""

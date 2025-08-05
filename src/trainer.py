@@ -358,12 +358,6 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_SamplingMUON(self.model.parameters(), tau=1e-1, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self.model.parameters(), tau=1e-1, beta=1e-2, use_smoothing=True, lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
-            inner_optimizers = self.optimizer._inner_optimizers
-            schedulers = [
-                get_scheduler(opt, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps, warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio) 
-                for opt in inner_optimizers
-            ]
-            self.optimizer.set_lr_schedulers(schedulers)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
@@ -372,6 +366,12 @@ class OurTrainer(Trainer):
                 self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
             else: 
                 raise NotImplementedError(f"Optimizer {args.optimizer} is not implemented")
+        inner_optimizers = self.optimizer._inner_optimizers
+        schedulers = [
+            get_scheduler(opt, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps, warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio) 
+            for opt in inner_optimizers
+        ]
+        self.optimizer.set_lr_schedulers(schedulers)
 
         # self.scheduler = CosineAnnealingLR(self.optimizer, T_max=self.args.max_steps, eta_min=1e-8)
         # important: at this point:
@@ -536,11 +536,11 @@ class OurTrainer(Trainer):
 
                 closure = self.create_closure(model, inputs)
                 tr_loss_step = self.optimizer.step(closure)       
-                if args.trainer == "jaguar_muon":            
-                    for scheduler in schedulers:
-                        scheduler.step()
-                self.scheduler.step()
-                print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']:.2e}")
+                # if args.trainer == "jaguar_muon":            
+                #     for scheduler in schedulers:
+                #         scheduler.step()
+                # self.scheduler.step()
+                # print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']:.2e}")
 
                 if (
                         args.logging_nan_inf_filter

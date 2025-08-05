@@ -39,7 +39,7 @@ AutoModelForCausalLM.register(MistralConfig, MistralForCausalLM)
 class OurArguments(TrainingArguments):
     # dataset and sampling strategy
     task_name: str = "SST2"  # task name should match the string before Dataset in the Dataset class name. We support the following task_name: SST2, RTE, CB, BoolQ, WSC, WIC, MultiRC, Copa, ReCoRD, SQuAD, DROP
-
+    project_name: str = "zo-bench"
     # Number of examples
     num_train: int = 0  # ICL mode: number of demonstrations; training mode: number of training samples
     num_dev: int = None  # (only enabled with training) number of development samples
@@ -648,7 +648,7 @@ def main():
     args.logging_dir = os.path.join(args.output_dir, "logs")
     os.makedirs(args.logging_dir, exist_ok=True)
 
-    wandb.init(project='zo-bench', name=args.tag, config=args)
+    wandb.init(project=args.project_name, name=args.tag, config=args)
     # clearml_task = Task.init(project_name='zo-bench', task_name=args.tag)
     # clearml_task.connect(args)
 

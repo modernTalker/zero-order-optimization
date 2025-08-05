@@ -1,6 +1,6 @@
 from .base import ZeroOrderOptimizer
 import torch
-from torch.optim import SGD
+# from torch.optim import SGD
 import numpy as np
 from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 
@@ -29,27 +29,13 @@ class Jaguar_MUON(ZeroOrderOptimizer):
         self.beta = beta
         self.use_smoothing = use_smoothing
 
-        self._inner_optimizers = []
-        for group in self.param_groups:
-            self._inner_optimizers.append(
-                SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
-            )
+        # self._inner_optimizers = []
+        # for group in self.param_groups:
+        #     self._inner_optimizers.append(
+        #         SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
+        #     )
        
-        self._lr_schedulers = None
-
-    def set_lr_schedulers(self, lr_schedulers: List):
-        """
-        Устанавливает scheduler'ы для внутренних оптимизаторов.
-        
-        Args:
-            lr_schedulers: Список scheduler'ов, по одному на каждую группу параметров
-        """
-        if len(lr_schedulers) != len(self.param_groups):
-            raise ValueError(
-                f"Количество scheduler'ов ({len(lr_schedulers)}) должно "
-                f"соответствовать количеству групп параметров ({len(self.param_groups)})"
-            )
-        self._lr_schedulers = lr_schedulers
+        # self._lr_schedulers = None
             
     @torch.no_grad()
     def step(self, closure=None):
