@@ -1,0 +1,60 @@
+diff --git a/src/__pycache__/trainer.cpython-310.pyc b/src/__pycache__/trainer.cpython-310.pyc
+index f0373ef..022f141 100644
+Binary files a/src/__pycache__/trainer.cpython-310.pyc and b/src/__pycache__/trainer.cpython-310.pyc differ
+diff --git a/src/optimizers/__pycache__/base.cpython-310.pyc b/src/optimizers/__pycache__/base.cpython-310.pyc
+index 3bff240..3243fe5 100644
+Binary files a/src/optimizers/__pycache__/base.cpython-310.pyc and b/src/optimizers/__pycache__/base.cpython-310.pyc differ
+diff --git a/src/optimizers/__pycache__/jaguar_muon.cpython-310.pyc b/src/optimizers/__pycache__/jaguar_muon.cpython-310.pyc
+index 30ceadd..148489b 100644
+Binary files a/src/optimizers/__pycache__/jaguar_muon.cpython-310.pyc and b/src/optimizers/__pycache__/jaguar_muon.cpython-310.pyc differ
+diff --git a/src/optimizers/__pycache__/jaguar_signsgd.cpython-310.pyc b/src/optimizers/__pycache__/jaguar_signsgd.cpython-310.pyc
+index 7e7acce..ba9f562 100644
+Binary files a/src/optimizers/__pycache__/jaguar_signsgd.cpython-310.pyc and b/src/optimizers/__pycache__/jaguar_signsgd.cpython-310.pyc differ
+diff --git a/src/optimizers/__pycache__/zo_sgd.cpython-310.pyc b/src/optimizers/__pycache__/zo_sgd.cpython-310.pyc
+index 88b87a5..c601206 100644
+Binary files a/src/optimizers/__pycache__/zo_sgd.cpython-310.pyc and b/src/optimizers/__pycache__/zo_sgd.cpython-310.pyc differ
+diff --git a/src/optimizers/opt_utils/__pycache__/__init__.cpython-310.pyc b/src/optimizers/opt_utils/__pycache__/__init__.cpython-310.pyc
+index 5ed94fb..d9c92b2 100644
+Binary files a/src/optimizers/opt_utils/__pycache__/__init__.cpython-310.pyc and b/src/optimizers/opt_utils/__pycache__/__init__.cpython-310.pyc differ
+diff --git a/src/optimizers/opt_utils/__pycache__/vector_sampling.cpython-310.pyc b/src/optimizers/opt_utils/__pycache__/vector_sampling.cpython-310.pyc
+index 6f12749..1549d17 100644
+Binary files a/src/optimizers/opt_utils/__pycache__/vector_sampling.cpython-310.pyc and b/src/optimizers/opt_utils/__pycache__/vector_sampling.cpython-310.pyc differ
+diff --git a/src/run_script.sh b/src/run_script.sh
+index de74c3e..027b529 100755
+--- a/src/run_script.sh
++++ b/src/run_script.sh
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ 
+-export CUDA_VISIBLE_DEVICES=2,3
++export CUDA_VISIBLE_DEVICES=3
+ export WANDB_DISABLED="false"          
+ export WANDB_ENTITY="andrey"   
+ export WANDB_PROJECT="zo-lib-run"    
+diff --git a/src/wandb/debug-internal.log b/src/wandb/debug-internal.log
+index 7c3cfcd..8d8874e 120000
+--- a/src/wandb/debug-internal.log
++++ b/src/wandb/debug-internal.log
+@@ -1 +1 @@
+-run-20250717_142655-f14rxscu/logs/debug-internal.log
+\ No newline at end of file
++run-20250804_143817-dd70jcs5/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/src/wandb/debug.log b/src/wandb/debug.log
+index 1f4632d..c5cbbbd 120000
+--- a/src/wandb/debug.log
++++ b/src/wandb/debug.log
+@@ -1 +1 @@
+-run-20250717_142655-f14rxscu/logs/debug.log
+\ No newline at end of file
++run-20250804_143817-dd70jcs5/logs/debug.log
+\ No newline at end of file
+diff --git a/src/wandb/latest-run b/src/wandb/latest-run
+index caaf7bb..641a145 120000
+--- a/src/wandb/latest-run
++++ b/src/wandb/latest-run
+@@ -1 +1 @@
+-run-20250717_142655-f14rxscu
+\ No newline at end of file
++run-20250804_143817-dd70jcs5
+\ No newline at end of file

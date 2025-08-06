@@ -1,0 +1,50 @@
+2025-08-06 17:20:50,951 - INFO - Sample train set 1500/67349
+2025-08-06 17:20:50,956 - INFO - ... including dev set 500 samples
+2025-08-06 17:20:50,958 - INFO - Loading model with FP32...
+31
+2025-08-06 17:21:28,446 - INFO - Done with 37.46s
+2025-08-06 17:21:29,219 - INFO - Dev samples: 500
+2025-08-06 17:21:29,263 - INFO - Train samples: 1000
+2025-08-06 17:21:29,265 - INFO - Eval sample length is 872
+2025-08-06 17:21:29,266 - INFO - Tokenizing training samples...
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+2025-08-06 17:21:31,853 - INFO - Done with 2.58s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-08-06 17:21:31,865 - INFO - ***** Running training *****
+2025-08-06 17:21:31,865 - INFO -   Num examples = 1000
+2025-08-06 17:21:31,866 - INFO -   Num Epochs = 318
+2025-08-06 17:21:31,867 - INFO -   Instantaneous batch size per device = 16
+2025-08-06 17:21:31,867 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-08-06 17:21:31,868 - INFO -   Gradient Accumulation steps = 1
+2025-08-06 17:21:31,868 - INFO -   Total optimization steps = 20000
+2025-08-06 17:21:31,869 - INFO -   Number of trainable parameters = 1315758080
+  0%|                                                                                                                                                                                                      | 0/20000 [00:00<?, ?it/s]You're using a GPT2TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+grad tensor([[0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.]], device='cuda:0')
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 773, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 704, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 587, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 537, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sgd.py", line 63, in step
+    self._apply_gradients(random_seeds=random_seeds)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sgd.py", line 89, in _apply_gradients
+    param.data.add_(update, alpha=-group['lr'])
+TypeError: bad operand type for unary -: 'dict'

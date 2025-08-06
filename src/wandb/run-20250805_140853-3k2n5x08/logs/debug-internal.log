@@ -1,0 +1,1701 @@
+2025-08-05 14:08:53,542 INFO    StreamThr :3200901 [internal.py:wandb_internal():86] W&B internal server running at pid: 3200901, started at: 2025-08-05 14:08:53.541478
+2025-08-05 14:08:53,545 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status
+2025-08-05 14:08:53,550 INFO    WriterThread:3200901 [datastore.py:open_for_write():85] open: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/run-3k2n5x08.wandb
+2025-08-05 14:08:53,550 DEBUG   SenderThread:3200901 [sender.py:send():382] send: header
+2025-08-05 14:08:53,557 DEBUG   SenderThread:3200901 [sender.py:send():382] send: run
+2025-08-05 14:08:53,656 INFO    SenderThread:3200901 [dir_watcher.py:__init__():211] watching files in: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files
+2025-08-05 14:08:53,656 INFO    SenderThread:3200901 [sender.py:_start_run_threads():1136] run started: 3k2n5x08 with start time 1754392133.541007
+2025-08-05 14:08:53,663 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: check_version
+2025-08-05 14:08:53,664 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: check_version
+2025-08-05 14:08:53,939 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: run_start
+2025-08-05 14:08:53,956 DEBUG   HandlerThread:3200901 [system_info.py:__init__():32] System info init
+2025-08-05 14:08:53,956 DEBUG   HandlerThread:3200901 [system_info.py:__init__():47] System info init done
+2025-08-05 14:08:53,957 INFO    HandlerThread:3200901 [system_monitor.py:start():194] Starting system monitor
+2025-08-05 14:08:53,957 INFO    SystemMonitor:3200901 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2025-08-05 14:08:53,957 INFO    HandlerThread:3200901 [system_monitor.py:probe():214] Collecting system info
+2025-08-05 14:08:53,959 INFO    SystemMonitor:3200901 [interfaces.py:start():190] Started cpu monitoring
+2025-08-05 14:08:53,960 INFO    SystemMonitor:3200901 [interfaces.py:start():190] Started disk monitoring
+2025-08-05 14:08:53,962 INFO    SystemMonitor:3200901 [interfaces.py:start():190] Started gpu monitoring
+2025-08-05 14:08:53,963 INFO    SystemMonitor:3200901 [interfaces.py:start():190] Started memory monitoring
+2025-08-05 14:08:53,964 INFO    SystemMonitor:3200901 [interfaces.py:start():190] Started network monitoring
+2025-08-05 14:08:54,022 DEBUG   HandlerThread:3200901 [system_info.py:probe():196] Probing system
+2025-08-05 14:08:54,026 DEBUG   HandlerThread:3200901 [system_info.py:_probe_git():181] Probing git
+2025-08-05 14:08:54,034 DEBUG   HandlerThread:3200901 [system_info.py:_probe_git():189] Probing git done
+2025-08-05 14:08:54,034 DEBUG   HandlerThread:3200901 [system_info.py:probe():244] Probing system done
+2025-08-05 14:08:54,034 DEBUG   HandlerThread:3200901 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-139-generic-x86_64-with-glibc2.31', 'python': '3.10.18', 'heartbeatAt': '2025-08-05T11:08:54.022742', 'startedAt': '2025-08-05T11:08:53.533077', 'docker': None, 'cuda': None, 'args': ('--model_name=facebook/opt-1.3b', '--task_name=SST2', '--output_dir=result/SST2-FT-', '--num_train_epochs=5', '--per_device_train_batch_size=16', '--load_best_model_at_end', '--evaluation_strategy=steps', '--save_strategy=steps', '--save_total_limit=1', '--eval_steps=1000', '--max_steps=20000', '--logging_steps=10', '--num_eval=1000', '--num_train=1000', '--num_dev=500', '--train_as_classification', '--perturbation_mode=two_side', '--trainer=jaguar_muon', '--train_set_seed=0', '--lr_scheduler_type=constant', '--save_steps=1000', '--learning_rate=1e-4', '--zo_eps=1e-3', '--momentum=0.0', '--weight_decay=0', '--module_wise_perturbation=False', '--zo_tau=1e-3', '--zo_use_smoothing=true', '--zo_beta=0.9', '--overwrite_output_dir', '--report_to=wandb', '--scheduler=cosine', '--num_training_steps=20000', '--warmup_steps=0', '--min_lr_ratio=0.1', '--scheduler_cycle_length=1'), 'state': 'running', 'program': '/home/rinya/zero-order-optimization/src/run.py', 'codePathLocal': 'run.py', 'codePath': 'src/run.py', 'git': {'remote': 'git@github.com:modernTalker/zero-order-optimization.git', 'commit': '62e0d5055dd6de7c5e4a94bc33ed6cbeef362562'}, 'email': 'evseevgrv@gmail.com', 'root': '/home/rinya/zero-order-optimization', 'host': 'opt-mipt', 'username': 'rinya', 'executable': '/home/rinya/anaconda3/envs/zollm2/bin/python', 'cpu_count': 48, 'cpu_count_logical': 48, 'cpu_freq': {'current': 2195.8000000000015, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}, {'current': 2195.8, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 132.80414581298828, 'used': 88.07093811035156}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 8, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}, {'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-PCIE-40GB', 'memory_total': 42949672960}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-PCIE-40GB', 'memory_total': 42949672960}, {'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}, {'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}], 'memory': {'total': 503.87476348876953}}
+2025-08-05 14:08:54,034 INFO    HandlerThread:3200901 [system_monitor.py:probe():224] Finished collecting system info
+2025-08-05 14:08:54,034 INFO    HandlerThread:3200901 [system_monitor.py:probe():227] Publishing system info
+2025-08-05 14:08:54,034 DEBUG   HandlerThread:3200901 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2025-08-05 14:08:54,034 DEBUG   HandlerThread:3200901 [system_info.py:_save_pip():68] Saving pip packages done
+2025-08-05 14:08:54,034 DEBUG   HandlerThread:3200901 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2025-08-05 14:08:54,070 DEBUG   HandlerThread:3200901 [system_info.py:_save_conda():87] Saving conda packages done
+2025-08-05 14:08:54,070 DEBUG   HandlerThread:3200901 [system_info.py:_save_code():90] Saving code
+2025-08-05 14:08:54,073 DEBUG   HandlerThread:3200901 [system_info.py:_save_code():111] Saving code done
+2025-08-05 14:08:54,073 DEBUG   HandlerThread:3200901 [system_info.py:_save_patches():128] Saving git patches
+2025-08-05 14:08:54,143 DEBUG   HandlerThread:3200901 [system_info.py:_save_patches():170] Saving git patches done
+2025-08-05 14:08:54,144 INFO    HandlerThread:3200901 [system_monitor.py:probe():229] Finished publishing system info
+2025-08-05 14:08:54,147 DEBUG   SenderThread:3200901 [sender.py:send():382] send: files
+2025-08-05 14:08:54,147 INFO    SenderThread:3200901 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2025-08-05 14:08:54,147 INFO    SenderThread:3200901 [sender.py:_save_file():1392] saving file code/src/run.py with policy now
+2025-08-05 14:08:54,148 INFO    SenderThread:3200901 [sender.py:_save_file():1392] saving file diff.patch with policy now
+2025-08-05 14:08:54,148 INFO    SenderThread:3200901 [sender.py:_save_file():1392] saving file upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch with policy now
+2025-08-05 14:08:54,152 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: stop_status
+2025-08-05 14:08:54,153 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: stop_status
+2025-08-05 14:08:54,160 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: internal_messages
+2025-08-05 14:08:54,190 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/wandb-metadata.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110854Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=6b5e2d3c77be79338a07d9c3db704e8ec411188d6035aa20898d7ad664642c19: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,190 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:08:54,190 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:08:54,200 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110854Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=0bf3b4ee9cc23046946d147811cccd2d631711b3b670ee1598871bab0e3f3784: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,201 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:08:54,201 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:08:54,207 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/code/src/run.py?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110854Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=d13db7bf199001fee50a93fb0be15bde52df2014b678cbfdd5b87874ec032e81: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,208 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:08:54,208 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:08:54,215 ERROR   wandb-upload_2:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/diff.patch?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110854Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=11859312c9e704ad85d6039a759a94020428ebf070de3664cad9198a01ab3d47: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,215 ERROR   wandb-upload_2:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:08:54,215 ERROR   wandb-upload_2:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:08:54,291 DEBUG   SenderThread:3200901 [sender.py:send():382] send: telemetry
+2025-08-05 14:08:54,494 ERROR   wandb-upload_0:3200901 [upload_job.py:push():134] Failed to upload file: /tmp/tmpovqmhrr8wandb/yuz024qo-wandb-metadata.json
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,495 ERROR   wandb-upload_3:3200901 [upload_job.py:push():134] Failed to upload file: /tmp/tmpovqmhrr8wandb/rq4zkt40-upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,495 ERROR   wandb-upload_1:3200901 [upload_job.py:push():134] Failed to upload file: /tmp/tmpovqmhrr8wandb/i2cm166m-code/src/run.py
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,496 ERROR   wandb-upload_2:3200901 [upload_job.py:push():134] Failed to upload file: /tmp/tmpovqmhrr8wandb/zlvui6xu-diff.patch
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,658 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/requirements.txt
+2025-08-05 14:08:54,658 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/diff.patch
+2025-08-05 14:08:54,658 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/code/src/run.py
+2025-08-05 14:08:54,658 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch
+2025-08-05 14:08:54,658 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/conda-environment.yaml
+2025-08-05 14:08:54,658 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-metadata.json
+2025-08-05 14:08:54,659 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/code
+2025-08-05 14:08:54,659 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/code/src
+2025-08-05 14:08:54,730 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /tmp/tmpovqmhrr8wandb/yuz024qo-wandb-metadata.json
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,733 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /tmp/tmpovqmhrr8wandb/i2cm166m-code/src/run.py
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,733 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /tmp/tmpovqmhrr8wandb/rq4zkt40-upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:54,733 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /tmp/tmpovqmhrr8wandb/zlvui6xu-diff.patch
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:08:59,294 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:04,295 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:05,666 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+2025-08-05 14:09:07,668 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+2025-08-05 14:09:09,152 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: stop_status
+2025-08-05 14:09:09,153 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: stop_status
+2025-08-05 14:09:09,155 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: internal_messages
+2025-08-05 14:09:10,278 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:14,287 DEBUG   SenderThread:3200901 [sender.py:send():382] send: config
+2025-08-05 14:09:14,288 DEBUG   SenderThread:3200901 [sender.py:send():382] send: metric
+2025-08-05 14:09:14,290 DEBUG   SenderThread:3200901 [sender.py:send():382] send: telemetry
+2025-08-05 14:09:14,290 DEBUG   SenderThread:3200901 [sender.py:send():382] send: metric
+2025-08-05 14:09:14,290 WARNING SenderThread:3200901 [sender.py:send_metric():1343] Seen metric with glob (shouldn't happen)
+2025-08-05 14:09:15,318 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:15,674 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+2025-08-05 14:09:17,449 DEBUG   SenderThread:3200901 [sender.py:send():382] send: exit
+2025-08-05 14:09:17,449 INFO    SenderThread:3200901 [sender.py:send_exit():589] handling exit code: 1
+2025-08-05 14:09:17,449 INFO    SenderThread:3200901 [sender.py:send_exit():591] handling runtime: 23
+2025-08-05 14:09:17,450 INFO    SenderThread:3200901 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-08-05 14:09:17,450 INFO    SenderThread:3200901 [sender.py:send_exit():597] send defer
+2025-08-05 14:09:17,450 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:17,451 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 0
+2025-08-05 14:09:17,451 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:17,451 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 0
+2025-08-05 14:09:17,451 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 1
+2025-08-05 14:09:17,451 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:17,451 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 1
+2025-08-05 14:09:17,452 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:17,452 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 1
+2025-08-05 14:09:17,452 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 2
+2025-08-05 14:09:17,452 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:17,452 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 2
+2025-08-05 14:09:17,452 INFO    HandlerThread:3200901 [system_monitor.py:finish():203] Stopping system monitor
+2025-08-05 14:09:17,453 INFO    HandlerThread:3200901 [interfaces.py:finish():202] Joined cpu monitor
+2025-08-05 14:09:17,454 INFO    HandlerThread:3200901 [interfaces.py:finish():202] Joined disk monitor
+2025-08-05 14:09:17,454 DEBUG   SystemMonitor:3200901 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2025-08-05 14:09:17,455 DEBUG   SystemMonitor:3200901 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2025-08-05 14:09:17,455 DEBUG   SystemMonitor:3200901 [system_monitor.py:_start():183] Publishing last batch of metrics
+2025-08-05 14:09:17,677 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+2025-08-05 14:09:17,677 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_created():271] file/dir created: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-summary.json
+2025-08-05 14:09:19,680 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+2025-08-05 14:09:25,688 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/config.yaml
+2025-08-05 14:09:27,126 INFO    HandlerThread:3200901 [interfaces.py:finish():202] Joined gpu monitor
+2025-08-05 14:09:27,127 INFO    HandlerThread:3200901 [interfaces.py:finish():202] Joined memory monitor
+2025-08-05 14:09:27,127 INFO    HandlerThread:3200901 [interfaces.py:finish():202] Joined network monitor
+2025-08-05 14:09:27,128 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: poll_exit
+2025-08-05 14:09:27,128 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:27,128 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: keepalive
+2025-08-05 14:09:27,128 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:27,129 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:27,130 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 2
+2025-08-05 14:09:27,130 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 3
+2025-08-05 14:09:27,130 DEBUG   SenderThread:3200901 [sender.py:send():382] send: stats
+2025-08-05 14:09:27,131 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: poll_exit
+2025-08-05 14:09:27,133 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:27,133 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 3
+2025-08-05 14:09:27,134 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:27,134 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 3
+2025-08-05 14:09:27,134 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 4
+2025-08-05 14:09:27,134 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:27,134 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 4
+2025-08-05 14:09:27,135 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:27,135 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 4
+2025-08-05 14:09:27,135 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 5
+2025-08-05 14:09:27,135 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:27,135 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 5
+2025-08-05 14:09:27,136 DEBUG   SenderThread:3200901 [sender.py:send():382] send: summary
+2025-08-05 14:09:27,136 INFO    SenderThread:3200901 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2025-08-05 14:09:27,137 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:27,137 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 5
+2025-08-05 14:09:27,137 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 6
+2025-08-05 14:09:27,137 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:27,137 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 6
+2025-08-05 14:09:27,138 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:27,138 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 6
+2025-08-05 14:09:27,138 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 7
+2025-08-05 14:09:27,138 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: status_report
+2025-08-05 14:09:27,139 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:27,139 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 7
+2025-08-05 14:09:27,139 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:27,139 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 7
+2025-08-05 14:09:27,691 INFO    Thread-12 :3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-summary.json
+2025-08-05 14:09:28,456 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: keepalive
+2025-08-05 14:09:28,899 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 8
+2025-08-05 14:09:28,900 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:28,900 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 8
+2025-08-05 14:09:28,901 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:28,901 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 8
+2025-08-05 14:09:28,901 INFO    SenderThread:3200901 [job_builder.py:build():298] Attempting to build job artifact
+2025-08-05 14:09:28,902 INFO    SenderThread:3200901 [job_builder.py:_get_source_type():428] is repo sourced job
+2025-08-05 14:09:28,917 INFO    SenderThread:3200901 [job_builder.py:build():404] adding wandb-job metadata file
+2025-08-05 14:09:28,957 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 9
+2025-08-05 14:09:28,958 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:28,958 DEBUG   SenderThread:3200901 [sender.py:send():382] send: artifact
+2025-08-05 14:09:28,959 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 9
+2025-08-05 14:09:29,105 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/wandb_artifacts/24/1691/2a03b2b4ec65d97f6e69ea0a63c49db2?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=content-md5%3Bcontent-type%3Bhost%3Bx-amz-meta-md5&X-User=rinya&X-Amz-Signature=9bde86bef0c9e10f730bb94a7674dfb761f0d89eee4fc9ff7cca8e201d5a0a40: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,105 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,105 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:29,106 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/wandb_artifacts/24/1691/d53cf3e86222d90b9e19053dbbfd34a1?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=content-md5%3Bcontent-type%3Bhost%3Bx-amz-meta-md5&X-User=rinya&X-Amz-Signature=1ad18ceadeb82e5916a582a551a805edf7fb3f261e51626a07c2300cb55ecd8d: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,107 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/wandb_artifacts/24/1691/05039987658839d61ee68e95dd9f40fb?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=content-md5%3Bcontent-type%3Bhost%3Bx-amz-meta-md5&X-User=rinya&X-Amz-Signature=47dcf2c49865753112c975346f84f5e3d51bbdab381cd9aba57d7868bcb71bf5: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,107 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,108 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,108 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:29,109 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:29,277 ERROR   wandb-upload_1:3200901 [upload_job.py:push():74] Failed to upload file: /home/rinya/.local/share/wandb/artifacts/staging/tmp978fwryf
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 69, in push
+    deduped = self.save_fn(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact_saver.py", line 176, in <lambda>
+    lambda entry, progress_callback: self._manifest.storage_policy.store_file_sync(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 312, in store_file_sync
+    self.default_file_upload(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 234, in default_file_upload
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/internal.py", line 168, in upload_file_retry
+    return self.api.upload_file_retry(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,278 ERROR   wandb-upload_0:3200901 [upload_job.py:push():74] Failed to upload file: /home/rinya/.local/share/wandb/artifacts/staging/tmphfj7bcn8
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 69, in push
+    deduped = self.save_fn(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact_saver.py", line 176, in <lambda>
+    lambda entry, progress_callback: self._manifest.storage_policy.store_file_sync(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 312, in store_file_sync
+    self.default_file_upload(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 234, in default_file_upload
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/internal.py", line 168, in upload_file_retry
+    return self.api.upload_file_retry(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,278 ERROR   wandb-upload_3:3200901 [upload_job.py:push():74] Failed to upload file: /home/rinya/.local/share/wandb/artifacts/staging/tmpxnse7ab2
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 69, in push
+    deduped = self.save_fn(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact_saver.py", line 176, in <lambda>
+    lambda entry, progress_callback: self._manifest.storage_policy.store_file_sync(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 312, in store_file_sync
+    self.default_file_upload(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 234, in default_file_upload
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/internal.py", line 168, in upload_file_retry
+    return self.api.upload_file_retry(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,469 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/.local/share/wandb/artifacts/staging/tmphfj7bcn8
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 69, in push
+    deduped = self.save_fn(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact_saver.py", line 176, in <lambda>
+    lambda entry, progress_callback: self._manifest.storage_policy.store_file_sync(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 312, in store_file_sync
+    self.default_file_upload(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 234, in default_file_upload
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/internal.py", line 168, in upload_file_retry
+    return self.api.upload_file_retry(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,471 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/.local/share/wandb/artifacts/staging/tmp978fwryf
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 69, in push
+    deduped = self.save_fn(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact_saver.py", line 176, in <lambda>
+    lambda entry, progress_callback: self._manifest.storage_policy.store_file_sync(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 312, in store_file_sync
+    self.default_file_upload(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 234, in default_file_upload
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/internal.py", line 168, in upload_file_retry
+    return self.api.upload_file_retry(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,471 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/.local/share/wandb/artifacts/staging/tmpxnse7ab2
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 69, in push
+    deduped = self.save_fn(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact_saver.py", line 176, in <lambda>
+    lambda entry, progress_callback: self._manifest.storage_policy.store_file_sync(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 312, in store_file_sync
+    self.default_file_upload(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/artifacts/storage_policies/wandb_storage_policy.py", line 234, in default_file_upload
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/internal.py", line 168, in upload_file_retry
+    return self.api.upload_file_retry(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,473 ERROR   SenderThread:3200901 [sender.py:send_artifact():1472] send_artifact: failed for artifact "job/job-git_github.com_modernTalker_zero-order-optimization.git_src_run.py": Unable to rewind request body for redirect.
+2025-08-05 14:09:29,473 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:29,473 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 9
+2025-08-05 14:09:29,473 INFO    SenderThread:3200901 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-08-05 14:09:29,694 INFO    SenderThread:3200901 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+2025-08-05 14:09:29,695 INFO    SenderThread:3200901 [dir_watcher.py:finish():388] scan: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files
+2025-08-05 14:09:29,695 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-summary.json wandb-summary.json
+2025-08-05 14:09:29,695 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log output.log
+2025-08-05 14:09:29,696 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/diff.patch diff.patch
+2025-08-05 14:09:29,696 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/requirements.txt requirements.txt
+2025-08-05 14:09:29,696 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/config.yaml config.yaml
+2025-08-05 14:09:29,696 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/conda-environment.yaml conda-environment.yaml
+2025-08-05 14:09:29,697 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-metadata.json wandb-metadata.json
+2025-08-05 14:09:29,700 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch upstream_diff_ddb677a1fbe3fdec49d3a4365f57bbc8718e5a76.patch
+2025-08-05 14:09:29,706 INFO    SenderThread:3200901 [dir_watcher.py:finish():402] scan save: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/code/src/run.py code/src/run.py
+2025-08-05 14:09:29,706 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 10
+2025-08-05 14:09:29,707 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:29,709 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 10
+2025-08-05 14:09:29,710 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:29,710 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 10
+2025-08-05 14:09:29,710 INFO    SenderThread:3200901 [file_pusher.py:finish():175] shutting down file pusher
+2025-08-05 14:09:29,728 ERROR   wandb-upload_2:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/wandb-summary.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=8f470c323599230528e64ed3f68f76d95fb0a0f1163623f00d8ca9d5730f0306: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,728 ERROR   wandb-upload_2:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,728 ERROR   wandb-upload_2:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:29,739 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/requirements.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=73a393b43350b52afddd1693fa0b87b8ea1a123c064bf7e30a9d37d504508eb2: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,739 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,739 ERROR   wandb-upload_1:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:29,842 ERROR   wandb-upload_2:3200901 [upload_job.py:push():134] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-summary.json
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,843 ERROR   wandb-upload_1:3200901 [upload_job.py:push():134] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/requirements.txt
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,867 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/config.yaml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=314538fc7c4c632413642734fa63acd2508bae15efb11e5c60f1f10ade94c787: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,869 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,869 ERROR   wandb-upload_3:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:29,874 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2761] upload_file exception http://wandb-radfan.ru/local-files/andrey/zo-bench/3k2n5x08/output.log?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=N4gfi90GAQkW6sVmtO0MPg%2F20250805%2Fwandb-local%2Fs3%2Faws4_request&X-Amz-Date=20250805T110929Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-User=rinya&X-Amz-Signature=c7806282600fa5b7735a79f3f9bfdf4d79bdaf4da917fd9886804fdf14e0c31c: Unable to rewind request body for redirect.
+2025-08-05 14:09:29,875 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2763] upload_file request headers: 
+2025-08-05 14:09:29,875 ERROR   wandb-upload_0:3200901 [internal_api.py:upload_file():2765] upload_file response body: 
+2025-08-05 14:09:30,079 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/wandb-summary.json
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:30,080 ERROR   wandb-upload_3:3200901 [upload_job.py:push():134] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/config.yaml
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:30,081 ERROR   wandb-upload_0:3200901 [upload_job.py:push():134] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:30,081 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/requirements.txt
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:30,206 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/output.log
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:30,207 ERROR   Thread-11 (_thread_body):3200901 [step_upload.py:_handle_event():200] Failed to upload file: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/files/config.yaml
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+requests.exceptions.UnrewindableBodyError: Unable to rewind request body for redirect.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 288, in run_and_notify
+    self._do_upload_sync(event)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/step_upload.py", line 330, in _do_upload_sync
+    job.run()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 57, in run
+    self.push()
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/filesync/upload_job.py", line 125, in push
+    self._api.upload_file_retry(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 212, in wrapped_fn
+    return retrier(*args, **kargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2787, in upload_file
+    wandb._sentry.reraise(e)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 154, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 2754, in upload_file
+    response = self._upload_file_session.put(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 649, in put
+    return self.request("PUT", url, data=data, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in send
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 724, in <listcomp>
+    history = [resp for resp in gen]
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/sessions.py", line 257, in resolve_redirects
+    rewind_body(prepared_request)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/requests/utils.py", line 1086, in rewind_body
+    raise UnrewindableBodyError("Unable to rewind request body for redirect.")
+wandb.errors.CommError: Unable to rewind request body for redirect.
+2025-08-05 14:09:30,407 INFO    Thread-11 (_thread_body):3200901 [sender.py:transition_state():617] send defer: 11
+2025-08-05 14:09:30,408 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:30,408 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 11
+2025-08-05 14:09:30,409 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:30,410 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 11
+2025-08-05 14:09:30,410 INFO    SenderThread:3200901 [file_pusher.py:join():181] waiting for file pusher
+2025-08-05 14:09:30,410 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 12
+2025-08-05 14:09:30,410 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:30,410 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 12
+2025-08-05 14:09:30,410 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:30,411 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 12
+2025-08-05 14:09:30,411 INFO    SenderThread:3200901 [file_stream.py:finish():595] file stream finish called
+2025-08-05 14:09:30,478 INFO    SenderThread:3200901 [file_stream.py:finish():599] file stream finish is done
+2025-08-05 14:09:30,478 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 13
+2025-08-05 14:09:30,479 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:30,479 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 13
+2025-08-05 14:09:30,479 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:30,480 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 13
+2025-08-05 14:09:30,480 INFO    SenderThread:3200901 [sender.py:transition_state():617] send defer: 14
+2025-08-05 14:09:30,480 DEBUG   SenderThread:3200901 [sender.py:send():382] send: final
+2025-08-05 14:09:30,480 DEBUG   SenderThread:3200901 [sender.py:send():382] send: footer
+2025-08-05 14:09:30,481 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: defer
+2025-08-05 14:09:30,481 INFO    HandlerThread:3200901 [handler.py:handle_request_defer():172] handle defer: 14
+2025-08-05 14:09:30,481 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: defer
+2025-08-05 14:09:30,481 INFO    SenderThread:3200901 [sender.py:send_request_defer():613] handle sender defer: 14
+2025-08-05 14:09:30,482 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: poll_exit
+2025-08-05 14:09:30,482 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: server_info
+2025-08-05 14:09:30,483 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: get_summary
+2025-08-05 14:09:30,483 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: sampled_history
+2025-08-05 14:09:30,483 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: internal_messages
+2025-08-05 14:09:30,484 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: poll_exit
+2025-08-05 14:09:30,484 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: server_info
+2025-08-05 14:09:30,486 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: job_info
+2025-08-05 14:09:30,499 DEBUG   SenderThread:3200901 [sender.py:send_request():409] send_request: job_info
+2025-08-05 14:09:30,500 INFO    MainThread:3200901 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2025-08-05 14:09:30,500 INFO    MainThread:3200901 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2025-08-05 14:09:30,500 INFO    MainThread:3200901 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2025-08-05 14:09:30,501 DEBUG   HandlerThread:3200901 [handler.py:handle_request():146] handle_request: shutdown
+2025-08-05 14:09:30,501 INFO    HandlerThread:3200901 [handler.py:finish():866] shutting down handler
+2025-08-05 14:09:31,487 INFO    WriterThread:3200901 [datastore.py:close():294] close: /home/rinya/zero-order-optimization/src/wandb/run-20250805_140853-3k2n5x08/run-3k2n5x08.wandb
+2025-08-05 14:09:31,499 INFO    SenderThread:3200901 [sender.py:finish():1548] shutting down sender
+2025-08-05 14:09:31,500 INFO    SenderThread:3200901 [file_pusher.py:finish():175] shutting down file pusher
+2025-08-05 14:09:31,500 INFO    SenderThread:3200901 [file_pusher.py:join():181] waiting for file pusher

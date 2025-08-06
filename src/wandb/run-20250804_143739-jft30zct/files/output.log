@@ -1,0 +1,38 @@
+2025-08-04 14:37:51,169 - INFO - Sample train set 1500/67349
+2025-08-04 14:37:51,170 - INFO - ... including dev set 500 samples
+2025-08-04 14:37:51,170 - INFO - Loading model with FP32...
+27
+2025-08-04 14:38:01,219 - INFO - Done with 10.05s
+2025-08-04 14:38:01,508 - INFO - Dev samples: 500
+2025-08-04 14:38:01,508 - INFO - Train samples: 1000
+2025-08-04 14:38:01,509 - INFO - Eval sample length is 872
+2025-08-04 14:38:01,509 - INFO - Tokenizing training samples...
+2025-08-04 14:38:01,848 - INFO - Done with 0.34s
+Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 773, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 704, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 517, in train
+    eval_dataset = HFDataset(_convert(eval_samples))
+  File "/home/rinya/zero-order-optimization/src/run.py", line 475, in _convert
+    encoded_candidates, option_lens = encode_prompt(self.task, self.task.get_template(
+  File "/home/rinya/zero-order-optimization/src/utils.py", line 174, in encode_prompt
+    option_lens = [(len(tokenizer.encode(verbalized_eval_prompt)) - unverbalized_eval_prompt_length) for
+  File "/home/rinya/zero-order-optimization/src/utils.py", line 174, in <listcomp>
+    option_lens = [(len(tokenizer.encode(verbalized_eval_prompt)) - unverbalized_eval_prompt_length) for
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 2309, in encode
+    encoded_inputs = self.encode_plus(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 2717, in encode_plus
+    return self._encode_plus(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/gpt2/tokenization_gpt2_fast.py", line 178, in _encode_plus
+    return super()._encode_plus(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/tokenization_utils_fast.py", line 500, in _encode_plus
+    batched_output = self._batch_encode_plus(
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/models/gpt2/tokenization_gpt2_fast.py", line 168, in _batch_encode_plus
+    return super()._batch_encode_plus(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/tokenization_utils_fast.py", line 476, in _batch_encode_plus
+    return BatchEncoding(sanitized_tokens, sanitized_encodings, tensor_type=return_tensors)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 205, in __init__
+    if n_sequences is None and encoding is not None and len(encoding):
+KeyboardInterrupt

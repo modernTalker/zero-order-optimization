@@ -1,0 +1,86 @@
+2025-08-06 17:28:06,188 - INFO - Sample train set 1500/67349
+2025-08-06 17:28:06,188 - INFO - ... including dev set 500 samples
+2025-08-06 17:28:06,189 - INFO - Loading model with FP32...
+If you want to use `RobertaLMHeadModel` as a standalone, add `is_decoder=True.`
+31
+2025-08-06 17:28:21,973 - INFO - Done with 15.78s
+2025-08-06 17:28:22,245 - INFO - Inject lora to: roberta.encoder.layer.0.attention
+2025-08-06 17:28:22,323 - INFO - Inject lora to: roberta.encoder.layer.1.attention
+2025-08-06 17:28:22,374 - INFO - Inject lora to: roberta.encoder.layer.2.attention
+2025-08-06 17:28:22,448 - INFO - Inject lora to: roberta.encoder.layer.3.attention
+2025-08-06 17:28:22,483 - INFO - Inject lora to: roberta.encoder.layer.4.attention
+2025-08-06 17:28:22,536 - INFO - Inject lora to: roberta.encoder.layer.5.attention
+2025-08-06 17:28:22,579 - INFO - Inject lora to: roberta.encoder.layer.6.attention
+2025-08-06 17:28:22,632 - INFO - Inject lora to: roberta.encoder.layer.7.attention
+2025-08-06 17:28:22,696 - INFO - Inject lora to: roberta.encoder.layer.8.attention
+2025-08-06 17:28:22,738 - INFO - Inject lora to: roberta.encoder.layer.9.attention
+2025-08-06 17:28:22,792 - INFO - Inject lora to: roberta.encoder.layer.10.attention
+2025-08-06 17:28:22,868 - INFO - Inject lora to: roberta.encoder.layer.11.attention
+2025-08-06 17:28:22,949 - INFO - Inject lora to: roberta.encoder.layer.12.attention
+2025-08-06 17:28:23,028 - INFO - Inject lora to: roberta.encoder.layer.13.attention
+2025-08-06 17:28:23,087 - INFO - Inject lora to: roberta.encoder.layer.14.attention
+2025-08-06 17:28:23,142 - INFO - Inject lora to: roberta.encoder.layer.15.attention
+2025-08-06 17:28:23,233 - INFO - Inject lora to: roberta.encoder.layer.16.attention
+2025-08-06 17:28:23,287 - INFO - Inject lora to: roberta.encoder.layer.17.attention
+2025-08-06 17:28:23,344 - INFO - Inject lora to: roberta.encoder.layer.18.attention
+2025-08-06 17:28:23,399 - INFO - Inject lora to: roberta.encoder.layer.19.attention
+2025-08-06 17:28:23,455 - INFO - Inject lora to: roberta.encoder.layer.20.attention
+2025-08-06 17:28:23,538 - INFO - Inject lora to: roberta.encoder.layer.21.attention
+2025-08-06 17:28:23,622 - INFO - Inject lora to: roberta.encoder.layer.22.attention
+2025-08-06 17:28:23,778 - INFO - Inject lora to: roberta.encoder.layer.23.attention
+2025-08-06 17:28:23,871 - INFO - Dev samples: 500
+2025-08-06 17:28:23,872 - INFO - Train samples: 1000
+2025-08-06 17:28:23,872 - INFO - Eval sample length is 872
+2025-08-06 17:28:23,872 - INFO - Tokenizing training samples...
+2025-08-06 17:28:25,261 - INFO - Done with 1.39s
+/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+2025-08-06 17:28:25,278 - INFO - ***** Running training *****
+2025-08-06 17:28:25,279 - INFO -   Num examples = 1000
+2025-08-06 17:28:25,279 - INFO -   Num Epochs = 318
+2025-08-06 17:28:25,280 - INFO -   Instantaneous batch size per device = 16
+2025-08-06 17:28:25,280 - INFO -   Total train batch size (w. parallel, distributed & accumulation) = 16
+2025-08-06 17:28:25,281 - INFO -   Gradient Accumulation steps = 1
+2025-08-06 17:28:25,281 - INFO -   Total optimization steps = 20000
+2025-08-06 17:28:25,283 - INFO -   Number of trainable parameters = 786432
+  0%|                                                                                                                                                                                                      | 0/20000 [00:00<?, ?it/s]You're using a RobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+### layer-wise gradient sparsity = None
+-------------------------- Training Epoch 0 --------------------------
+{'peak_mem': 1.794886589050293, 'step_consumption': 998.6057281494141, 'epoch': 0.02}
+  0%|                                                                                                                                                                                            | 2/20000 [00:01<5:00:06,  1.11it/s]
+{'peak_mem': 2.101541519165039, 'step_consumption': 824.709415435791, 'epoch': 0.03}
+{'peak_mem': 2.253203868865967, 'step_consumption': 725.5005836486816, 'epoch': 0.05}
+
+  0%|                                                                                                                                                                                            | 5/20000 [00:03<3:46:13,  1.47it/s]
+{'peak_mem': 2.253203868865967, 'step_consumption': 508.94808769226074, 'epoch': 0.08}
+{'peak_mem': 2.253203868865967, 'step_consumption': 753.5097599029541, 'epoch': 0.1}
+  0%|                                                                                                                                                                                            | 7/20000 [00:05<4:04:25,  1.36it/s]Traceback (most recent call last):
+  File "/home/rinya/zero-order-optimization/src/run.py", line 773, in <module>
+    main()
+  File "/home/rinya/zero-order-optimization/src/run.py", line 704, in main
+    framework.train(train_samples, dev_samples if dev_samples is not None else eval_samples, eval_samples)
+  File "/home/rinya/zero-order-optimization/src/run.py", line 587, in train
+    trainer.train(resume_from_checkpoint=last_checkpoint)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 1662, in train
+    return inner_training_loop(
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 537, in _inner_training_loop
+    tr_loss_step = self.optimizer.step(closure)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/optim/optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/rinya/zero-order-optimization/src/optimizers/zo_sgd.py", line 49, in step
+    loss1 = closure()
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 762, in closure
+    def closure(): return self.zo_forward(model, inputs)
+  File "/home/rinya/zero-order-optimization/src/trainer.py", line 776, in zo_forward
+    inputs = self._prepare_inputs(inputs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2637, in _prepare_inputs
+    inputs = self._prepare_input(inputs)
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2619, in _prepare_input
+    return type(data)({k: self._prepare_input(v) for k, v in data.items()})
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2619, in <dictcomp>
+    return type(data)({k: self._prepare_input(v) for k, v in data.items()})
+  File "/home/rinya/anaconda3/envs/zollm2/lib/python3.10/site-packages/transformers/trainer.py", line 2629, in _prepare_input
+    return data.to(**kwargs)
+KeyboardInterrupt
