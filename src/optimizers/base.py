@@ -6,6 +6,7 @@ import numpy as np
 from .opt_utils import VectorSampler
 from gradient_pruning import fast_random_mask_like
 from torch.optim import SGD
+from collections import defaultdict
 
 class ZeroOrderOptimizer(Optimizer, ABC):
     def __init__(self,
@@ -40,17 +41,16 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             }
         else:
             defaults = {'momentum': momentum}
-        # print("DONE defaults")
+
         super().__init__(params, defaults)
-        # print("DONE super.init")
+
         self._validate_hyperparameters()
         self.gradient_sparsity = gradient_sparsity
 
-        # init random generators
-        # FIXME: don't we like to have a atrribute "random_seed" to set it directly?
+        self.state = defaultdict(dict)
+
         # self.generator = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
         self.generator = torch.Generator(device=device)
-        # self.sparse_grad_random_seed = np.random.randint(1000000000)  # FIXME: is it ok? don't know yet
 
         self.vector_sampler = VectorSampler(vector_sampling_type, device=device)
 
@@ -65,14 +65,14 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.zo_eps = self._calculate_zo_eps(eps=eps)
         # print("DONE init")
 
-        self._inner_optimizers = []
-        for group in self.param_groups:
-            self._inner_optimizers.append(
-                SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
-            )
-       
+        self._inner_optimizers = None
         self._lr_schedulers = None
 
+        # for group in self.param_groups:
+        #     self._inner_optimizers.append(
+        #         SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
+        #     )
+       
     def set_lr_schedulers(self, lr_schedulers: List):
         """        
         Args:
@@ -232,8 +232,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
 
                 param_id = id(p)
                 perturb = None
-                if custom_perturb_func:
-                    perturb = custom_perturb_func(p) * eps
+                if custom_perturb_func: # FIXME: debug
+                    pass 
+                #     perturb = custom_perturb_func(p) * eps
                     # print("Sampled vector:\n", perturb/eps)
 
                 elif indices is not None and param_id in indices:

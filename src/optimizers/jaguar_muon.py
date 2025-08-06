@@ -1,6 +1,5 @@
 from .base import ZeroOrderOptimizer
 import torch
-# from torch.optim import SGD
 import numpy as np
 from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 
@@ -28,15 +27,8 @@ class Jaguar_MUON(ZeroOrderOptimizer):
         self.tau = tau 
         self.beta = beta
         self.use_smoothing = use_smoothing
+        self.lr = lr 
 
-        # self._inner_optimizers = []
-        # for group in self.param_groups:
-        #     self._inner_optimizers.append(
-        #         SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
-        #     )
-       
-        # self._lr_schedulers = None
-            
     @torch.no_grad()
     def step(self, closure=None):
         loss1, loss2 = None, None
@@ -49,102 +41,97 @@ class Jaguar_MUON(ZeroOrderOptimizer):
         self.zo_random_seed = np.random.randint(1_000_000_000)
         torch.manual_seed(self.zo_random_seed)
 
-        for group_idx, _ in enumerate(self.param_groups):
-            self._inner_optimizers[group_idx].zero_grad()
-
-        original_grads = {}
-        for name, param in self.named_parameters_to_optim:
-            original_grads[name] = param.grad.clone() if param.grad is not None else None
-
-
         selected_indices = {}
         original_values = {}
 
-        for name, param in self.named_parameters_to_optim:
-            if param not in self._inner_optimizers[group_idx].state:
-                self._inner_optimizers[group_idx].state[param] = {}
-                self._inner_optimizers[group_idx].state[param]['grad_accum'] = torch.zeros_like(param.data)
-            if len(param.data.shape) == 1:
-                n_elements = param.data.shape[0]
-                k = max(1, n_elements // 10)
-                indices = torch.randperm(n_elements, device=param.device)[:k]
-                selected_indices[name] = indices
-                original_values[name] = param.data[indices].clone()
-            else:
-                n_rows, n_cols = param.data.shape
-                k = max(1, n_rows // 10)
-                m = max(1, n_cols // 10)
-                selected_rows = torch.randperm(n_rows, device=param.device)[:k]
-                selected_cols = torch.randperm(n_cols, device=param.device)[:m]
-                selected_indices[name] = (selected_rows, selected_cols)
-                original_values[name] = param.data[selected_rows[:, None], selected_cols].clone()
+        for group_idx, group in enumerate(self.param_groups):
+            for param in group['params']:
+                if param.grad is None:
+                    continue
+                state = self.state[param]
+                if len(param.shape) == 0:  
+                    continue
+                if 'grad_accum' not in state:
+                    state['grad_accum'] = torch.zeros_like(param.data)
+                
+                if len(param.data.shape) == 1:
+                    n_elements = param.data.shape[0]
+                    k = max(1, int(n_elements * 0.1))  
+                    indices = torch.randperm(n_elements, device=param.device)[:k]
+                    selected_indices[param] = indices
+                    original_values[param] = param.data[indices].clone()
+                else:
+                    n_rows, n_cols = param.data.shape
+                    k = max(1, int(n_rows * 0.1))
+                    m = max(1, int(n_cols * 0.1))
+                    selected_rows = torch.randperm(n_rows, device=param.device)[:k]
+                    selected_cols = torch.randperm(n_cols, device=param.device)[:m]
+                    selected_indices[param] = (selected_rows, selected_cols)
+                    original_values[param] = param.data[selected_rows[:, None], selected_cols].clone()
 
-        for name, param in self.named_parameters_to_optim:
+        for param, indices in selected_indices.items():
             if len(param.data.shape) == 1:
-                indices = selected_indices[name]
                 param.data[indices] += tau
             else:
-                selected_rows, selected_cols = selected_indices[name]
-                param.data[selected_rows[:, None], selected_cols] += tau
+                rows, cols = indices
+                param.data[rows[:, None], cols] += tau
+                
         if closure is not None:
             with torch.enable_grad():
                 loss1 = closure()
-
-        for name, param in self.named_parameters_to_optim:
+                
+        for param, indices in selected_indices.items():
             if len(param.data.shape) == 1:
-                indices = selected_indices[name]
-                param.data[indices] = original_values[name] - tau
+                param.data[indices] = original_values[param] - tau
             else:
-                selected_rows, selected_cols = selected_indices[name]
-                param.data[selected_rows[:, None], selected_cols] = original_values[name] - tau
+                rows, cols = indices
+                param.data[rows[:, None], cols] = original_values[param] - tau
+                
         if closure is not None:
             with torch.enable_grad():
                 loss2 = closure()
-
-        for name, param in self.named_parameters_to_optim:
+                
+        for param, indices in selected_indices.items():
             if len(param.data.shape) == 1:
-                indices = selected_indices[name]
-                param.data[indices] = original_values[name]
+                param.data[indices] = original_values[param]
             else:
-                selected_rows, selected_cols = selected_indices[name]
-                param.data[selected_rows[:, None], selected_cols] = original_values[name]
+                rows, cols = indices
+                param.data[rows[:, None], cols] = original_values[param]
 
         grad_update = (loss1 - loss2).item() / (2 * tau) 
 
         for group_idx, group in enumerate(self.param_groups):
             for param in group['params']:
-                name = next(name for name, p in self.named_parameters_to_optim if p is param)
-                # if param.grad is None:
-                #     param.grad = torch.zeros_like(param)
+                if param not in selected_indices:
+                    continue
                     
-                # grad_update = rho
-                state = self._inner_optimizers[group_idx].state[param]
-                if len(param.data.shape) == 1:
-                    indices = selected_indices[name]
-                    if use_smoothing:
+                state = self.state[param]
+            
+                if len(state) == 0:  
+                    state['step'] = 0
+                    state['grad_accum'] = torch.zeros_like(param, memory_format=torch.preserve_format)
+                    
+                indices = selected_indices[param]
+                
+                if use_smoothing:
+                    if len(param.data.shape) == 1:
                         state['grad_accum'][indices] = beta * state['grad_accum'][indices] + (1 - beta) * grad_update
                     else:
-                        state['grad_accum'][indices] = grad_update
-                    accum = state['grad_accum']
-                    accum[indices] = torch.sign(accum[indices])
+                        rows, cols = indices
+                        state['grad_accum'][rows[:, None], cols] = beta * state['grad_accum'][rows[:, None], cols] + (1 - beta) * grad_update
                 else:
-                    selected_rows, selected_cols = selected_indices[name]
-                    if use_smoothing:
-                        state['grad_accum'][selected_rows[:, None], selected_cols] = beta * state['grad_accum'][selected_rows[:, None], selected_cols] + (1 - beta) * grad_update
+                    if len(param.data.shape) == 1:
+                        state['grad_accum'][indices] = grad_update
                     else:
-                        state['grad_accum'][selected_rows[:, None], selected_cols] = grad_update
-
-                    accum = zeropower_via_newtonschulz5(state['grad_accum'], steps=5).to(param.data.dtype)
-
-                param.grad = accum.clone()
-
-                self._inner_optimizers[group_idx].step()
-                # param.grad = None
-
-        for name, param in self.named_parameters_to_optim:
-            param.grad = original_grads[name]
-
-        for group_idx, _ in enumerate(self.param_groups):
-            self._lr_schedulers[group_idx].step()
+                        rows, cols = indices
+                        state['grad_accum'][rows[:, None], cols] = grad_update
+                
+                if len(param.data.shape) == 1:
+                    ns_accum = state['grad_accum'].clone()
+                    ns_accum[indices] = torch.sign(ns_accum[indices])
+                else:
+                    ns_accum = zeropower_via_newtonschulz5(state['grad_accum'], steps=5).to(param.data.dtype)
+                
+                param.data.add_(ns_accum, alpha=-self.lr)
 
         return loss1

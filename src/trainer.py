@@ -344,7 +344,6 @@ class OurTrainer(Trainer):
         if args.trainer == "zo_adam":
             self.optimizer = ZO_Adam(self.model.parameters(), self.args, self.gradient_sparsity)
         elif args.trainer == "zo_sgd":
-            # self.optimizer = ZO_SGD(self.model.parameters(), self.args, self.gradient_sparsity)
             self.optimizer = ZO_SGD(self.model.parameters(), lr=1e-3, eps=1e-2, momentum=0.0, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "zo_signsgd":
             self.optimizer = ZO_SignSGD(self.model.parameters(), self.args, self.gradient_sparsity)
@@ -366,12 +365,12 @@ class OurTrainer(Trainer):
                 self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
             else: 
                 raise NotImplementedError(f"Optimizer {args.optimizer} is not implemented")
-        inner_optimizers = self.optimizer._inner_optimizers
-        schedulers = [
-            get_scheduler(opt, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps, warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio) 
-            for opt in inner_optimizers
-        ]
-        self.optimizer.set_lr_schedulers(schedulers)
+        # inner_optimizers = self.optimizer._inner_optimizers
+        # schedulers = [
+        #     get_scheduler(opt, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps, warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio) 
+        #     for opt in inner_optimizers
+        # ]
+        # self.optimizer.set_lr_schedulers(schedulers)
 
         # self.scheduler = CosineAnnealingLR(self.optimizer, T_max=self.args.max_steps, eta_min=1e-8)
         # important: at this point:
