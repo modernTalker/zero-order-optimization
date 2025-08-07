@@ -167,7 +167,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.perturb_parameters(
             scaling_factor=scaling_factor,
             random_seed=self.zo_random_seed,
-            generator=self.generator,
+            # generator=self.generator,
             sparsity_dict=sparsity_dict,
             element_wise=True
         )
@@ -176,7 +176,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self, 
         scaling_factor: float = 1.0,
         random_seed: Optional[int] = None,
-        generator: Optional[torch.Generator] = None,
+        # generator: Optional[torch.Generator] = None,
         custom_perturb_func: Optional[Callable[[torch.Tensor], torch.Tensor]] = None,
         indices: Optional[Dict[int, Tuple[str, Any]]] = None,
         element_wise: bool = False,
@@ -199,7 +199,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             random_seed = np.random.randint(1000000)
             # generator.manual_seed(random_seed)
         
-        generator.manual_seed(random_seed)
+        self.generator.manual_seed(random_seed)
         
         # The code that was transfered from the previous function
         if sparsity_dict is not None:
@@ -211,15 +211,15 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                     # z = torch.randn_like(param)  # it outputs only normal distribution
                     # z = torch.randn(size=param.size(), dtype=param.dtype, device=param.device, generator=generator)
-                    z = self.vector_sampler.sample(param.shape, generator=generator)
+                    z = self.vector_sampler.sample(param.shape, generator=self.generator)
                 
                 param_id = id(param)
-                generator.manual_seed(random_seed)
+                self.generator.manual_seed(random_seed)
                 if param_id in sparsity_dict:
                     sparsity = sparsity_dict[param_id]
                     if sparsity is not None:
-                        mask = fast_random_mask_like(z, sparsity, generator=generator)
-                        generator.manual_seed(random_seed)
+                        mask = fast_random_mask_like(z, sparsity, generator=self.generator)
+                        self.generator.manual_seed(random_seed)
                         z[mask] = 0
                 return z
             custom_perturb_func = sparse_perturb_func
@@ -245,7 +245,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         if element_wise:
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                             # perturb = torch.randn_like(p.data[idx]) * eps
-                            perturb = self.vector_sampler.sample(p.data[idx].shape, generator=generator) * eps
+                            perturb = self.vector_sampler.sample(p.data[idx].shape, generator=self.generator) * eps
                             # print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[idx]) * eps
@@ -258,7 +258,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                             slice_data = p.data[rows[:, None], cols]
                             # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
                             # perturb = torch.randn_like(slice_data) * eps
-                            perturb = self.vector_sampler.sample(slice_data.shape, generator=generator) * eps
+                            perturb = self.vector_sampler.sample(slice_data.shape, generator=self.generator) * eps
                             # print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
@@ -267,7 +267,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 else:
                     if perturb is None:
                         # z = torch.randn_like(p)
-                        z = self.vector_sampler.sample(p.shape, generator=generator)
+                        z = self.vector_sampler.sample(p.shape, generator=self.generator)
                         perturb = z * eps
                         # print("Sampled vector:\n", perturb/eps)
                     p.data.add_(scaling_factor * perturb)

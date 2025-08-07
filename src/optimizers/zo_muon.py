@@ -29,6 +29,9 @@ class ZO_MUON(ZeroOrderOptimizer):
         loss1, loss2 = None, None 
         self._prepare_parameters()  
 
+        seed = np.random.randint(1_000_000_000)
+        self.generator.manual_seed(seed)
+
         if self._inner_optimizers is not None:
             for group_idx, _ in enumerate(self.param_groups):
                 self._inner_optimizers[group_idx].zero_grad()
@@ -36,40 +39,47 @@ class ZO_MUON(ZeroOrderOptimizer):
             for name, param in self.named_parameters_to_optim:
                 original_grads[name] = param.grad.clone() if param.grad is not None else None
 
-        self.zo_perturb_parameters(scaling_factor=1)
+        self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+        self.generator.manual_seed(seed)
         if closure is not None:
             with torch.enable_grad():
                 loss1 = closure()
 
         if self.perturbation_mode == "one_side":
-            self.zo_perturb_parameters(scaling_factor=-1)
+            self.zo_perturb_parameters(scaling_factor=-1, random_seed=self.zo_random_seed)
+            self.generator.manual_seed(seed)
             if closure is not None:
                 with torch.enable_grad():
                     loss2 = closure()
             self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
         else:  
-            self.zo_perturb_parameters(scaling_factor=-2)
+            self.zo_perturb_parameters(scaling_factor=-2, random_seed=self.zo_random_seed)
+            self.generator.manual_seed(seed)
             if closure is not None:
                 with torch.enable_grad():
                     loss2 = closure()
             self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
-            self.zo_perturb_parameters(scaling_factor=1)
+            self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+            self.generator.manual_seed(seed)
         
-        self.zo_random_seed = np.random.randint(1_000_000_000)
-        torch.manual_seed(self.zo_random_seed)
-        self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
+        # self.zo_random_seed = np.random.randint(1_000_000_000)
+        # orch.manual_seed(self.zo_random_seed)
+        # self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
 
         for group_idx, group in enumerate(self.param_groups):
             for param in group['params']:
                 name = next(name for name, p in self.named_parameters_to_optim if p is param)
+                device = param.device()
 
-                z = torch.normal(
-                    mean=0,
-                    std=1,
-                    size=param.data.size(),
-                    device=param.data.device,
-                    dtype=param.data.dtype,
-                )
+                # z = torch.normal(
+                #     mean=0,
+                #     std=1,
+                #     size=param.data.size(),
+                #     device=param.data.device,
+                #     dtype=param.data.dtype,
+                # )
+                z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
+                self.generator.manual_seed(seed)
                 grad_sparsity = self.get_grad_sparsity_by_name(name) 
                 if grad_sparsity is not None:
                     z[fast_random_mask_like(z, grad_sparsity, generator=self.sparse_grad_rng)] = 0

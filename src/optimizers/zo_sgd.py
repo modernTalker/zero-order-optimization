@@ -23,7 +23,8 @@ class ZO_SGD(ZeroOrderOptimizer):
             lr=lr,
             eps=eps,
             momentum=momentum,
-            vector_sampling_type=vector_sampling_type
+            vector_sampling_type=vector_sampling_type,
+            gradient_sparsity=gradient_sparsity
         )
         super().__init__(params, defaults)
         
@@ -63,6 +64,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             self.generator.manual_seed(seed)
             
         self._apply_gradients(random_seeds=random_seeds)
+        self.generator.manual_seed(seed)
         return loss1 
     
     @torch.no_grad()

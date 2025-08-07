@@ -55,7 +55,8 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                 state['step'] += 1
 
         self.zo_random_seed = np.random.randint(1_000_000_000)
-        torch.manual_seed(self.zo_random_seed)
+        # torch.manual_seed(self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed)
 
         selected_indices = {}
         original_values = {}
