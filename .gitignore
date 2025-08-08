@@ -1,3 +1,5 @@
 src/**/wandb/
 src/**/result/
+src/**/mlruns/
+src/**/__pycache__/
 __pycache__/
