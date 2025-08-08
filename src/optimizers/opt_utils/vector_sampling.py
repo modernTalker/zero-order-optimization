@@ -10,25 +10,16 @@ class VectorSampler:
             device: The device to place tensors on (default: None, uses current default device)
             p (float of 'inf'): The p-norm value for "lp_sphere" sampler (default: 2.0)
         """
-        self.sampler_type = sampler_type
         self.p = p
         self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if self.sampler_type == "standard_normal":
+        if sampler_type == "standard_normal":
             self._sample_func = self._standard_normal
-        elif self.sampler_type == "lp_sphere":
+        elif sampler_type == "lp_sphere":
             self._sample_func = self._sample_lp_sphere
         else:
-            raise NotImplementedError(f"Sampling {self.sampler_type} is not implemented")
+            raise NotImplementedError(f"Sampling {sampler_type} is not implemented")
     
     def sample(self, param_shape, generator=None):
-        # NOTE: This part is transfered in the __init__
-        # if self.sampler_type == "standard_normal":
-        #     self.sample = self._standard_normal
-        # elif self.sampler_type == "lp_sphere":
-        #     self.sample = self._sample_lp_sphere
-        # else:
-        #     raise NotImplementedError(f"Sampling {self.sampler_type} is not implemented")
-    
         return  self._sample_func(param_shape, generator)
 
     def _standard_normal(self, param_shape, generator=None):

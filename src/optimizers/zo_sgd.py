@@ -40,31 +40,29 @@ class ZO_SGD(ZeroOrderOptimizer):
     def step(self, closure=None):
         loss1, loss2 = None, None 
         self._prepare_parameters()
-        random_seeds = []
         
-        seed = np.random.randint(1_000_000_000)
-        random_seeds.append(seed)
-        self.generator.manual_seed(seed)
+        self.zo_random_seed = np.random.randint(1_000_000_000)
+        self.generator.manual_seed(self.zo_random_seed)
         
-        self.zo_perturb_parameters(scaling_factor=1, random_seed=seed)
+        self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
         loss1 = closure()
-        self.generator.manual_seed(seed)
+        self.generator.manual_seed(self.zo_random_seed)
 
         if self.perturbation_mode == "one_side":
-            self.zo_perturb_parameters(scaling_factor=-1, random_seed=seed)
-            self.generator.manual_seed(seed)
+            self.zo_perturb_parameters(scaling_factor=-1, random_seed=self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
             loss2 = closure()
             self.projected_grad = (loss2 - loss1).item()
         else:
-            self.zo_perturb_parameters(scaling_factor=-2, random_seed=seed)
+            self.zo_perturb_parameters(scaling_factor=-2, random_seed=self.zo_random_seed)
             loss2 = closure()
             self.projected_grad = (loss2 - loss1).item() / 2
-            self.generator.manual_seed(seed)
-            self.zo_perturb_parameters(scaling_factor=1, random_seed=seed)
-            self.generator.manual_seed(seed)
+            self.generator.manual_seed(self.zo_random_seed)
+            self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+            self.generator.manual_seed(self.zo_random_seed)
             
-        self._apply_gradients(random_seeds=random_seeds)
-        self.generator.manual_seed(seed)
+        self._apply_gradients(random_seeds=[self.zo_random_seed]) # FIXME: get rid of random_seeds
+        self.generator.manual_seed(self.zo_random_seed)
         return loss1 
     
     @torch.no_grad()
