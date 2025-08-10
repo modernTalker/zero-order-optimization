@@ -8,7 +8,7 @@ from .opt_utils import *
 class Jaguar_MUON(ZeroOrderOptimizer):
     def __init__(self, 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
-            tau: Optional[float] = None,
+            # tau: Optional[float] = None,
             beta: Optional[float] = None, 
             use_smoothing: Optional[bool] = None,
             lr: Optional[float] = None,
@@ -22,9 +22,10 @@ class Jaguar_MUON(ZeroOrderOptimizer):
             lr=lr,
             eps=eps,
             momentum=momentum,
-            gradient_sparsity=gradient_sparsity
+            gradient_sparsity=gradient_sparsity,
+            perturbation_mode=perturbation_mode
         )
-        self.tau = tau 
+        # self.tau = tau 
         self.beta = beta
         self.use_smoothing = use_smoothing
         self.lr = lr 
@@ -32,73 +33,28 @@ class Jaguar_MUON(ZeroOrderOptimizer):
     @torch.no_grad()
     def step(self, closure=None):
         loss1, loss2 = None, None
-        tau = self.tau
+        # tau = self.tau
         beta = self.beta
         use_smoothing = self.use_smoothing
 
         self._prepare_parameters()   
                 
         self.zo_random_seed = np.random.randint(1_000_000_000)
-        torch.manual_seed(self.zo_random_seed)
+        self.generator.manual_seed(self.zo_random_seed)
 
-        selected_indices = {}
-        original_values = {}
+        selected_indices = self._select_perturbation_indices(row_frac=0.1, col_frac=0.1, min_elements=1)
 
-        for group_idx, group in enumerate(self.param_groups):
-            for param in group['params']:
-                if param.grad is None:
-                    continue
-                state = self.state[param]
-                if len(param.shape) == 0:  
-                    continue
-                if 'grad_accum' not in state:
-                    state['grad_accum'] = torch.zeros_like(param.data)
-                
-                if len(param.data.shape) == 1:
-                    n_elements = param.data.shape[0]
-                    k = max(1, int(n_elements * 0.1))  
-                    indices = torch.randperm(n_elements, device=param.device)[:k]
-                    selected_indices[param] = indices
-                    original_values[param] = param.data[indices].clone()
-                else:
-                    n_rows, n_cols = param.data.shape
-                    k = max(1, int(n_rows * 0.1))
-                    m = max(1, int(n_cols * 0.1))
-                    selected_rows = torch.randperm(n_rows, device=param.device)[:k]
-                    selected_cols = torch.randperm(n_cols, device=param.device)[:m]
-                    selected_indices[param] = (selected_rows, selected_cols)
-                    original_values[param] = param.data[selected_rows[:, None], selected_cols].clone()
+        self.generator.manual_seed(self.zo_random_seed)
 
-        for param, indices in selected_indices.items():
-            if len(param.data.shape) == 1:
-                param.data[indices] += tau
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] += tau
-                
-        if closure is not None:
-            with torch.enable_grad():
-                loss1 = closure()
-                
-        for param, indices in selected_indices.items():
-            if len(param.data.shape) == 1:
-                param.data[indices] = original_values[param] - tau
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[param] - tau
-                
-        if closure is not None:
-            with torch.enable_grad():
-                loss2 = closure()
-                
-        for param, indices in selected_indices.items():
-            if len(param.data.shape) == 1:
-                param.data[indices] = original_values[param]
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[param]
+        self._apply_sparse_perturbation(selected_indices, scaling_factor=1)
+        loss1 = closure()
 
-        grad_update = (loss1 - loss2).item() / (2 * tau) 
+        self._apply_sparse_perturbation(selected_indices, scaling_factor=-2)
+        loss2 = closure()
+
+        self._apply_sparse_perturbation(selected_indices, scaling_factor=1)
+
+        grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode=self.perturbation_mode)
 
         for group_idx, group in enumerate(self.param_groups):
             for param in group['params']:

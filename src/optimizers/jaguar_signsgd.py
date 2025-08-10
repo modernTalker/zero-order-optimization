@@ -8,11 +8,11 @@ from .opt_utils import *
 class Jaguar_SignSGD(ZeroOrderOptimizer):
     def __init__(self, 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
-            tau: float = 0.01,
+            # tau: float = 0.01,
             beta: float = 0.9,
             use_smoothing: bool = True,
             lr: float = 0.01,
-            eps: float = 1e-8,
+            eps: float = 1e-3,
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
             perturbation_mode: str = "two_side",
@@ -24,13 +24,14 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
             lr=lr,
             eps=eps,
             momentum=momentum,
-            tau=tau,
+            # tau=tau,
             beta=beta,
-            use_smoothing=use_smoothing
+            use_smoothing=use_smoothing,
+            gradient_sparsity=gradient_sparsity
         )
         super().__init__(params, defaults)
         
-        self.tau = tau
+        # self.tau = tau
         self.beta = beta
         self.use_smoothing = use_smoothing
         self.perturbation_mode = perturbation_mode
@@ -40,6 +41,7 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
 
     @torch.no_grad()
     def step(self, closure):
+        self._prepare_parameters()
         for group in self.param_groups:
             for param in group['params']:
                 if param.grad is None:
@@ -55,57 +57,22 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                 state['step'] += 1
 
         self.zo_random_seed = np.random.randint(1_000_000_000)
-        # torch.manual_seed(self.zo_random_seed)
         self.generator.manual_seed(self.zo_random_seed)
 
-        selected_indices = {}
-        original_values = {}
+        selected_indices = self._select_perturbation_indices(row_frac=0.1, col_frac=0.1, min_elements=1)
+        self.generator.manual_seed(self.zo_random_seed)
 
-        for name, param in self.named_parameters_to_optim:
-            if len(param.shape) == 1:
-                n_elements = param.numel()
-                k = max(1, int(n_elements * 0.1))
-                indices = torch.randperm(n_elements, device=param.device)[:k]
-                selected_indices[name] = indices
-                original_values[name] = param.data[indices].clone()
-            else:
-                n_rows, n_cols = param.shape
-                k = max(1, int(n_rows * 0.1))
-                m = max(1, int(n_cols * 0.1))
-                selected_rows = torch.randperm(n_rows, device=param.device)[:k]
-                selected_cols = torch.randperm(n_cols, device=param.device)[:m]
-                selected_indices[name] = (selected_rows, selected_cols)
-                original_values[name] = param.data[selected_rows[:, None], selected_cols].clone()
-
-        for name, param in self.named_parameters_to_optim:
-            indices = selected_indices[name]
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] += self.tau
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] += self.tau
-                
+        self._apply_sparse_perturbation(selected_indices, scaling_factor=1)
         loss1 = closure()
 
-        for name, param in self.named_parameters_to_optim:
-            indices = selected_indices[name]
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] = original_values[name] - self.tau
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[name] - self.tau
-                
+        self._apply_sparse_perturbation(selected_indices, scaling_factor=-2)
         loss2 = closure()
 
-        for name, param in self.named_parameters_to_optim:
-            indices = selected_indices[name]
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] = original_values[name]
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[name]
+        self._apply_sparse_perturbation(selected_indices, scaling_factor=1)
 
-        grad_update = (loss1 - loss2).item() / (2 * self.tau)
+        # grad_update = (loss1 - loss2).item() / (2 * self.zo_eps)
+
+        grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode=self.perturbation_mode)
 
         for group in self.param_groups:
             for param in group['params']:

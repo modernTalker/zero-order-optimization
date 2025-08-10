@@ -16,6 +16,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
             vector_sampling_type: str = "standard_normal",
+            perturbation_mode: str = "two_side",
             device: str = "cuda", # FIXME: maybe change it
     ):
         """
@@ -30,10 +31,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             momentum: Momentum factor, zero by default
             gradient_sparsity: Gradient sparsity (float for global or dict per parameter)
         """
-        # NOTE: This code allows us to have different lr's for param_groups,
-        # NOTE: eg. we can use lr=1e-3 and lr=1e-5 for different model layers
         if lr is not None or eps is not None:
-            # print(f"LR: {lr}, EPS: {eps}")
             defaults = {
                 'lr': lr,
                 'eps': eps,
@@ -49,21 +47,19 @@ class ZeroOrderOptimizer(Optimizer, ABC):
 
         self.state = defaultdict(dict)
 
-        # self.generator = torch.Generator(device='cuda' if torch.cuda.is_available() else 'cpu')
         self.generator = torch.Generator(device=device)
 
         self.vector_sampler = VectorSampler(vector_sampling_type, device=device)
+        self.perturbation_mode = perturbation_mode
 
         self.named_parameters_all = []
-        for group_idx, group in enumerate(self.param_groups):  # NOTE: it's ok, self.param_groups is set by torch.optim.Optimizer FIXED: is it ok?
+        for group_idx, group in enumerate(self.param_groups):
             for param_idx, param in enumerate(group['params']):
                 self.device = param.device
-                param_name = f"group_{group_idx}.param_{param_idx}" # create unique name
+                param_name = f"group_{group_idx}.param_{param_idx}"
                 self.named_parameters_all.append((param_name, param))
     
-        # NOTE: If eps is not common for all parameters, then we calculate the weighted average of all epsilons
         self.zo_eps = self._calculate_zo_eps(eps=eps)
-        # print("DONE init")
 
         self._inner_optimizers = None
         self._lr_schedulers = None
@@ -112,7 +108,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     raise ValueError(f"Missing required hyperparameter: {key}")
     
     @abstractmethod
-    def step(self, closure: Optional[Callable[[], float]] = None) -> Optional[float]:  # NOTE: it's ok, but maybe we want to have Optional[torch.Tensor] as an output FIXED: change to (model, inputs) ???
+    def step(self, closure: Optional[Callable[[], float]] = None) -> Optional[float]:
         """
         Performs a single optimization step.
 
@@ -149,25 +145,17 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         - random_seed: random seed for MeZO in-place perturbation (if it's None, we will use self.zo_random_seed)
         - scaling_factor: theta = theta + scaling_factor * z * eps
         """
-        # NOTE: changed it, may be we want fixes in other parts of the code
-        # now it might be more user-friendly, as we need to call only this function
-        # and in it the self.perturb_parameters() is called
         self.zo_random_seed = random_seed if random_seed is not None else np.random.randint(1000000000)
-        # Set the random seed to ensure that we sample the same z for perturbation/update
-        # torch.manual_seed(random_seed if random_seed is not None else self.zo_random_seed)
-        self.generator.manual_seed(self.zo_random_seed) # NOTE: call trainer. instead of self. ??? FIXED.
+        self.generator.manual_seed(self.zo_random_seed)
 
         sparsity_dict = {}
         for name, param in self.named_parameters_all:
             if param.requires_grad:
-                # FIXME: I've tried to use name insted of id(param), but some problems occur
-                # in the perturbation function (haven't found a way to search for (name, param) in current implementation)
                 sparsity_dict[id(param)] = self.get_grad_sparsity_by_name(name)
 
         self.perturb_parameters(
             scaling_factor=scaling_factor,
             random_seed=self.zo_random_seed,
-            # generator=self.generator,
             sparsity_dict=sparsity_dict,
             element_wise=True
         )
@@ -176,7 +164,6 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self, 
         scaling_factor: float = 1.0,
         random_seed: Optional[int] = None,
-        # generator: Optional[torch.Generator] = None,
         custom_perturb_func: Optional[Callable[[torch.Tensor], torch.Tensor]] = None,
         indices: Optional[Dict[int, Tuple[str, Any]]] = None,
         element_wise: bool = False,
@@ -195,22 +182,16 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             sparsity_dict: {param_id: sparsity} for gradient sparsity
         """
         if random_seed is None:
-            # torch.manual_seed(random_seed)
             random_seed = np.random.randint(1000000)
-            # generator.manual_seed(random_seed)
         
         self.generator.manual_seed(random_seed)
         
-        # The code that was transfered from the previous function
         if sparsity_dict is not None:
             original_perturb_func = custom_perturb_func
             def sparse_perturb_func(param: torch.Tensor) -> torch.Tensor:
                 if original_perturb_func:
                     z = original_perturb_func(param)
                 else:
-                    # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
-                    # z = torch.randn_like(param)  # it outputs only normal distribution
-                    # z = torch.randn(size=param.size(), dtype=param.dtype, device=param.device, generator=generator)
                     z = self.vector_sampler.sample(param.shape, generator=self.generator)
                 
                 param_id = id(param)
@@ -232,10 +213,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
 
                 param_id = id(p)
                 perturb = None
-                if custom_perturb_func: # FIXME: debug
+                if custom_perturb_func:
                     pass 
-                #     perturb = custom_perturb_func(p) * eps
-                    # print("Sampled vector:\n", perturb/eps)
 
                 elif indices is not None and param_id in indices:
                     spec = indices[param_id]
@@ -243,10 +222,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                     if spec[0] == '1d':
                         idx = spec[1]
                         if element_wise:
-                            # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
-                            # perturb = torch.randn_like(p.data[idx]) * eps
                             perturb = self.vector_sampler.sample(p.data[idx].shape, generator=self.generator) * eps
-                            # print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[idx]) * eps
 
@@ -256,20 +232,15 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         rows, cols = spec[1], spec[2]
                         if element_wise:
                             slice_data = p.data[rows[:, None], cols]
-                            # FIXME: ISSUES WITH RANDN LIKE, THER IS NO GENERATOR
-                            # perturb = torch.randn_like(slice_data) * eps
                             perturb = self.vector_sampler.sample(slice_data.shape, generator=self.generator) * eps
-                            # print("Sampled vector:\n", perturb/eps)
                         else:
                             perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
                         p.data[rows[:, None], cols].add_(scaling_factor * perturb)
                 
                 else:
                     if perturb is None:
-                        # z = torch.randn_like(p)
                         z = self.vector_sampler.sample(p.shape, generator=self.generator)
                         perturb = z * eps
-                        # print("Sampled vector:\n", perturb/eps)
                     p.data.add_(scaling_factor * perturb)
 
     def grad_approx(
@@ -289,9 +260,6 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         Returns:
             Gradient estimation
         """
-        # FIXME: Don't know, if we need to divide it by eps
-        # FIXED, but need a CHECK
-        # I believe, we don't (as it is in the original code)
         if perturbation_mode == "one_side":
             return ((loss_perturbed - loss_original) / self.zo_eps).item()
         elif perturbation_mode == "two_side":
@@ -350,3 +318,21 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                         indices[param_id] = ('2d', rows, cols)
                         
         return indices
+    
+    def _apply_sparse_perturbation(self, indices_dict, scaling_factor):
+        for group in self.param_groups:
+            for param in group['params']:
+                param_id = id(param)
+                if param_id not in indices_dict:
+                    continue
+                    
+                indices_info = indices_dict[param_id]
+                perturbation = self.zo_eps * scaling_factor
+                
+                if indices_info[0] == '1d':
+                    indices = indices_info[1]
+                    param.data[indices] += perturbation
+                    
+                elif indices_info[0] == '2d':
+                    rows, cols = indices_info[1], indices_info[2]
+                    param.data[rows[:, None], cols] += perturbation
