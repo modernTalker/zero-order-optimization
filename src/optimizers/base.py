@@ -299,23 +299,23 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         indices = {}
         for group in self.param_groups:
             for p in group['params']:
-                if p.requires_grad:
-                    param_id = id(p)
+                # if p.requires_grad:
+                param_id = id(p)
+                
+                if p.dim() == 1:
+                    n = p.size(0)
+                    k = max(min_elements, int(n * row_frac))
+                    idx = torch.randperm(n)[:k]
+                    indices[param_id] = ('1d', idx)
                     
-                    if p.dim() == 1:
-                        n = p.size(0)
-                        k = max(min_elements, int(n * row_frac))
-                        idx = torch.randperm(n)[:k]
-                        indices[param_id] = ('1d', idx)
-                        
-                    elif p.dim() >= 2:
-                        n, m = p.size(0), p.size(1)
-                        k = max(min_elements, int(n * row_frac))
-                        l = max(min_elements, int(m * col_frac))
-                        
-                        rows = torch.randperm(n)[:k]
-                        cols = torch.randperm(m)[:l]
-                        indices[param_id] = ('2d', rows, cols)
+                elif p.dim() >= 2:
+                    n, m = p.size(0), p.size(1)
+                    k = max(min_elements, int(n * row_frac))
+                    l = max(min_elements, int(m * col_frac))
+                    
+                    rows = torch.randperm(n)[:k]
+                    cols = torch.randperm(m)[:l]
+                    indices[param_id] = ('2d', rows, cols)
                         
         return indices
     

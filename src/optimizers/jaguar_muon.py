@@ -67,7 +67,7 @@ class Jaguar_MUON(ZeroOrderOptimizer):
                     state['step'] = 0
                     state['grad_accum'] = torch.zeros_like(param, memory_format=torch.preserve_format)
                     
-                indices = selected_indices[param]
+                indices = selected_indices[id(param)]
                 
                 if use_smoothing:
                     if len(param.data.shape) == 1:
