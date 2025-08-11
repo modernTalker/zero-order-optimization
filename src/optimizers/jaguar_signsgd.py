@@ -57,59 +57,20 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         self.zo_random_seed = np.random.randint(1_000_000_000)
         self.generator.manual_seed(self.zo_random_seed)
 
-        selected_indices = {}
-        original_values = {}
-
-        for name, param in self.named_parameters_to_optim:
-            if len(param.shape) == 1:
-                n_elements = param.numel()
-                k = max(1, int(n_elements * 0.1))
-                indices = torch.randperm(n_elements, device=param.device, generator=self.generator)[:k]
-                self.generator.manual_seed(self.zo_random_seed)
-                selected_indices[name] = indices
-                original_values[name] = param.data[indices].clone()
-            else:
-                n_rows, n_cols = param.shape
-                k = max(1, int(n_rows * 0.1))
-                m = max(1, int(n_cols * 0.1))
-                selected_rows = torch.randperm(n_rows, device=param.device, generator=self.generator)[:k]
-                self.generator.manual_seed(self.zo_random_seed)
-                selected_cols = torch.randperm(n_cols, device=param.device, generator=self.generator)[:m]
-                self.generator.manual_seed(self.zo_random_seed)
-                selected_indices[name] = (selected_rows, selected_cols)
-                original_values[name] = param.data[selected_rows[:, None], selected_cols].clone()
-
-        for name, param in self.named_parameters_to_optim:
-            indices = selected_indices[name]
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] += self.zo_eps
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] += self.zo_eps
-                
+        self.indices_perturb(scaling_factor = 1.0)
         if closure is not None:
             with torch.enable_grad():
                 loss1 = closure()
+        self.generator.manual_seed(self.zo_random_seed)
 
-        for name, param in self.named_parameters_to_optim:
-            indices = selected_indices[name]
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] = original_values[name] - self.zo_eps
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[name] - self.zo_eps
-                
+        self.indices_perturb(scaling_factor = -2.0)
         if closure is not None:
             with torch.enable_grad():
                 loss2 = closure()
+        self.generator.manual_seed(self.zo_random_seed)
 
-        for name, param in self.named_parameters_to_optim:
-            indices = selected_indices[name]
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] = original_values[name]
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[name]
+        self.indices_perturb(scaling_factor = 1.0)
+        self.generator.manual_seed(self.zo_random_seed)
 
         grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
 
@@ -117,9 +78,8 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
             for param in group['params']:
                 if not any(name for name, p in self.named_parameters_to_optim if p is param):
                     continue
-                name = next(name for name, p in self.named_parameters_to_optim if p is param)
                 state = self.state[param]
-                indices = selected_indices[name]
+                indices = self.select_indices(param_shape=param.shape, device=param.device)
                 
                 if self.use_smoothing:
                     if isinstance(indices, torch.Tensor):
@@ -144,3 +104,29 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                 param.data.add_(update_direction, alpha=-self.lr)
 
         return loss1
+    
+    def select_indices(self, param_shape, rows_ratio = 0.1, cols_ratio = 0.1, device='cuda'):
+
+        if len(param_shape) == 1:
+            n_elems = param_shape[0]
+            k = max(1, int(n_elems * rows_ratio))
+            indices = torch.randperm(n_elems, device=device, generator=self.generator)[:k]
+            return indices
+        
+        n_rows, n_cols = param_shape
+        k = max(1, int(n_rows * rows_ratio))
+        m = max(1, int(n_cols * cols_ratio))
+
+        selected_rows = torch.randperm(n_rows, device=device, generator=self.generator)[:k]
+        selected_cols = torch.randperm(n_cols, device=device, generator=self.generator)[:m]
+        return (selected_rows, selected_cols)
+    
+    def indices_perturb(self, scaling_factor = 1.0):
+        for name, param in self.named_parameters_to_optim:
+            indices = self.select_indices(param_shape=param.shape, device=param.device)
+            if isinstance(indices, torch.Tensor):
+                param.data[indices] += scaling_factor * self.zo_eps
+            else:
+                rows, cols = indices
+                param.data[rows[:, None], cols] += scaling_factor * self.zo_eps
+
