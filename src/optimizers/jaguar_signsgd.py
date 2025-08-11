@@ -9,7 +9,6 @@ from .opt_utils import *
 class Jaguar_SignSGD(ZeroOrderOptimizer):
     def __init__(self, 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
-            # tau: float = 0.01,
             beta: float = 0.9,
             use_smoothing: bool = True,
             lr: float = 0.01,
@@ -25,14 +24,12 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
             lr=lr,
             eps=eps,
             momentum=momentum,
-            # tau=tau,
             beta=beta,
             use_smoothing=use_smoothing,
             gradient_sparsity=gradient_sparsity
         )
         super().__init__(params, defaults)
         
-        # self.tau = tau
         self.lr = lr 
         self.beta = beta
         self.use_smoothing = use_smoothing
@@ -42,15 +39,12 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         self.coordinate_perturbation = coordinate_perturbation
 
     @torch.no_grad()
-    def step(self, closure):
-        # self._prepare_parameters()
-        print(f"START STEP: {self.state['step']}")
-        st_time = time.time()
+    def step(self, closure=None):
+        loss1, loss2 = None, None 
+        self._prepare_parameters()  
+
         for group in self.param_groups:
-            for param in group['params']:
-                # if param.grad is None:
-                    # continue
-                    
+            for param in group['params']:    
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
@@ -59,75 +53,94 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                         memory_format=torch.preserve_format
                     )
                 state['step'] += 1
-        end_time = time.time()
-        print("State cycle time: {}".format(end_time - st_time))
 
         self.zo_random_seed = np.random.randint(1_000_000_000)
         self.generator.manual_seed(self.zo_random_seed)
 
-        st_time = time.time()
-        selected_indices = self._select_perturbation_indices(row_frac=0.1, col_frac=0.1, min_elements=1)
-        self.generator.manual_seed(self.zo_random_seed)
-        end_time = time.time()
-        print("Select indices time: {}".format(end_time - st_time))
+        selected_indices = {}
+        original_values = {}
 
+        for name, param in self.named_parameters_to_optim:
+            if len(param.shape) == 1:
+                n_elements = param.numel()
+                k = max(1, int(n_elements * 0.1))
+                indices = torch.randperm(n_elements, device=param.device, generator=self.generator)[:k]
+                self.generator.manual_seed(self.zo_random_seed)
+                selected_indices[name] = indices
+                original_values[name] = param.data[indices].clone()
+            else:
+                n_rows, n_cols = param.shape
+                k = max(1, int(n_rows * 0.1))
+                m = max(1, int(n_cols * 0.1))
+                selected_rows = torch.randperm(n_rows, device=param.device, generator=self.generator)[:k]
+                self.generator.manual_seed(self.zo_random_seed)
+                selected_cols = torch.randperm(n_cols, device=param.device, generator=self.generator)[:m]
+                self.generator.manual_seed(self.zo_random_seed)
+                selected_indices[name] = (selected_rows, selected_cols)
+                original_values[name] = param.data[selected_rows[:, None], selected_cols].clone()
 
-        st_time = time.time()
-        self._apply_sparse_perturbation(selected_indices, scaling_factor=1)
-        loss1 = closure()
-        end_time = time.time()
-        print("First perturb time: {}".format(end_time - st_time))
+        for name, param in self.named_parameters_to_optim:
+            indices = selected_indices[name]
+            if isinstance(indices, torch.Tensor):
+                param.data[indices] += self.zo_eps
+            else:
+                rows, cols = indices
+                param.data[rows[:, None], cols] += self.zo_eps
+                
+        if closure is not None:
+            with torch.enable_grad():
+                loss1 = closure()
 
+        for name, param in self.named_parameters_to_optim:
+            indices = selected_indices[name]
+            if isinstance(indices, torch.Tensor):
+                param.data[indices] = original_values[name] - self.zo_eps
+            else:
+                rows, cols = indices
+                param.data[rows[:, None], cols] = original_values[name] - self.zo_eps
+                
+        if closure is not None:
+            with torch.enable_grad():
+                loss2 = closure()
 
-        st_time = time.time()
-        self._apply_sparse_perturbation(selected_indices, scaling_factor=-2)
-        loss2 = closure()
-        end_time = time.time()
-        print("Second perturb time: {}".format(end_time - st_time))
+        for name, param in self.named_parameters_to_optim:
+            indices = selected_indices[name]
+            if isinstance(indices, torch.Tensor):
+                param.data[indices] = original_values[name]
+            else:
+                rows, cols = indices
+                param.data[rows[:, None], cols] = original_values[name]
 
-        st_time = time.time()
-        self._apply_sparse_perturbation(selected_indices, scaling_factor=1)
-        end_time = time.time()
-        print("Third perturb time: {}".format(end_time - st_time))
-        # grad_update = (loss1 - loss2).item() / (2 * self.zo_eps)
+        grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
 
-        grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode=self.perturbation_mode)
-
-        print("PARAM GROUPS ", len(self.param_groups))
-
-        st_time = time.time()
         for group in self.param_groups:
             for param in group['params']:
-                # name = next(name for name, p in self.named_parameters_to_optim if p is param)
+                if not any(name for name, p in self.named_parameters_to_optim if p is param):
+                    continue
+                name = next(name for name, p in self.named_parameters_to_optim if p is param)
                 state = self.state[param]
-                indices = selected_indices[id(param)]
+                indices = selected_indices[name]
                 
                 if self.use_smoothing:
-                    # if isinstance(indices, torch.Tensor):
-                    if indices[0] == '1d':
-                        idx = indices[1]
-                        state['grad_accum'][idx] = (
-                            self.beta * state['grad_accum'][idx] + 
+                    if isinstance(indices, torch.Tensor):
+                        state['grad_accum'][indices] = (
+                            self.beta * state['grad_accum'][indices] + 
                             (1 - self.beta) * grad_update
                         )
                     else:
-                        rows, cols = indices[1], indices[2]
+                        rows, cols = indices
                         state['grad_accum'][rows[:, None], cols] = (
                             self.beta * state['grad_accum'][rows[:, None], cols] + 
                             (1 - self.beta) * grad_update
                         )
                 else:
-                    # if isinstance(indices, torch.Tensor):
-                    if indices[0] == '1d':
+                    if isinstance(indices, torch.Tensor):
                         state['grad_accum'][indices] = grad_update
                     else:
-                        rows, cols = indices[1], indices[2]
+                        rows, cols = indices
                         state['grad_accum'][rows[:, None], cols] = grad_update
                 
                 update_direction = torch.sign(state['grad_accum'])
-                # param.data.add_(update_direction, alpha=-group['lr']
                 param.data.add_(update_direction, alpha=-self.lr)
-        end_time = time.time()
-        print("Last update time: {}".format(end_time - st_time))
 
         return loss1
