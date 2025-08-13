@@ -59,14 +59,12 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
 
         self._indices_perturb(scaling_factor = 1.0)
         if closure is not None:
-            with torch.enable_grad():
-                loss1 = closure()
+            loss1 = closure()
         self.generator.manual_seed(self.zo_random_seed)
 
         self._indices_perturb(scaling_factor = -2.0)
         if closure is not None:
-            with torch.enable_grad():
-                loss2 = closure()
+            loss2 = closure()
         self.generator.manual_seed(self.zo_random_seed)
 
         self._indices_perturb(scaling_factor = 1.0)

@@ -24,11 +24,11 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             momentum=momentum,
             gradient_sparsity=gradient_sparsity,
             vector_sampling_type=vector_sampling_type,
+            matrix_sampling_type=matrix_sampling_type,
             device=device,
         )
         self.lr = lr
         self.perturbation_mode = perturbation_mode
-        self.matrix_sampler = MatrixSampler(matrix_sampling_type, device=device)
 
     @torch.no_grad()
     def step(self, closure=None):
@@ -37,14 +37,6 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
 
         self.zo_random_seed = np.random.randint(1_000_000_000) 
         self.generator.manual_seed(self.zo_random_seed)
-
-
-        if self._inner_optimizers is not None:
-            for group_idx, _ in enumerate(self.param_groups):
-                self._inner_optimizers[group_idx].zero_grad()
-            original_grads = {}
-            for name, param in self.named_parameters_to_optim:
-                original_grads[name] = param.grad.clone() if param.grad is not None else None
 
         self.matrix_perturb_parameters(scaling_factor=1)
         self.generator.manual_seed(self.zo_random_seed)
@@ -81,19 +73,3 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
 
                 param.data.add_(grad_update_final, alpha=-self.lr) 
         return loss1
-    
-    def matrix_perturb_parameters(
-        self, 
-        scaling_factor: float = 1.0,
-    ) -> None:
-        for group in self.param_groups:
-            eps = group['eps']
-            for p in group['params']:
-                if len(p.shape) == 1:
-                    z = self.vector_sampler.sample(p.shape, generator=self.generator)
-                else:
-                    z = self.matrix_sampler.sample_single_matrix(p.shape, generator=self.generator)
-                
-                perturb = z * eps
-                p.data.add_(scaling_factor * perturb)
-

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from typing import Optional, Callable, List, Dict, Any, Tuple, Union, Iterable
 import torch
 import numpy as np
-from .opt_utils import VectorSampler
+from .opt_utils import *
 from gradient_pruning import fast_random_mask_like
 from torch.optim import SGD
 from collections import defaultdict
@@ -16,6 +16,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
             vector_sampling_type: str = "standard_normal",
+            matrix_sampling_type: str = None,
             perturbation_mode: str = "two_side",
             device: str = "cuda", # FIXME: maybe change it
     ):
@@ -50,6 +51,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.generator = torch.Generator(device=device)
 
         self.vector_sampler = VectorSampler(vector_sampling_type, device=device)
+        if matrix_sampling_type is not None:
+            self.matrix_sampler = MatrixSampler(matrix_sampling_type, device=device)
         self.perturbation_mode = perturbation_mode
 
         self.named_parameters_all = []
@@ -321,3 +324,20 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 elif indices_info[0] == '2d':
                     rows, cols = indices_info[1], indices_info[2]
                     param.data[rows[:, None], cols] += perturbation
+
+    def matrix_perturb_parameters(
+        self, 
+        scaling_factor: float = 1.0,
+    ) -> None:
+        for group in self.param_groups:
+            eps = group['eps']
+            for p in group['params']:
+                if len(p.shape) == 1:
+                    z = self.vector_sampler.sample(p.shape, generator=self.generator)
+                else:
+                    z = self.matrix_sampler.sample_single_matrix(p.shape, generator=self.generator)
+                
+                perturb = z * eps
+                perturb = perturb.to(p.device)
+                p.data.add_(scaling_factor * perturb)
+
