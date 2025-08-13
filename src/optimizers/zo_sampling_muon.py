@@ -46,27 +46,24 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             for name, param in self.named_parameters_to_optim:
                 original_grads[name] = param.grad.clone() if param.grad is not None else None
 
-        self.zo_matrix_perturb_parameters(scaling_factor=1)
+        self.matrix_perturb_parameters(scaling_factor=1)
         self.generator.manual_seed(self.zo_random_seed)
         if closure is not None:
-            with torch.enable_grad():
-                loss1 = closure()
+            loss1 = closure()
 
         if self.perturbation_mode == "one_side":
-            self.zo_matrix_perturb_parameters(scaling_factor=-1)
+            self.matrix_perturb_parameters(scaling_factor=-1)
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
-                with torch.enable_grad():
-                    loss2 = closure()
+                loss2 = closure()
             self.projected_grad = torch.sign(loss2-loss1).item()
         else:  
-            self.zo_matrix_perturb_parameters(scaling_factor=-2)
+            self.matrix_perturb_parameters(scaling_factor=-2)
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
-                with torch.enable_grad():
-                    loss2 = closure()
+                loss2 = closure()
             self.projected_grad = torch.sign(loss2-loss1).item()
-            self.zo_matrix_perturb_parameters(scaling_factor=1)
+            self.matrix_perturb_parameters(scaling_factor=1)
             self.generator.manual_seed(self.zo_random_seed)
         
         self.generator.manual_seed(self.zo_random_seed)
@@ -84,14 +81,6 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
 
                 param.data.add_(grad_update_final, alpha=-self.lr) 
         return loss1
-    
-    def zo_matrix_perturb_parameters(self, 
-            scaling_factor: float = 1.0
-    ) -> None:
-
-        self.matrix_perturb_parameters(
-            scaling_factor=scaling_factor,
-        )
     
     def matrix_perturb_parameters(
         self, 
