@@ -82,7 +82,7 @@ class ZO_MUON(ZeroOrderOptimizer):
                     #     grad_update = grad_update.view(original_shape)
                     grad_update_final = grad_update.to(param.data.dtype)
                 else:
-                    grad_update_final = grad_update # FIXME: take grad_update or take sign of it?
+                    grad_update_final = torch.sign(grad_update)
 
                 grad_update_final = grad_update_final.to(device)
                 
