@@ -67,18 +67,6 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self._inner_optimizers = None
         self._lr_schedulers = None
 
-        # for group in self.param_groups:
-        #     self._inner_optimizers.append(
-        #         SGD(group['params'], lr=group['lr'], momentum=group['momentum'])
-        #     )
-       
-    def set_lr_schedulers(self, lr_schedulers: List):
-        """        
-        Args:
-            lr_schedulers: list of schedulers
-        """
-        self._lr_schedulers = lr_schedulers
-
     def _prepare_parameters(self) -> None:
         """Prepares parameters for optimization. Common for all optimizer's steps"""
         self.named_parameters_to_optim = [
@@ -112,139 +100,26 @@ class ZeroOrderOptimizer(Optimizer, ABC):
     
     @abstractmethod
     def step(self, closure: Optional[Callable[[], float]] = None) -> Optional[float]:
-        """
-        Performs a single optimization step.
-
-        Args:
-            closure: Callable that returns the loss and recomputes gradients.
-        Returns:
-            Loss tensor or None
-        """
         pass
     
     def get_grad_sparsity_by_name(self, name: str) -> Optional[float]:
-        """
-        Get gradient sparsity for a parameter by name.
-
-        Args:
-            name: Parameter name
-        Returns:
-            Sparsity value or None
-        """
         if self.gradient_sparsity is None:
             return None
         elif isinstance(self.gradient_sparsity, float):
             return self.gradient_sparsity
         elif isinstance(self.gradient_sparsity, dict):
             return self.gradient_sparsity[name]
-
-    def zo_perturb_parameters(self, 
-            random_seed: Optional[int] = None, 
-            scaling_factor: float = 1.0
-    ) -> None:
-        """
-        Perturb the parameters with random vector z.
-        Input:
-        - random_seed: random seed for MeZO in-place perturbation (if it's None, we will use self.zo_random_seed)
-        - scaling_factor: theta = theta + scaling_factor * z * eps
-        """
-        self.zo_random_seed = random_seed if random_seed is not None else np.random.randint(1000000000)
-        self.generator.manual_seed(self.zo_random_seed)
-
-        sparsity_dict = {}
-        for name, param in self.named_parameters_all:
-            if param.requires_grad:
-                sparsity_dict[id(param)] = self.get_grad_sparsity_by_name(name)
-
-        self.perturb_parameters(
-            scaling_factor=scaling_factor,
-            random_seed=self.zo_random_seed,
-            sparsity_dict=sparsity_dict,
-            element_wise=True
-        )
-    
-    def perturb_parameters(
+        
+    def zo_perturb_parameters(
         self, 
         scaling_factor: float = 1.0,
-        random_seed: Optional[int] = None,
-        custom_perturb_func: Optional[Callable[[torch.Tensor], torch.Tensor]] = None,
-        indices: Optional[Dict[int, Tuple[str, Any]]] = None,
-        element_wise: bool = False,
-        sparsity_dict: Optional[Dict[int, float]] = None
     ) -> None:
-        """
-        Applies perturbation to parameters, either globally or to selected indices.
-        
-        Args:
-            scaling_factor: Scale of perturbation
-            random_seed: Fixes random seed for reproducibility
-            generator: Custom random number generator
-            custom_perturb_func: Custom perturbation function
-            indices: Dictionary of indices from _select_perturbation_indices for selective perturbation
-            element_wise: Whether to apply perturbations element-wise (for indices mode)
-            sparsity_dict: {param_id: sparsity} for gradient sparsity
-        """
-        if random_seed is None:
-            random_seed = np.random.randint(1000000)
-        
-        self.generator.manual_seed(random_seed)
-        
-        if sparsity_dict is not None:
-            original_perturb_func = custom_perturb_func
-            def sparse_perturb_func(param: torch.Tensor) -> torch.Tensor:
-                if original_perturb_func:
-                    z = original_perturb_func(param)
-                else:
-                    z = self.vector_sampler.sample(param.shape, generator=self.generator)
-                
-                param_id = id(param)
-                self.generator.manual_seed(random_seed)
-                if param_id in sparsity_dict:
-                    sparsity = sparsity_dict[param_id]
-                    if sparsity is not None:
-                        mask = fast_random_mask_like(z, sparsity, generator=self.generator)
-                        self.generator.manual_seed(random_seed)
-                        z[mask] = 0
-                return z
-            custom_perturb_func = sparse_perturb_func
-            
         for group in self.param_groups:
-            eps = group['eps']
             for p in group['params']:
-                if not p.requires_grad:
-                    continue
-
-                param_id = id(p)
-                perturb = None
-                if custom_perturb_func:
-                    pass 
-
-                elif indices is not None and param_id in indices:
-                    spec = indices[param_id]
-                    
-                    if spec[0] == '1d':
-                        idx = spec[1]
-                        if element_wise:
-                            perturb = self.vector_sampler.sample(p.data[idx].shape, generator=self.generator) * eps
-                        else:
-                            perturb = torch.ones_like(p.data[idx]) * eps
-
-                        p.data[idx].add_(scaling_factor * perturb)
-
-                    elif spec[0] == '2d':
-                        rows, cols = spec[1], spec[2]
-                        if element_wise:
-                            slice_data = p.data[rows[:, None], cols]
-                            perturb = self.vector_sampler.sample(slice_data.shape, generator=self.generator) * eps
-                        else:
-                            perturb = torch.ones_like(p.data[rows[:, None], cols]) * eps
-                        p.data[rows[:, None], cols].add_(scaling_factor * perturb)
-                
-                else:
-                    if perturb is None:
-                        z = self.vector_sampler.sample(p.shape, generator=self.generator)
-                        perturb = z * eps
-                    p.data.add_(scaling_factor * perturb)
+                z = self.vector_sampler.sample(p.shape, generator=self.generator)
+                perturb = z * self.zo_eps
+                perturb = perturb.to(p.device)
+                p.data.add_(scaling_factor * perturb)
 
     def grad_approx(
         self,
@@ -252,44 +127,19 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         loss_perturbed: torch.Tensor,
         perturbation_mode: str = "two_side"
     ) -> float:
-        """
-        Aproximates gradient.
-        
-        Args:
-            loss_original: Loss function value in a source point
-            loss_perturbed: Loss function value is a perturbated point
-            perturbation_mode: 'one_side' or 'two_side'
-            
-        Returns:
-            Gradient estimation
-        """
         if perturbation_mode == "one_side":
             return ((loss_perturbed - loss_original) / self.zo_eps).item()
         elif perturbation_mode == "two_side":
             return ((loss_perturbed - loss_original) / (2 * self.zo_eps)).item()
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")
-    
-    def _get_flat_params(self) -> List[torch.Tensor]:
-        """Returns full list of parameters copy"""
-        return [p.detach().clone() for group in self.param_groups for p in group['params']]
-    
-    def _set_flat_params(self, params: List[torch.Tensor]) -> None:
-        """Setes parameters from List"""
-        idx = 0
-        for group in self.param_groups:
-            for p in group['params']:
-                p.data.copy_(params[idx])
-                idx += 1
-                
+                    
     def _select_indices(self, param_shape, rows_ratio = 0.1, cols_ratio = 0.1, device='cuda'):
-
         if len(param_shape) == 1:
             n_elems = param_shape[0]
             k = max(1, int(n_elems * rows_ratio))
             indices = torch.randperm(n_elems, device=device, generator=self.generator)[:k]
             return indices
-        
         n_rows, n_cols = param_shape
         k = max(1, int(n_rows * rows_ratio))
         m = max(1, int(n_cols * cols_ratio))
@@ -307,37 +157,18 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 rows, cols = indices
                 param.data[rows[:, None], cols] += scaling_factor * self.zo_eps
 
-    def _apply_sparse_perturbation(self, indices_dict, scaling_factor):
-        for group in self.param_groups:
-            for param in group['params']:
-                param_id = id(param)
-                if param_id not in indices_dict:
-                    continue
-                    
-                indices_info = indices_dict[param_id]
-                perturbation = self.zo_eps * scaling_factor
-                
-                if indices_info[0] == '1d':
-                    indices = indices_info[1]
-                    param.data[indices] += perturbation
-                    
-                elif indices_info[0] == '2d':
-                    rows, cols = indices_info[1], indices_info[2]
-                    param.data[rows[:, None], cols] += perturbation
-
     def matrix_perturb_parameters(
         self, 
         scaling_factor: float = 1.0,
     ) -> None:
         for group in self.param_groups:
-            eps = group['eps']
             for p in group['params']:
                 if len(p.shape) == 1:
                     z = self.vector_sampler.sample(p.shape, generator=self.generator)
                 else:
                     z = self.matrix_sampler.sample_single_matrix(p.shape, generator=self.generator)
-                
-                perturb = z * eps
+
+                perturb = z *self.zo_eps
                 perturb = perturb.to(p.device)
                 p.data.add_(scaling_factor * perturb)
 

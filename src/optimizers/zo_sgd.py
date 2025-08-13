@@ -44,52 +44,38 @@ class ZO_SGD(ZeroOrderOptimizer):
         self.zo_random_seed = np.random.randint(1_000_000_000)
         self.generator.manual_seed(self.zo_random_seed)
         
-        self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+        self.zo_perturb_parameters(scaling_factor=1)
         loss1 = closure()
         self.generator.manual_seed(self.zo_random_seed)
 
         if self.perturbation_mode == "one_side":
-            self.zo_perturb_parameters(scaling_factor=-1, random_seed=self.zo_random_seed)
+            self.zo_perturb_parameters(scaling_factor=-1)
             self.generator.manual_seed(self.zo_random_seed)
             loss2 = closure()
-            self.projected_grad = (loss2 - loss1).item() # FIXME: why not use grad_approx?
+            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
         else:
-            self.zo_perturb_parameters(scaling_factor=-2, random_seed=self.zo_random_seed)
+            self.zo_perturb_parameters(scaling_factor=-2)
             loss2 = closure()
-            self.projected_grad = (loss2 - loss1).item() / 2
+            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
             self.generator.manual_seed(self.zo_random_seed)
-            self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+            self.zo_perturb_parameters(scaling_factor=1)
             self.generator.manual_seed(self.zo_random_seed)
             
-        self._apply_gradients(random_seeds=[self.zo_random_seed]) # FIXME: get rid of random_seeds
+        self._apply_gradients()
         self.generator.manual_seed(self.zo_random_seed)
         return loss1 
     
     @torch.no_grad()
-    def _apply_gradients(self, random_seeds = None) -> None:
+    def _apply_gradients(self) -> None:
         for group_idx, group in enumerate(self.param_groups):
             for param in group['params']:
-                if not any(name for name, p in self.named_parameters_to_optim if p is param):
-                    continue
-                
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
                 
                 device = param.device
-                grad = torch.zeros_like(param)
-                eps = 1 # FIXME: do we need it?
-                
-                for seed in random_seeds:
-                    self.generator.manual_seed(seed)
-                    z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
-                    name = next(name for name, p in self.named_parameters_to_optim if p is param)
-                    sparsity = self.get_grad_sparsity_by_name(name)
-                    if sparsity is not None:
-                        mask = fast_random_mask_like(z, sparsity, generator=self.sparse_grad_rng).to(device)
-                        z[mask] = 0
-                    
-                    grad += (z * self.projected_grad * eps) / len(random_seeds)
+                z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
+                grad = (z * self.projected_grad * self.zo_eps)
                 
                 param.data.add_(grad, alpha=-self.lr)
 
