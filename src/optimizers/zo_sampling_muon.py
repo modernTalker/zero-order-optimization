@@ -3,6 +3,7 @@ import torch
 import numpy as np
 from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 from .opt_utils import *
+from gradient_pruning import fast_random_mask_like
 
 class ZO_SamplingMUON(ZeroOrderOptimizer):
     def __init__(self, 
@@ -36,9 +37,7 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
 
         self.zo_random_seed = np.random.randint(1_000_000_000) 
         self.generator.manual_seed(self.zo_random_seed)
-        
-        shapes = [(name, tuple(param.shape)) for name, param in self.named_parameters_to_optim if param.ndim >= 2 and param.size(0) < 10000]
-        E_dict = self.matrix_sampler.sample(shapes)
+
 
         if self._inner_optimizers is not None:
             for group_idx, _ in enumerate(self.param_groups):
@@ -47,58 +46,65 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             for name, param in self.named_parameters_to_optim:
                 original_grads[name] = param.grad.clone() if param.grad is not None else None
 
-        self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+        self.zo_matrix_perturb_parameters(scaling_factor=1)
         self.generator.manual_seed(self.zo_random_seed)
         if closure is not None:
             with torch.enable_grad():
                 loss1 = closure()
 
         if self.perturbation_mode == "one_side":
-            self.zo_perturb_parameters(scaling_factor=-1, random_seed=self.zo_random_seed)
+            self.zo_matrix_perturb_parameters(scaling_factor=-1)
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
                 with torch.enable_grad():
                     loss2 = closure()
             self.projected_grad = torch.sign(loss2-loss1).item()
         else:  
-            self.zo_perturb_parameters(scaling_factor=-2, random_seed=self.zo_random_seed)
+            self.zo_matrix_perturb_parameters(scaling_factor=-2)
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
                 with torch.enable_grad():
                     loss2 = closure()
             self.projected_grad = torch.sign(loss2-loss1).item()
-            self.zo_perturb_parameters(scaling_factor=1, random_seed=self.zo_random_seed)
+            self.zo_matrix_perturb_parameters(scaling_factor=1)
             self.generator.manual_seed(self.zo_random_seed)
         
+        self.generator.manual_seed(self.zo_random_seed)
         for group_idx, group in enumerate(self.param_groups):
             for param in group['params']:
-                if not any(name for name, p in self.named_parameters_to_optim if p is param):
-                    continue
-                name = next(name for name, p in self.named_parameters_to_optim if p is param)
                 device = param.device
 
-                if param.ndim >= 2 and param.size(0) < 10000:
-                    E, U, S, V = E_dict[name]
-                    grad_update_final = self.projected_grad * (U @ V.T)
+                if param.ndim >= 2:
+                    z = self.matrix_sampler.sample_single_matrix(param_shape=param.shape, generator=self.generator)
                 else:
                     z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
 
-                    mask = getattr(self, 'get_grad_sparsity_by_name', lambda x: None)(name)
-                    if mask is not None:
-                        z[fast_random_mask_like(z, mask, generator=self.sparse_grad_rng)] = 0
-                    grad_update_final = self.projected_grad * z
+                grad_update_final = self.projected_grad * z
                 grad_update_final = grad_update_final.to(device)
-                if self._inner_optimizers is None:
-                    param.data.add_(grad_update_final, alpha=-self.lr) 
-                else:
-                    param.grad = grad_update_final
-                    self._inner_optimizers[group_idx].step()
 
-        if self._inner_optimizers is not None:
-            for name, param in self.named_parameters_to_optim:
-                param.grad = original_grads[name]
-
-            for group_idx, _ in enumerate(self.param_groups):
-                self._lr_schedulers[group_idx].step()
-
+                param.data.add_(grad_update_final, alpha=-self.lr) 
         return loss1
+    
+    def zo_matrix_perturb_parameters(self, 
+            scaling_factor: float = 1.0
+    ) -> None:
+
+        self.matrix_perturb_parameters(
+            scaling_factor=scaling_factor,
+        )
+    
+    def matrix_perturb_parameters(
+        self, 
+        scaling_factor: float = 1.0,
+    ) -> None:
+        for group in self.param_groups:
+            eps = group['eps']
+            for p in group['params']:
+                if len(p.shape) == 1:
+                    z = self.vector_sampler.sample(p.shape, generator=self.generator)
+                else:
+                    z = self.matrix_sampler.sample_single_matrix(p.shape, generator=self.generator)
+                
+                perturb = z * eps
+                p.data.add_(scaling_factor * perturb)
+

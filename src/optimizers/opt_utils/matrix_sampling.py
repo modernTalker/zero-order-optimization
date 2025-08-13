@@ -11,9 +11,6 @@ class MatrixSampler:
         
         self.sampler_type = sampler_type
         self.device = device
-
-    def sample(self, param_shapes):
-
         if self.sampler_type == 'GS':                       # + +
             self.sampler = self._GS_matrix
         elif self.sampler_type == 'GS_v2':                  # + +
@@ -28,6 +25,15 @@ class MatrixSampler:
             self.sampler = self._random_baseline
         else:
             raise NotImplementedError(f"Sampling {self.sampler_type} is not implemented")
+        
+    def sample_single_matrix(self, param_shape, generator = None):
+        assert len(param_shape) > 1, f"Sample only matrices, current shape: {param_shape}"
+        n, m = param_shape
+        if n > m:
+            return self.sampler(n, generator=generator)[:, :m]
+        return self.sampler(m, generator=generator)[:n, :]
+
+    def sample(self, param_shapes):
 
         shape_to_names = defaultdict(list)
         for name, shape in param_shapes:
@@ -59,24 +65,24 @@ class MatrixSampler:
 
         return sigma
 
-    def _householder_matrix(self, d):
+    def _householder_matrix(self, d, generator = None):
         
-        u = torch.randn(d, device=self.device)
+        u = torch.randn(d, device=self.device, generator=generator)
         H = torch.eye(d, device=self.device) - 2*(u*u.unsqueeze(1))/(u.norm()**2)
 
         return H
 
 
-    def _rotation_matrix(self, d, num_rotations=None):
+    def _rotation_matrix(self, d, num_rotations=None, generator = None):
         if num_rotations is None:
             num_rotations = d
         Q = torch.eye(d, device=self.device)
         for _ in range(num_rotations):
-            i, j = torch.randint(0, d, (2,), device=self.device)
+            i, j = torch.randint(0, d, (2,), device=self.device, generator=generator)
             while i == j:
-                j = torch.randint(0, d, (1,), device=self.device)
+                j = torch.randint(0, d, (1,), device=self.device, generator=generator)
                 j = j.item()
-            theta = torch.rand(1, device=self.device) * 2 * math.pi
+            theta = torch.rand(1, device=self.device, generator=generator) * 2 * math.pi
             c = torch.cos(theta)
             s = torch.sin(theta)
             col_i = Q[:, i].clone()
@@ -86,15 +92,15 @@ class MatrixSampler:
         return Q
 
 
-    def _reflection_matrix(self, d):
+    def _reflection_matrix(self, d, generator = None):
         Q = torch.eye(d, device=self.device)
-        idx = torch.randint(0, d - 1, (torch.randint(0,d-1, (1,)), ))
+        idx = torch.randint(0, d - 1, (torch.randint(0,d-1, (1,), generator=generator), ))
         Q[idx, idx] = -1
         return Q
 
 
-    def _random_baseline(self, d):
-        return torch.randn((d,d), device=self.device)
+    def _random_baseline(self, d, generator = None):
+        return torch.randn((d,d), device=self.device, generator=generator)
 
     def _GS_matrix(
         self,
@@ -103,6 +109,7 @@ class MatrixSampler:
         use_PL: bool = True,
         use_P:  bool = True,
         use_PR: bool = True,
+        generator = None,
     ):
         base = dim // num_blocks
         rem  = dim %  num_blocks
@@ -116,7 +123,7 @@ class MatrixSampler:
             maxL = max(bsL)
             L_blocks = []
             for b in bsL:
-                X = torch.randn(b, b, device=self.device)
+                X = torch.randn(b, b, device=self.device, generator=generator)
                 Qb, Rb = torch.linalg.qr(X)
                 sign = torch.sign(torch.diagonal(Rb, 0))
                 Qb *= sign
@@ -131,7 +138,7 @@ class MatrixSampler:
             bsR = block_sizes_R
             R_blocks = []
             for b in bsR:
-                X = torch.randn(b, b, device=self.device)
+                X = torch.randn(b, b, device=self.device, generator=generator)
                 Qb, Rb = torch.linalg.qr(X)
                 sign = torch.sign(torch.diagonal(Rb, 0))
                 Qb *= sign
@@ -142,9 +149,9 @@ class MatrixSampler:
         else:
             R = torch.eye(dim, device=self.device)
     
-        idx_PL = torch.randperm(dim, device=self.device) if use_PL else torch.arange(dim, device=self.device)
-        idx_P  = torch.randperm(dim, device=self.device) if use_P  else torch.arange(dim, device=self.device)
-        idx_PR = torch.randperm(dim, device=self.device) if use_PR else torch.arange(dim, device=self.device)
+        idx_PL = torch.randperm(dim, device=self.device) if use_PL else torch.arange(dim, device=self.device, generator=generator)
+        idx_P  = torch.randperm(dim, device=self.device) if use_P  else torch.arange(dim, device=self.device, generator=generator)
+        idx_PR = torch.randperm(dim, device=self.device) if use_PR else torch.arange(dim, device=self.device, generator=generator)
     
         M1 = R[:, idx_PR]
         M2 = M1[idx_P, :]
@@ -160,6 +167,7 @@ class MatrixSampler:
         use_PL: bool = True,
         use_P:  bool = True,
         use_PR: bool = True,
+        generator = None
     ):
         # num_blocks is a variable
         # base*num_blocks = n
@@ -177,7 +185,7 @@ class MatrixSampler:
             maxL = max(bsL)
             L_blocks = []
             for b in bsL:
-                X = torch.randn(b, b, device=self.device)
+                X = torch.randn(b, b, device=self.device, generator=generator)
                 Qb, Rb = torch.linalg.qr(X)
                 sign = torch.sign(torch.diagonal(Rb, 0))
                 Qb *= sign
@@ -192,7 +200,7 @@ class MatrixSampler:
             bsR = block_sizes_R
             R_blocks = []
             for b in bsR:
-                X = torch.randn(b, b, device=self.device)
+                X = torch.randn(b, b, device=self.device, generator=generator)
                 Qb, Rb = torch.linalg.qr(X)
                 sign = torch.sign(torch.diagonal(Rb, 0))
                 Qb *= sign
@@ -203,9 +211,9 @@ class MatrixSampler:
         else:
             R = torch.eye(dim, device=self.device)
     
-        idx_PL = torch.randperm(dim, device=self.device) if use_PL else torch.arange(dim, device=self.device)
-        idx_P  = torch.randperm(dim, device=self.device) if use_P  else torch.arange(dim, device=self.device)
-        idx_PR = torch.randperm(dim, device=self.device) if use_PR else torch.arange(dim, device=self.device)
+        idx_PL = torch.randperm(dim, device=self.device) if use_PL else torch.arange(dim, device=self.device, generator=generator)
+        idx_P  = torch.randperm(dim, device=self.device) if use_P  else torch.arange(dim, device=self.device, generator=generator)
+        idx_PR = torch.randperm(dim, device=self.device) if use_PR else torch.arange(dim, device=self.device, generator=generator)
     
         M1 = R[:, idx_PR]
         M2 = M1[idx_P, :]
