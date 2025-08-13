@@ -71,20 +71,11 @@ class ZO_MUON(ZeroOrderOptimizer):
                 grad_update = self.projected_grad * z
 
                 if param.ndim >= 2:
-                    grad_update = grad_update.to(torch.bfloat16)
-                    original_ndim = grad_update.ndim
-                    # if original_ndim > 2:
-                    #     grad_update = grad_update.view(grad_update.size(0), -1)  
-
                     grad_update = zeropower_via_newtonschulz5(grad_update, steps=5)
-
-                    # if original_ndim > 2:
-                    #     grad_update = grad_update.view(original_shape)
-                    grad_update_final = grad_update.to(param.data.dtype)
                 else:
-                    grad_update_final = torch.sign(grad_update)
+                    grad_update = torch.sign(grad_update)
 
-                grad_update_final = grad_update_final.to(device)
+                grad_update_final = grad_update.to(device)
                 
                 param.data.add_(grad_update_final, alpha=-self.lr) 
 
