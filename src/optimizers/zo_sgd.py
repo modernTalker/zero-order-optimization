@@ -52,7 +52,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             self.zo_perturb_parameters(scaling_factor=-1, random_seed=self.zo_random_seed)
             self.generator.manual_seed(self.zo_random_seed)
             loss2 = closure()
-            self.projected_grad = (loss2 - loss1).item()
+            self.projected_grad = (loss2 - loss1).item() # FIXME: why not use grad_approx?
         else:
             self.zo_perturb_parameters(scaling_factor=-2, random_seed=self.zo_random_seed)
             loss2 = closure()
