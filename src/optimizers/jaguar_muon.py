@@ -1,137 +1,108 @@
 from .base import ZeroOrderOptimizer
 import torch
 import numpy as np
-from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
+from typing import Optional, Dict, Any, Union, Iterable
+import time
 
 from .opt_utils import *
 
 class Jaguar_MUON(ZeroOrderOptimizer):
     def __init__(self, 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
-            tau: Optional[float] = None,
-            beta: Optional[float] = None, 
-            use_smoothing: Optional[bool] = None,
-            lr: Optional[float] = None,
-            eps: Optional[float] = None,
+            beta: float = 0.9,
+            use_smoothing: bool = True,
+            lr: float = 0.01,
+            eps: float = 1e-3,
             momentum: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
             perturbation_mode: str = "two_side",
-        ):
-        super().__init__(
-            params=params,
+            q: int = 1,
+            module_wise_perturbation: bool = False,
+            coordinate_perturbation: bool = False
+    ):
+        defaults = dict(
             lr=lr,
             eps=eps,
             momentum=momentum,
+            beta=beta,
+            use_smoothing=use_smoothing,
             gradient_sparsity=gradient_sparsity
         )
-        self.tau = tau 
+        super().__init__(params, defaults)
+        
+        self.lr = lr 
         self.beta = beta
         self.use_smoothing = use_smoothing
-        self.lr = lr 
+        self.perturbation_mode = perturbation_mode
+        self.q = q
+        self.module_wise_perturbation = module_wise_perturbation
+        self.coordinate_perturbation = coordinate_perturbation
 
     @torch.no_grad()
     def step(self, closure=None):
-        loss1, loss2 = None, None
-        tau = self.tau
-        beta = self.beta
-        use_smoothing = self.use_smoothing
+        loss1, loss2 = None, None 
+        self._prepare_parameters()  
 
-        self._prepare_parameters()   
-                
-        self.zo_random_seed = np.random.randint(1_000_000_000)
-        torch.manual_seed(self.zo_random_seed)
-
-        selected_indices = {}
-        original_values = {}
-
-        for group_idx, group in enumerate(self.param_groups):
-            for param in group['params']:
-                if param.grad is None:
-                    continue
+        for group in self.param_groups:
+            for param in group['params']:    
                 state = self.state[param]
-                if len(param.shape) == 0:  
-                    continue
-                if 'grad_accum' not in state:
-                    state['grad_accum'] = torch.zeros_like(param.data)
-                
-                if len(param.data.shape) == 1:
-                    n_elements = param.data.shape[0]
-                    k = max(1, int(n_elements * 0.1))  
-                    indices = torch.randperm(n_elements, device=param.device)[:k]
-                    selected_indices[param] = indices
-                    original_values[param] = param.data[indices].clone()
-                else:
-                    n_rows, n_cols = param.data.shape
-                    k = max(1, int(n_rows * 0.1))
-                    m = max(1, int(n_cols * 0.1))
-                    selected_rows = torch.randperm(n_rows, device=param.device)[:k]
-                    selected_cols = torch.randperm(n_cols, device=param.device)[:m]
-                    selected_indices[param] = (selected_rows, selected_cols)
-                    original_values[param] = param.data[selected_rows[:, None], selected_cols].clone()
+                if len(state) == 0:
+                    state['step'] = 0
+                    state['grad_accum'] = torch.zeros_like(
+                        param, 
+                        memory_format=torch.preserve_format
+                    )
+                state['step'] += 1
 
-        for param, indices in selected_indices.items():
-            if len(param.data.shape) == 1:
-                param.data[indices] += tau
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] += tau
-                
+        self.zo_random_seed = np.random.randint(1_000_000_000)
+        self.generator.manual_seed(self.zo_random_seed)
+
+        self._indices_perturb(scaling_factor = 1.0)
         if closure is not None:
             with torch.enable_grad():
                 loss1 = closure()
-                
-        for param, indices in selected_indices.items():
-            if len(param.data.shape) == 1:
-                param.data[indices] = original_values[param] - tau
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[param] - tau
-                
+        self.generator.manual_seed(self.zo_random_seed)
+
+        self._indices_perturb(scaling_factor = -2.0)
         if closure is not None:
             with torch.enable_grad():
                 loss2 = closure()
-                
-        for param, indices in selected_indices.items():
-            if len(param.data.shape) == 1:
-                param.data[indices] = original_values[param]
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] = original_values[param]
+        self.generator.manual_seed(self.zo_random_seed)
 
-        grad_update = (loss1 - loss2).item() / (2 * tau) 
+        self._indices_perturb(scaling_factor = 1.0)
+        self.generator.manual_seed(self.zo_random_seed)
 
-        for group_idx, group in enumerate(self.param_groups):
+        grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
+
+        for group in self.param_groups:
             for param in group['params']:
-                if param not in selected_indices:
+                if not any(name for name, p in self.named_parameters_to_optim if p is param):
                     continue
-                    
                 state = self.state[param]
-            
-                if len(state) == 0:  
-                    state['step'] = 0
-                    state['grad_accum'] = torch.zeros_like(param, memory_format=torch.preserve_format)
-                    
-                indices = selected_indices[param]
+                indices = self._select_indices(param_shape=param.shape, device=param.device)
                 
-                if use_smoothing:
-                    if len(param.data.shape) == 1:
-                        state['grad_accum'][indices] = beta * state['grad_accum'][indices] + (1 - beta) * grad_update
+                if self.use_smoothing:
+                    if isinstance(indices, torch.Tensor):
+                        state['grad_accum'][indices] = (
+                            self.beta * state['grad_accum'][indices] + 
+                            (1 - self.beta) * grad_update
+                        )
                     else:
                         rows, cols = indices
-                        state['grad_accum'][rows[:, None], cols] = beta * state['grad_accum'][rows[:, None], cols] + (1 - beta) * grad_update
+                        state['grad_accum'][rows[:, None], cols] = (
+                            self.beta * state['grad_accum'][rows[:, None], cols] + 
+                            (1 - self.beta) * grad_update
+                        )
                 else:
-                    if len(param.data.shape) == 1:
+                    if isinstance(indices, torch.Tensor):
                         state['grad_accum'][indices] = grad_update
                     else:
                         rows, cols = indices
                         state['grad_accum'][rows[:, None], cols] = grad_update
-                
-                if len(param.data.shape) == 1:
-                    ns_accum = state['grad_accum'].clone()
-                    ns_accum[indices] = torch.sign(ns_accum[indices])
+                if param.ndim >= 2:
+                    update_direction = zeropower_via_newtonschulz5(state['grad_accum'])
                 else:
-                    ns_accum = zeropower_via_newtonschulz5(state['grad_accum'], steps=5).to(param.data.dtype)
-                
-                param.data.add_(ns_accum, alpha=-self.lr)
+                    update_direction = torch.sign(state['grad_accum'])
+                param.data.add_(update_direction, alpha=-self.lr)
 
         return loss1

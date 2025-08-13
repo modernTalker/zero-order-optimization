@@ -279,46 +279,31 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 p.data.copy_(params[idx])
                 idx += 1
                 
-    def _select_perturbation_indices(
-        self,
-        row_frac: float = 0.1,
-        col_frac: float = 0.1,
-        min_elements: int = 1
-    ) -> Dict[int, Tuple[str, Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]]]:
-        """
-        Selects random perturbation indices
+    def _select_indices(self, param_shape, rows_ratio = 0.1, cols_ratio = 0.1, device='cuda'):
+
+        if len(param_shape) == 1:
+            n_elems = param_shape[0]
+            k = max(1, int(n_elems * rows_ratio))
+            indices = torch.randperm(n_elems, device=device, generator=self.generator)[:k]
+            return indices
         
-        Args:
-            row_frac: Fraction of rows for perturbation (for 2D+ tensors)
-            col_frac: Fraction of columns for perturbation (for 2D+ tensors)
-            min_elements: Minimum number of elements for perturbtion
-            
-        Returns:
-            Dictionary with indices for each parameter
-        """
-        indices = {}
-        for group in self.param_groups:
-            for p in group['params']:
-                # if p.requires_grad:
-                param_id = id(p)
-                
-                if p.dim() == 1:
-                    n = p.size(0)
-                    k = max(min_elements, int(n * row_frac))
-                    idx = torch.randperm(n)[:k]
-                    indices[param_id] = ('1d', idx)
-                    
-                elif p.dim() >= 2:
-                    n, m = p.size(0), p.size(1)
-                    k = max(min_elements, int(n * row_frac))
-                    l = max(min_elements, int(m * col_frac))
-                    
-                    rows = torch.randperm(n)[:k]
-                    cols = torch.randperm(m)[:l]
-                    indices[param_id] = ('2d', rows, cols)
-                        
-        return indices
+        n_rows, n_cols = param_shape
+        k = max(1, int(n_rows * rows_ratio))
+        m = max(1, int(n_cols * cols_ratio))
+
+        selected_rows = torch.randperm(n_rows, device=device, generator=self.generator)[:k]
+        selected_cols = torch.randperm(n_cols, device=device, generator=self.generator)[:m]
+        return (selected_rows, selected_cols)
     
+    def _indices_perturb(self, scaling_factor = 1.0):
+        for name, param in self.named_parameters_to_optim:
+            indices = self._select_indices(param_shape=param.shape, device=param.device)
+            if isinstance(indices, torch.Tensor):
+                param.data[indices] += scaling_factor * self.zo_eps
+            else:
+                rows, cols = indices
+                param.data[rows[:, None], cols] += scaling_factor * self.zo_eps
+
     def _apply_sparse_perturbation(self, indices_dict, scaling_factor):
         for group in self.param_groups:
             for param in group['params']:
