@@ -141,11 +141,6 @@ class OurArguments(TrainingArguments):
     zo_use_smoothing: bool = False
     zo_beta: float = 1e-4
 
-    # new args
-
-    vector_sampling_type: str = None
-    matrix_sampling_type: str = None
-
     # sparse gradient pruning
     gradient_sparsity: float = None
     sparse_gradient_resample_steps: int = 1

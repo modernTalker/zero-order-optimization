@@ -1,3 +1,4 @@
+src/**/run_script.sh/
 src/**/wandb/
 src/**/result/
 src/**/mlruns/

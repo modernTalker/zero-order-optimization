@@ -5,7 +5,6 @@ export WANDB_DISABLED="false"
 export WANDB_ENTITY="andrey"   
 export WANDB_PROJECT="zo-lib-run"    
 export WANDB_API_KEY=""
-export WANDB_BASE_URL=""
 export HF_TOKEN="" # for llama 
 
 python run.py --model_name="roberta-large" --lora \
@@ -18,3 +17,4 @@ python run.py --model_name="roberta-large" --lora \
             --zo_tau=1e-3 --zo_use_smoothing=true --zo_beta=0.9 --overwrite_output_dir --report_to="wandb" \
             --scheduler="cosine" --num_training_steps=20000 --warmup_steps=0 --min_lr_ratio=0.1 --scheduler_cycle_length=1 \
             --vector_sampling_type="standard_normal" --matrix_sampling_type="Rotation"
+            
