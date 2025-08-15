@@ -48,13 +48,13 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
                 loss2 = closure()
-            self.projected_grad = torch.sign(loss2-loss1).item()
+            self.projected_grad = torch.sign(loss1 - loss2).item()
         else:  
             self.matrix_perturb_parameters(scaling_factor=-2)
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
                 loss2 = closure()
-            self.projected_grad = torch.sign(loss2-loss1).item()
+            self.projected_grad = torch.sign(loss1 - loss2).item()
             self.matrix_perturb_parameters(scaling_factor=1)
             self.generator.manual_seed(self.zo_random_seed)
         

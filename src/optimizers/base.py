@@ -117,20 +117,21 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         for group in self.param_groups:
             for p in group['params']:
                 z = self.vector_sampler.sample(p.shape, generator=self.generator)
+                # print(self.zo_eps)
                 perturb = z * self.zo_eps
                 perturb = perturb.to(p.device)
                 p.data.add_(scaling_factor * perturb)
 
     def grad_approx(
         self,
-        loss_original: torch.Tensor,
-        loss_perturbed: torch.Tensor,
+        loss_plus: torch.Tensor,
+        loss_minus: torch.Tensor,
         perturbation_mode: str = "two_side"
     ) -> float:
         if perturbation_mode == "one_side":
-            return ((loss_perturbed - loss_original) / self.zo_eps).item()
+            return ((loss_plus - loss_minus) / self.zo_eps).item()
         elif perturbation_mode == "two_side":
-            return ((loss_perturbed - loss_original) / (2 * self.zo_eps)).item()
+            return ((loss_plus - loss_minus) / (2 * self.zo_eps)).item()
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")
                     

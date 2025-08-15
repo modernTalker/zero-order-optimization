@@ -46,13 +46,13 @@ class ZO_MUON(ZeroOrderOptimizer):
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
                 loss2 = closure()
-            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="one_side")
+            self.projected_grad = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="one_side")
         else:  
             self.matrix_perturb_parameters(scaling_factor=-2)
             self.generator.manual_seed(self.zo_random_seed)
             if closure is not None:
                 loss2 = closure()
-            self.projected_grad = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
+            self.projected_grad = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
             self.matrix_perturb_parameters(scaling_factor=1)
             self.generator.manual_seed(self.zo_random_seed)
         

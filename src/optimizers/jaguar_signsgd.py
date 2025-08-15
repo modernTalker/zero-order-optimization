@@ -70,7 +70,7 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         self._indices_perturb(scaling_factor = 1.0)
         self.generator.manual_seed(self.zo_random_seed)
 
-        grad_update = self.grad_approx(loss_original=loss1, loss_perturbed=loss2, perturbation_mode="two_side")
+        grad_update = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
 
         for group in self.param_groups:
             for param in group['params']:
