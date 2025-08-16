@@ -105,119 +105,102 @@ class MatrixSampler:
     def _GS_matrix(
         self,
         dim,
-        num_blocks: int = 10,
-        use_PL: bool = True,
-        use_P:  bool = True,
-        use_PR: bool = True,
-        generator = None,
+        num_blocks=10,
+        use_PL=True,
+        use_P=True,
+        use_PR=True,
+        generator=None,
     ):
+        if generator is None:
+            generator = torch.Generator(device=self.device)
+        
         base = dim // num_blocks
-        rem  = dim %  num_blocks
+        rem = dim % num_blocks
         blocks = [base + (1 if i < rem else 0) for i in range(num_blocks)]
-        block_sizes_L = blocks
-        block_sizes_R = blocks
-    
-    
-        if block_sizes_L:
-            bsL = block_sizes_L
-            maxL = max(bsL)
-            L_blocks = []
-            for b in bsL:
-                X = torch.randn(b, b, device=self.device, generator=generator)
-                Qb, Rb = torch.linalg.qr(X)
-                sign = torch.sign(torch.diagonal(Rb, 0))
-                Qb *= sign
-                if torch.det(Qb) < 0:
-                    Qb[:, 0] *= -1
-                L_blocks.append(Qb)
-            L = torch.block_diag(*L_blocks).to(self.device)
-        else:
-            L = torch.eye(dim, device=self.device)
-    
-        if block_sizes_R:
-            bsR = block_sizes_R
-            R_blocks = []
-            for b in bsR:
-                X = torch.randn(b, b, device=self.device, generator=generator)
-                Qb, Rb = torch.linalg.qr(X)
-                sign = torch.sign(torch.diagonal(Rb, 0))
-                Qb *= sign
-                if torch.det(Qb) < 0:
-                    Qb[:, 0] *= -1
-                R_blocks.append(Qb)
-            R = torch.block_diag(*R_blocks).to(self.device)
-        else:
-            R = torch.eye(dim, device=self.device)
-    
-        idx_PL = torch.randperm(dim, device=self.device) if use_PL else torch.arange(dim, device=self.device, generator=generator)
-        idx_P  = torch.randperm(dim, device=self.device) if use_P  else torch.arange(dim, device=self.device, generator=generator)
-        idx_PR = torch.randperm(dim, device=self.device) if use_PR else torch.arange(dim, device=self.device, generator=generator)
-    
-        M1 = R[:, idx_PR]
-        M2 = M1[idx_P, :]
-        M3 = L @ M2
-        A  = M3[idx_PL, :]
-    
+        
+        L = torch.zeros(dim, dim, device=self.device, dtype=torch.float32)
+        R = torch.zeros(dim, dim, device=self.device, dtype=torch.float32)
+        
+        offset = 0
+        for b in blocks:
+            X_L = torch.randn(b, b, device=self.device, generator=generator)
+            Q_L, R_L = torch.linalg.qr(X_L)
+            sign_L = torch.sign(torch.diagonal(R_L, 0))
+            Q_L = Q_L * sign_L.unsqueeze(0)
+            if torch.det(Q_L) < 0:
+                Q_L[:, 0] *= -1
+            
+            X_R = torch.randn(b, b, device=self.device, generator=generator)
+            Q_R, R_R = torch.linalg.qr(X_R)
+            sign_R = torch.sign(torch.diagonal(R_R, 0))
+            Q_R = Q_R * sign_R.unsqueeze(0)
+            if torch.det(Q_R) < 0:
+                Q_R[:, 0] *= -1
+            
+            L[offset:offset+b, offset:offset+b] = Q_L
+            R[offset:offset+b, offset:offset+b] = Q_R
+            offset += b
+        
+        identity = torch.arange(dim, device=self.device)
+        idx_PR = torch.randperm(dim, device=self.device, generator=generator) if use_PR else identity
+        idx_P = torch.randperm(dim, device=self.device, generator=generator) if use_P else identity
+        idx_PL = torch.randperm(dim, device=self.device, generator=generator) if use_PL else identity
+        
+        A = R[idx_P, :][:, idx_PR]
+        A = L @ A
+        A = A[idx_PL, :]
+        
         return A
     
     def _GS_matrix_v2(
         self,
         dim,
-        num_blocks: int = 10,
-        use_PL: bool = True,
-        use_P:  bool = True,
-        use_PR: bool = True,
-        generator = None
+        num_blocks=None,
+        use_PL=True,
+        use_P=True,
+        use_PR=True,
+        generator=None
     ):
-        # num_blocks is a variable
-        # base*num_blocks = n
-        # base = sqrt(n) => num_blocks = n / sqrt(n)
-        num_blocks = int(dim // np.sqrt(dim))
+        if generator is None:
+            generator = torch.Generator(device=self.device)
+        
+        if num_blocks is None:
+            num_blocks = max(1, int(np.sqrt(dim)))
+        
         base = dim // num_blocks
-        rem  = dim % num_blocks
+        rem = dim % num_blocks
         blocks = [base + (1 if i < rem else 0) for i in range(num_blocks)]
-        block_sizes_L = blocks
-        block_sizes_R = blocks
-    
-    
-        if block_sizes_L:
-            bsL = block_sizes_L
-            maxL = max(bsL)
-            L_blocks = []
-            for b in bsL:
-                X = torch.randn(b, b, device=self.device, generator=generator)
-                Qb, Rb = torch.linalg.qr(X)
-                sign = torch.sign(torch.diagonal(Rb, 0))
-                Qb *= sign
-                if torch.det(Qb) < 0:
-                    Qb[:, 0] *= -1
-                L_blocks.append(Qb)
-            L = torch.block_diag(*L_blocks).to(self.device)
-        else:
-            L = torch.eye(dim, device=self.device)
-    
-        if block_sizes_R:
-            bsR = block_sizes_R
-            R_blocks = []
-            for b in bsR:
-                X = torch.randn(b, b, device=self.device, generator=generator)
-                Qb, Rb = torch.linalg.qr(X)
-                sign = torch.sign(torch.diagonal(Rb, 0))
-                Qb *= sign
-                if torch.det(Qb) < 0:
-                    Qb[:, 0] *= -1
-                R_blocks.append(Qb)
-            R = torch.block_diag(*R_blocks).to(self.device)
-        else:
-            R = torch.eye(dim, device=self.device)
-    
-        idx_PL = torch.randperm(dim, device=self.device) if use_PL else torch.arange(dim, device=self.device, generator=generator)
-        idx_P  = torch.randperm(dim, device=self.device) if use_P  else torch.arange(dim, device=self.device, generator=generator)
-        idx_PR = torch.randperm(dim, device=self.device) if use_PR else torch.arange(dim, device=self.device, generator=generator)
-    
-        M1 = R[:, idx_PR]
-        M2 = M1[idx_P, :]
-        M3 = L @ M2
-        A  = M3[idx_PL, :]
-    
+        
+        L = torch.zeros(dim, dim, device=self.device, dtype=torch.float32)
+        R = torch.zeros(dim, dim, device=self.device, dtype=torch.float32)
+        
+        offset = 0
+        for b in blocks:
+            X_L = torch.randn(b, b, device=self.device, generator=generator)
+            Q_L, R_L = torch.linalg.qr(X_L)
+            sign_L = torch.sign(torch.diagonal(R_L, 0))
+            Q_L = Q_L * sign_L.unsqueeze(0)
+            if torch.det(Q_L) < 0:
+                Q_L[:, 0] *= -1
+            
+            X_R = torch.randn(b, b, device=self.device, generator=generator)
+            Q_R, R_R = torch.linalg.qr(X_R)
+            sign_R = torch.sign(torch.diagonal(R_R, 0))
+            Q_R = Q_R * sign_R.unsqueeze(0)
+            if torch.det(Q_R) < 0:
+                Q_R[:, 0] *= -1
+            
+            L[offset:offset+b, offset:offset+b] = Q_L
+            R[offset:offset+b, offset:offset+b] = Q_R
+            offset += b
+        
+        identity = torch.arange(dim, device=self.device)
+        idx_PR = torch.randperm(dim, device=self.device, generator=generator) if use_PR else identity
+        idx_P = torch.randperm(dim, device=self.device, generator=generator) if use_P else identity
+        idx_PL = torch.randperm(dim, device=self.device, generator=generator) if use_PL else identity
+        
+        A = R[idx_P, :][:, idx_PR]
+        A = L @ A
+        A = A[idx_PL, :]
+        
         return A
