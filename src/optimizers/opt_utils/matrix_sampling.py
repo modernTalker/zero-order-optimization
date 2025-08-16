@@ -92,10 +92,20 @@ class MatrixSampler:
         return Q
 
 
-    def _reflection_matrix(self, d, generator = None):
-        Q = torch.eye(d, device=self.device)
-        idx = torch.randint(0, d - 1, (torch.randint(0,d-1, (1,), generator=generator), ))
-        Q[idx, idx] = -1
+    def _reflection_matrix(self, d, generator=None):
+        if generator is None:
+            generator = torch.Generator(device=self.device)
+        
+        num_reflections = torch.randint(0, d, (1,), device=self.device, generator=generator).item()
+        
+        if num_reflections == 0:
+            return torch.eye(d, device=self.device, dtype=torch.float32)
+        
+        diag = torch.ones(d, device=self.device, dtype=torch.float32)
+        indices = torch.randperm(d, device=self.device, generator=generator)[:num_reflections]
+        diag[indices] = -1
+        
+        Q = torch.diag(diag)
         return Q
 
 
