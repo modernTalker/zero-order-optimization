@@ -73,23 +73,85 @@ class MatrixSampler:
         return H
 
 
-    def _rotation_matrix(self, d, num_rotations=None, generator = None):
+    # def _rotation_matrix(self, d, num_rotations=None, generator = None):
+    #     if num_rotations is None:
+    #         num_rotations = d
+    #     Q = torch.eye(d, device=self.device)
+    #     for _ in range(num_rotations):
+    #         i, j = torch.randint(0, d, (2,), device=self.device, generator=generator)
+    #         while i == j:
+    #             j = torch.randint(0, d, (1,), device=self.device, generator=generator)
+    #             j = j.item()
+    #         theta = torch.rand(1, device=self.device, generator=generator) * 2 * math.pi
+    #         c = torch.cos(theta)
+    #         s = torch.sin(theta)
+    #         col_i = Q[:, i].clone()
+    #         col_j = Q[:, j].clone()
+    #         Q[:, i] = c * col_i - s * col_j
+    #         Q[:, j] = s * col_i + c * col_j
+    #     return Q
+
+
+    def _rotation_matrix(self, d, num_rotations=None, generator=None):
+        if self.device == 'cpu':
+            return self._rotation_matrix_sequential(d, num_rotations, generator)
+        else:
+            return self._rotation_matrix_parallel(d, num_rotations, generator)
+    
+    def _rotation_matrix_sequential(self, d, num_rotations=None, generator=None):
         if num_rotations is None:
             num_rotations = d
-        Q = torch.eye(d, device=self.device)
-        for _ in range(num_rotations):
-            i, j = torch.randint(0, d, (2,), device=self.device, generator=generator)
-            while i == j:
-                j = torch.randint(0, d, (1,), device=self.device, generator=generator)
-                j = j.item()
-            theta = torch.rand(1, device=self.device, generator=generator) * 2 * math.pi
-            c = torch.cos(theta)
-            s = torch.sin(theta)
+        
+        if generator is None:
+            generator = torch.Generator(device=self.device)
+        
+        Q = torch.eye(d, device=self.device, dtype=torch.float32)
+        
+        pairs = torch.randint(0, d, (num_rotations, 2), device=self.device, generator=generator)
+        mask = pairs[:, 0] != pairs[:, 1]
+        valid_pairs = pairs[mask]
+        
+        while len(valid_pairs) < num_rotations:
+            new_pairs = torch.randint(0, d, (num_rotations, 2), device=self.device, generator=generator)
+            mask = new_pairs[:, 0] != new_pairs[:, 1]
+            valid_pairs = torch.cat([valid_pairs, new_pairs[mask]])
+        
+        valid_pairs = valid_pairs[:num_rotations]
+        
+        thetas = torch.rand(num_rotations, device=self.device, generator=generator) * 2 * math.pi
+        cos_thetas = torch.cos(thetas)
+        sin_thetas = torch.sin(thetas)
+        
+        for idx in range(num_rotations):
+            i = valid_pairs[idx, 0]
+            j = valid_pairs[idx, 1]
+            c = cos_thetas[idx]
+            s = sin_thetas[idx]
+            
             col_i = Q[:, i].clone()
             col_j = Q[:, j].clone()
-            Q[:, i] = c * col_i - s * col_j
-            Q[:, j] = s * col_i + c * col_j
+            Q[:, i].mul_(c).add_(col_j, alpha=-s)
+            Q[:, j].mul_(c).add_(col_i, alpha=s)
+        
         return Q
+    
+    def _rotation_matrix_parallel(self, d, num_rotations=None, generator=None):
+        if num_rotations is None:
+            num_rotations = min(d, d*(d-1)//2)
+        
+        if generator is None:
+            generator = torch.Generator(device=self.device)
+        
+        A = torch.randn(d, d, device=self.device, generator=generator, dtype=torch.float32)
+        A = (A - A.T) / 2
+        
+        scale = num_rotations / (d * (d-1) / 2)
+        A = A * scale
+        
+        Q = torch.matrix_exp(A)
+        
+        return Q
+
 
 
     def _reflection_matrix(self, d, generator=None):
