@@ -350,13 +350,13 @@ class OurTrainer(Trainer):
         elif args.trainer == "zo_conserv":
             self.optimizer = ZO_Conserv(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "jaguar_signsgd":
-            self.optimizer = Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, gradient_sparsity=self.gradient_sparsity)
+            self.optimizer = Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, use_smoothing=args.use_smoothing, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "zo_sampling_muon":
             self.optimizer = ZO_SamplingMUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, matrix_sampling_type=args.matrix_sampling_type, gradient_sparsity=self.gradient_sparsity)
         elif args.trainer == "jaguar_muon":
-            self.optimizer = Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, gradient_sparsity=self.gradient_sparsity)
+            self.optimizer = Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, use_smoothing=args.use_smoothing, gradient_sparsity=self.gradient_sparsity)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
