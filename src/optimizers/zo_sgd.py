@@ -11,8 +11,9 @@ class ZO_SGD(ZeroOrderOptimizer):
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
             lr: Optional[float] = None,
             eps: Optional[float] = None,
-            momentum: float = 0.0,
-            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
+            momentum: float = None,
+            weight_decay: float = 0.0,
+            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None, # FIXME: what to do with this? 
             vector_sampling_type: str = "standard_normal",
             perturbation_mode: str = "two_side",
             q: int = 1,
@@ -76,8 +77,7 @@ class ZO_SGD(ZeroOrderOptimizer):
                 device = param.device
                 z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
                 grad = (z * self.projected_grad * self.zo_eps)
-                
-                param.data.add_(grad, alpha=-self.lr)
 
-    def _get_module_parameters(self):
-        return [("all", [(name, p) for name, p in self.named_parameters_all if p.requires_grad])]
+                grad.add_(param, alpha=self.weight_decay) # decay
+
+                param.data.add_(grad, alpha=-self.lr)

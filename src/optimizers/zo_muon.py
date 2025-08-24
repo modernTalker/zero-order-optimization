@@ -6,7 +6,7 @@ from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 from .opt_utils import *
 
 class ZO_MUON(ZeroOrderOptimizer):
-    def __init__(self, 
+    def __init__(self, # FIXME: add Muon momentum 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
             lr: Optional[float] = None,
             eps: Optional[float] = None,
@@ -76,7 +76,5 @@ class ZO_MUON(ZeroOrderOptimizer):
                     grad_update = torch.sign(grad_update)
 
                 grad_update_final = grad_update.to(device)
-                
                 param.data.add_(grad_update_final, alpha=-self.lr) 
-
         return loss1

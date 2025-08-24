@@ -14,32 +14,22 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             lr: Optional[float] = None,
             eps: Optional[float] = None,
             momentum: float = 0.0,
+            weight_decay: float = 0.0,
             gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
             vector_sampling_type: str = "standard_normal",
             matrix_sampling_type: str = None,
             perturbation_mode: str = "two_side",
-            device: str = "cuda", # FIXME: maybe change it
+            device: str = "cuda",
     ):
-        """
-        Base class for zero-order optimizers.
-
-        Args:
-            params: Model parameters to optimize:
-                - Iterable[Tensor] (all parameters)
-                - Iterable[Dict] (parameter gruops with different hyperparameters)
-            lr: Learning rate, if None, then it has to be in parameter groups
-            eps: Perturbation magnitude, if None, then it has to be in parameter groups
-            momentum: Momentum factor, zero by default
-            gradient_sparsity: Gradient sparsity (float for global or dict per parameter)
-        """
-        if lr is not None or eps is not None:
+        if lr is not None or eps is not None: # FIXME: looks strange 
             defaults = {
                 'lr': lr,
                 'eps': eps,
                 'momentum': momentum,
+                'weight_decay': weight_decay
             }
         else:
-            defaults = {'momentum': momentum}
+            defaults = {'momentum': momentum, 'weight_decay': weight_decay}
 
         super().__init__(params, defaults)
 
@@ -65,7 +55,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         self.zo_eps = self._calculate_zo_eps(eps=eps)
 
         self._inner_optimizers = None
-        self._lr_schedulers = None
+        self._lr_schedulers = None  
 
     def _prepare_parameters(self) -> None:
         """Prepares parameters for optimization. Common for all optimizer's steps"""
@@ -172,4 +162,3 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 perturb = z *self.zo_eps
                 perturb = perturb.to(p.device)
                 p.data.add_(scaling_factor * perturb)
-
