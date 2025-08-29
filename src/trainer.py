@@ -152,7 +152,8 @@ class OurTrainer(Trainer):
 
     def create_optimizer_and_scheduler(self, num_training_steps):
         # self.optimizer = ""
-        self.lr_scheduler = get_cosine_schedule_with_warmup(self.optimizer)
+        # self.lr_scheduler = get_cosine_schedule_with_warmup(self.optimizer)
+        pass
 
     def _inner_training_loop(
             self, batch_size=None, args=None, resume_from_checkpoint=None, trial=None, ignore_keys_for_eval=None
@@ -366,6 +367,7 @@ class OurTrainer(Trainer):
 
         self.scheduler = get_scheduler(optimizer=self.optimizer, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps,
                                         warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio)
+        # self.scheduler = get_cosine_schedule_with_warmup(self.optimizer, num_warmup_steps=0, num_training_steps=args.num_training_steps)
         # important: at this point:
         # self.model         is the Transformers Model
         # self.model_wrapped is DDP(Transformers Model), Deepspeed(Transformers Model), etc.

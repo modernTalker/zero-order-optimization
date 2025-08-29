@@ -14,8 +14,7 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
             eps: float = 1e-3,
             vector_sampling_type: str = "standard_normal", 
             matrix_sampling_type: str = None,  
-            perturbation_mode: str = "two_side",
-            *
+            perturbation_mode: str = "two_side"
     ):
         super().__init__(
             params,
@@ -28,7 +27,6 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         
         for group in self.param_groups:
             group['beta'] = beta
-            group['use_smoothing'] = use_smoothing
 
     @torch.no_grad()
     def step(self, closure=None):
