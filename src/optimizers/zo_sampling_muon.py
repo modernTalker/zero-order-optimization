@@ -15,13 +15,13 @@ class ZO_SamplingMUON(ZeroOrderOptimizer):
             perturbation_mode: str = "two_side"
         ):
         super().__init__(
-            params=params,
+            params,
             lr=lr,
             eps=eps,
             vector_sampling_type=vector_sampling_type,
             matrix_sampling_type=matrix_sampling_type,
+            perturbation_mode=perturbation_mode,
         )
-        self.perturbation_mode = perturbation_mode
 
     @torch.no_grad()
     def step(self, closure=None):

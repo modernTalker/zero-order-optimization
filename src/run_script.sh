@@ -13,7 +13,7 @@ command="python run.py"
 command+=" --model_name=\"roberta-large\""
 command+=" --lora" # type of Fine-Tuning 
 command+=" --task_name=\"SST2\""
-command+=" --trainer=\"jaguar_signsgd\""
+command+=" --trainer=\"zo_sampling_muon\""
 
 # Logging and Reporting
 # TODO: output_dir is constructed in Python using args.tag, do we need it? 
@@ -44,7 +44,7 @@ command+=" --train_set_seed=0"
 command+=" --perturbation_mode=\"two_side\""
 command+=" --zo_eps=1e-3"
 command+=" --momentum=0.0"
-command+=" --weight_decay=0"
+command+=" --weight_decay=0.0"
 command+=" --module_wise_perturbation=False"
 
 # Jaguar-Specific Parameters

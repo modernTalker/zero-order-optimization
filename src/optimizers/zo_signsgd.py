@@ -10,7 +10,9 @@ class ZO_SignSGD(ZO_SGD):
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
             lr: Optional[float] = None,
             eps: Optional[float] = None,
-            momentum: float = 0.0,
+            momentum: float = None,
+            weight_decay: float = 0.0,
+            vector_sampling_type: str = "standard_normal",
             perturbation_mode: str = "two_side",
     ):
         """
@@ -43,8 +45,8 @@ class ZO_SignSGD(ZO_SGD):
         perturbation_mode: str = "two_side"
     ) -> float:
         if perturbation_mode == "one_side":
-            return torch.sign(((loss_plus - loss_minus) / self.zo_eps).item())
+            return torch.sign(loss_plus - loss_minus)
         elif perturbation_mode == "two_side":
-            return  torch.sign(((loss_plus - loss_minus) / (2 * self.zo_eps)).item())
+            return  torch.sign((loss_plus - loss_minus) / 2)
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")

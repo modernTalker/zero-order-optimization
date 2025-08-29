@@ -10,17 +10,18 @@ class ZO_MUON(ZeroOrderOptimizer):
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
             lr: Optional[float] = None,
             eps: Optional[float] = None,
-            matrix_sampling_type: str = "Random_baseline",
             vector_sampling_type: str = "standard_normal",
+            matrix_sampling_type: str = "Random_baseline",
             perturbation_mode: str = "two_side"
         ):
-        defaults = dict(
+        super().__init__(
+            params,
             lr=lr,
             eps=eps,
             vector_sampling_type=vector_sampling_type,
-            matrix_sampling_type=matrix_sampling_type
+            matrix_sampling_type=matrix_sampling_type,
+            perturbation_mode=perturbation_mode,
         )
-        super().__init__(params, defaults)
         self.perturbation_mode = perturbation_mode
 
     @torch.no_grad()
