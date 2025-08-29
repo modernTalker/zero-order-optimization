@@ -105,12 +105,11 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         scaling_factor: float = 1.0,
     ) -> None:
         for group in self.param_groups:
+            eps = group["eps"]
             for p in group['params']:
                 z = self.vector_sampler.sample(p.shape, generator=self.generator)
-                # print(self.zo_eps)
-                perturb = z * self.zo_eps
-                perturb = perturb.to(p.device)
-                p.data.add_(scaling_factor * perturb)
+                perturb = z * eps
+                p.data.add_(scaling_factor * perturb.to(p.device))
 
     def grad_approx(
         self,
@@ -119,9 +118,9 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         perturbation_mode: str = "two_side"
     ) -> float:
         if perturbation_mode == "one_side":
-            return ((loss_plus - loss_minus) / self.zo_eps).item()
+            return ((loss_plus - loss_minus)).item()
         elif perturbation_mode == "two_side":
-            return ((loss_plus - loss_minus) / (2 * self.zo_eps)).item()
+            return ((loss_plus - loss_minus) / 2).item()
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")
                     
@@ -153,12 +152,12 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         scaling_factor: float = 1.0,
     ) -> None:
         for group in self.param_groups:
+            eps = group["eps"]
             for p in group['params']:
                 if len(p.shape) == 1:
                     z = self.vector_sampler.sample(p.shape, generator=self.generator)
                 else:
                     z = self.matrix_sampler.sample_single_matrix(p.shape, generator=self.generator)
 
-                perturb = z *self.zo_eps
-                perturb = perturb.to(p.device)
-                p.data.add_(scaling_factor * perturb)
+                perturb = z * eps
+                p.data.add_(scaling_factor * perturb.to(p.device))

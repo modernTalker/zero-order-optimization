@@ -13,29 +13,21 @@ class ZO_SGD(ZeroOrderOptimizer):
             eps: Optional[float] = None,
             momentum: float = None,
             weight_decay: float = 0.0,
-            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None, # FIXME: what to do with this? 
             vector_sampling_type: str = "standard_normal",
             perturbation_mode: str = "two_side",
-            q: int = 1,
-            module_wise_perturbation: bool = False,
-            coordinate_perturbation: bool = False
     ):
         defaults = dict(
             lr=lr,
             eps=eps,
             momentum=momentum,
-            vector_sampling_type=vector_sampling_type,
-            gradient_sparsity=gradient_sparsity
+            weight_decay=weight_decay,
+            gradient_sparsity=gradient_sparsity,
+            vector_sampling_type=vector_sampling_type
         )
         super().__init__(params, defaults)
         
         self.state = defaultdict(dict)
         self.perturbation_mode = perturbation_mode
-        self.lr = lr 
-        self.module_wise_perturbation = module_wise_perturbation
-        self.coordinate_perturbation = coordinate_perturbation
-        self.projected_grad = None
-        self.zo_random_seed = None
 
     @torch.no_grad()
     def step(self, closure=None):
@@ -53,11 +45,11 @@ class ZO_SGD(ZeroOrderOptimizer):
             self.zo_perturb_parameters(scaling_factor=-1)
             self.generator.manual_seed(self.zo_random_seed)
             loss2 = closure()
-            self.projected_grad = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="one_side")
+            projected_grad = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="one_side")
         else:
             self.zo_perturb_parameters(scaling_factor=-2)
             loss2 = closure()
-            self.projected_grad = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
+            projected_grad = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
             self.generator.manual_seed(self.zo_random_seed)
             self.zo_perturb_parameters(scaling_factor=1)
             self.generator.manual_seed(self.zo_random_seed)
@@ -68,7 +60,14 @@ class ZO_SGD(ZeroOrderOptimizer):
     
     @torch.no_grad()
     def _apply_gradients(self) -> None:
+        self.generator.manual_seed(self.zo_random_seed)
         for group_idx, group in enumerate(self.param_groups):
+            lr = group['lr']
+            eps = group['eps']
+            momentum = group['momentum']
+            weight_decay = group['weight_decay']
+            gradient_sparsity = group['gradient_sparsity']
+            vector_sampling_type = group['vector_sampling_type']
             for param in group['params']:
                 state = self.state[param]
                 if len(state) == 0:
@@ -76,8 +75,19 @@ class ZO_SGD(ZeroOrderOptimizer):
                 
                 device = param.device
                 z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
-                grad = (z * self.projected_grad * self.zo_eps)
+                grad = (z * projected_grad) / eps        
 
-                grad.add_(param, alpha=self.weight_decay) # decay
+                grad.add_(param, alpha=weight_decay) # decay
 
-                param.data.add_(grad, alpha=-self.lr)
+                # Apply momentum if applicable
+                if momentum is not None and momentum != 0:
+                    if 'momentum_buffer' not in state:
+                        buf = state['momentum_buffer'] = torch.clone(grad).detach()
+                    else:
+                        buf = state['momentum_buffer']
+                        buf.mul_(momentum).add_(grad)
+                    update = buf
+                else:
+                    update = grad
+
+                param.data.add_(update, alpha=-lr)

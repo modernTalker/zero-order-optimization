@@ -10,38 +10,25 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
     def __init__(self, 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
             beta: float = 0.9,
-            use_smoothing: bool = True,
             lr: float = 0.01,
             eps: float = 1e-3,
-            momentum: float = 0.0,
-            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None,
-            perturbation_mode: str = "two_side",
-            q: int = 1,
-            module_wise_perturbation: bool = False,
-            coordinate_perturbation: bool = False,
             vector_sampling_type: str = "standard_normal", 
             matrix_sampling_type: str = None,  
-            device: str = "cuda" 
+            perturbation_mode: str = "two_side",
+            *
     ):
         super().__init__(
             params,
             lr=lr,
             eps=eps,
-            momentum=momentum,
-            gradient_sparsity=gradient_sparsity,
             vector_sampling_type=vector_sampling_type,
             matrix_sampling_type=matrix_sampling_type,
             perturbation_mode=perturbation_mode,
-            device=device
         )
         
         for group in self.param_groups:
             group['beta'] = beta
             group['use_smoothing'] = use_smoothing
-        
-        self.q = q
-        self.module_wise_perturbation = module_wise_perturbation
-        self.coordinate_perturbation = coordinate_perturbation
 
     @torch.no_grad()
     def step(self, closure=None):
@@ -80,7 +67,8 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         for group in self.param_groups:
             lr = group['lr']  
             beta = group['beta']
-            use_smoothing = group['use_smoothing']
+            eps = group['eps']
+            grad_final = grad_update / eps 
 
             for param in group['params']:
                 if not any(name for name, p in self.named_parameters_to_optim if p is param):
@@ -88,24 +76,17 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
                 state = self.state[param]
                 indices = self._select_indices(param_shape=param.shape, device=param.device)
                 
-                if use_smoothing:
-                    if isinstance(indices, torch.Tensor):
-                        state['grad_accum'][indices] = (
-                            beta * state['grad_accum'][indices] + 
-                            (1 - beta) * grad_update
-                        )
-                    else:
-                        rows, cols = indices
-                        state['grad_accum'][rows[:, None], cols] = (
-                            beta * state['grad_accum'][rows[:, None], cols] + 
-                            (1 - beta) * grad_update
-                        )
+                if isinstance(indices, torch.Tensor):
+                    state['grad_accum'][indices] = (
+                        beta * state['grad_accum'][indices] + 
+                        (1 - beta) * grad_final
+                    )
                 else:
-                    if isinstance(indices, torch.Tensor):
-                        state['grad_accum'][indices] = grad_update
-                    else:
-                        rows, cols = indices
-                        state['grad_accum'][rows[:, None], cols] = grad_update
+                    rows, cols = indices
+                    state['grad_accum'][rows[:, None], cols] = (
+                        beta * state['grad_accum'][rows[:, None], cols] + 
+                        (1 - beta) * grad_final
+                    )
                 
                 update_direction = torch.sign(state['grad_accum'])
                 param.data.add_(update_direction, alpha=-lr)
