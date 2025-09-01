@@ -365,9 +365,9 @@ class OurTrainer(Trainer):
             else: 
                 raise NotImplementedError(f"Optimizer {args.optimizer} is not implemented")
 
-        self.scheduler = get_scheduler(optimizer=self.optimizer, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps,
+        self.lr_scheduler = get_scheduler(optimizer=self.optimizer, scheduler_type=args.scheduler, num_training_steps=args.num_training_steps,
                                         warmup_steps=args.warmup_steps, min_lr_ratio=args.min_lr_ratio)
-        # self.scheduler = get_cosine_schedule_with_warmup(self.optimizer, num_warmup_steps=0, num_training_steps=args.num_training_steps)
+        # self.lr_scheduler = get_cosine_schedule_with_warmup(self.optimizer, num_warmup_steps=0, num_training_steps=args.num_training_steps)
         # important: at this point:
         # self.model         is the Transformers Model
         # self.model_wrapped is DDP(Transformers Model), Deepspeed(Transformers Model), etc.
@@ -530,7 +530,7 @@ class OurTrainer(Trainer):
 
                 closure = self.create_closure(model, inputs)
                 tr_loss_step = self.optimizer.step(closure)     
-                self.scheduler.step()
+                self.lr_scheduler.step()
                 # print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']}")
 
                 if (
