@@ -644,8 +644,6 @@ class OurTrainer(Trainer):
 
         return TrainOutput(self.state.global_step, train_loss, metrics)
 
-<<<<<<< HEAD
-=======
     ############## MeZO ##############
 
     def gradient_update(self, model):
