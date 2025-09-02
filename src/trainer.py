@@ -51,14 +51,12 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm.auto import tqdm
 from transformers import Trainer
 from transformers.debug_utils import DebugOption, DebugUnderflowOverflow
-from transformers.deepspeed import deepspeed_init, is_deepspeed_zero3_enabled
 from transformers.dependency_versions_check import dep_version_check
 # Integrations must be imported before ML frameworks:
 from transformers.integrations import (  # isort: split
     hp_params,
-    is_fairscale_available,
 )
-from transformers.pytorch_utils import is_torch_greater_or_equal_than_1_10, is_torch_less_than_1_11
+
 from transformers.trainer_callback import (
     DefaultFlowCallback,
     ProgressCallback,
@@ -69,7 +67,6 @@ from transformers.trainer_pt_utils import (
 )
 from transformers.trainer_utils import (
     HPSearchBackend,
-    ShardedDDPOption,
     TrainOutput,
     has_length,
     speed_metrics,
@@ -79,7 +76,6 @@ from transformers.utils import (
     is_apex_available,
     is_in_notebook,
     is_sagemaker_mp_enabled,
-    is_torch_tpu_available,
     logging,
 )
 
@@ -97,7 +93,6 @@ from metrics import f1
 from utils import OPT_PERTURBATION_LEVEL_TO_REGEX
 from optimizers import * 
 
-_is_native_cpu_amp_available = is_torch_greater_or_equal_than_1_10
 
 DEFAULT_CALLBACKS = [DefaultFlowCallback]
 DEFAULT_PROGRESS_CALLBACK = ProgressCallback
@@ -110,13 +105,6 @@ if is_in_notebook():
 if is_apex_available():
     from apex import amp
 
-if is_torch_tpu_available(check_device=False):
-    import torch_xla.core.xla_model as xm
-    import torch_xla.debug.metrics as met
-    import torch_xla.distributed.parallel_loader as pl
-
-if is_fairscale_available():
-    dep_version_check("fairscale")
 
 if is_sagemaker_mp_enabled():
     import smdistributed.modelparallel.torch as smp
@@ -294,24 +282,13 @@ class OurTrainer(Trainer):
                 debug_overflow = DebugUnderflowOverflow(self.model)  # noqa
 
         delay_optimizer_creation = (
-                self.sharded_ddp is not None
-                and self.sharded_ddp != ShardedDDPOption.SIMPLE
-                or is_sagemaker_mp_enabled()
-                or self.fsdp is not None
+                is_sagemaker_mp_enabled()
         )
-        if args.deepspeed:
-            deepspeed_engine, optimizer, lr_scheduler = deepspeed_init(
-                self, num_training_steps=max_steps, resume_from_checkpoint=resume_from_checkpoint
-            )
-            self.model = deepspeed_engine.module
-            self.model_wrapped = deepspeed_engine
-            self.deepspeed = deepspeed_engine
-            self.optimizer = optimizer
-            self.lr_scheduler = lr_scheduler
-        elif not delay_optimizer_creation:
+        if not delay_optimizer_creation:
             self.create_optimizer_and_scheduler(num_training_steps=max_steps)
 
         self.state = TrainerState()
+        self.state.logging_steps = args.logging_steps
         self.state.is_hyper_param_search = trial is not None
 
         # Activate gradient checkpointing if needed
@@ -451,15 +428,7 @@ class OurTrainer(Trainer):
                 is_random_sampler = hasattr(train_dataloader, "sampler") and isinstance(
                     train_dataloader.sampler, RandomSampler
                 )
-                if is_torch_less_than_1_11 or not is_random_sampler:
-                    # We just need to begin an iteration to create the randomization of the sampler.
-                    # That was before PyTorch 1.11 however...
-                    for _ in train_dataloader:
-                        break
-                else:
-                    # Otherwise we need to call the whooooole sampler cause there is some random operation added
-                    # AT THE VERY END!
-                    _ = list(train_dataloader.sampler)
+                _ = list(train_dataloader.sampler)
 
         # Main training loop
         total_steps = 0
@@ -481,11 +450,7 @@ class OurTrainer(Trainer):
             elif hasattr(train_dataloader, "dataset") and isinstance(train_dataloader.dataset, IterableDatasetShard):
                 train_dataloader.dataset.set_epoch(epoch)
 
-            if is_torch_tpu_available():
-                parallel_loader = pl.ParallelLoader(train_dataloader, [args.device]).per_device_loader(args.device)
-                epoch_iterator = parallel_loader
-            else:
-                epoch_iterator = train_dataloader
+            epoch_iterator = train_dataloader
 
             # Reset the past mems state at the beginning of each epoch if necessary.
             if args.past_index >= 0:
@@ -535,7 +500,7 @@ class OurTrainer(Trainer):
 
                 if (
                         args.logging_nan_inf_filter
-                        and not is_torch_tpu_available()
+                        # and not is_torch_tpu_available()
                         and (torch.isnan(tr_loss_step) or torch.isinf(tr_loss_step))
                 ):
                     # if loss is nan or inf simply add the average of previous logged losses
@@ -545,9 +510,6 @@ class OurTrainer(Trainer):
 
                 self.current_flos += float(self.floating_point_ops(inputs))
 
-                # Optimizer step for deepspeed must be called on every step regardless of the value of gradient_accumulation_steps
-                if self.deepspeed:
-                    self.deepspeed.step()
 
                 if (step + 1) % args.gradient_accumulation_steps == 0 or (
                         # last step in epoch but step is always smaller than gradient_accumulation_steps
@@ -558,7 +520,9 @@ class OurTrainer(Trainer):
                     self.state.global_step += 1
                     self.state.epoch = epoch + (step + 1) / steps_in_epoch
                     self.control = self.callback_handler.on_step_end(args, self.state, self.control)
-                    self._maybe_log_save_evaluate(tr_loss, model, trial, epoch, ignore_keys_for_eval)
+                    # self.control.should_log = True
+                    # print(self.control.should_log)
+                    self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval, start_time, None)
 
                 else:
                     self.control = self.callback_handler.on_substep_end(args, self.state, self.control)
@@ -619,7 +583,7 @@ class OurTrainer(Trainer):
                 self.control.should_training_stop = True
 
             self.control = self.callback_handler.on_epoch_end(args, self.state, self.control)
-            self._maybe_log_save_evaluate(tr_loss, model, trial, epoch, ignore_keys_for_eval)
+            self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval, start_time, None)
 
             if DebugOption.TPU_METRICS_DEBUG in self.args.debug:
                 if is_torch_tpu_available():
@@ -639,10 +603,7 @@ class OurTrainer(Trainer):
 
         logger.info("\n\nTraining completed. Do not forget to share your model on huggingface.co/models =)\n\n")
         if args.load_best_model_at_end and self.state.best_model_checkpoint is not None:
-            # Wait for everyone to get here so we are sur the model has been saved by process 0.
-            if is_torch_tpu_available():
-                xm.rendezvous("load_best_model_at_end")
-            elif args.local_rank != -1:
+            if args.local_rank != -1:
                 dist.barrier()
             elif is_sagemaker_mp_enabled():
                 smp.barrier()
@@ -682,6 +643,52 @@ class OurTrainer(Trainer):
         self.control = self.callback_handler.on_train_end(args, self.state, self.control)
 
         return TrainOutput(self.state.global_step, train_loss, metrics)
+
+<<<<<<< HEAD
+=======
+    ############## MeZO ##############
+
+    def gradient_update(self, model):
+        args = self.args
+
+        # Gradient clipping
+        if args.max_grad_norm is not None and args.max_grad_norm > 0 and not self.deepspeed:
+
+            if self.do_grad_scaling:
+                self.scaler.unscale_(self.optimizer)
+
+            if is_sagemaker_mp_enabled() and args.fp16:
+                self.optimizer.clip_master_grads(args.max_grad_norm)
+            elif hasattr(self.optimizer, "clip_grad_norm"):
+                # Some optimizers (like the sharded optimizer) have a specific way to do gradient clipping
+                self.optimizer.clip_grad_norm(args.max_grad_norm)
+            elif hasattr(model, "clip_grad_norm_"):
+                # Some models (like FullyShardedDDP) have a specific way to do gradient clipping
+                model.clip_grad_norm_(args.max_grad_norm)
+            else:
+                # Revert to normal clipping otherwise, handling Apex or full precision
+                nn.utils.clip_grad_norm_(
+                    amp.master_params(self.optimizer) if self.use_apex else model.parameters(),
+                    args.max_grad_norm,
+                )
+
+        # Optimizer step
+        optimizer_was_run = True
+        if self.deepspeed:
+            pass  # called outside the loop
+        elif self.do_grad_scaling:
+            scale_before = self.scaler.get_scale()
+            self.scaler.step(self.optimizer)
+            self.scaler.update()
+            scale_after = self.scaler.get_scale()
+            optimizer_was_run = scale_before <= scale_after
+        else:
+            # self.optimizer.step()
+            pass # FIXME: fix this part
+
+        if optimizer_was_run and not self.deepspeed:
+            self.lr_scheduler.step()
+        model.zero_grad()
 
     def create_closure(self, model, inputs):
         '''
@@ -770,18 +777,11 @@ class OurTrainer(Trainer):
         if self.args.n_gpu > 1:
             loss = loss.mean()  # mean() to average on multi-gpu parallel training
 
-        if self.args.gradient_accumulation_steps > 1 and not self.deepspeed:
-            # deepspeed handles loss scaling by gradient_accumulation_steps in its `backward`
-            loss = loss / self.args.gradient_accumulation_steps
-
         if self.do_grad_scaling:
             self.scaler.scale(loss).backward()
         elif self.use_apex:
             with amp.scale_loss(loss, self.optimizer) as scaled_loss:
                 scaled_loss.backward()
-        elif self.deepspeed:
-            # loss gets scaled under gradient_accumulation_steps in deepspeed
-            loss = self.deepspeed.backward(loss)
         else:
             loss.backward()
 
@@ -819,8 +819,8 @@ class OurTrainer(Trainer):
         if output_dir is None:
             output_dir = self.args.output_dir
 
-        if is_torch_tpu_available():
-            self._save_tpu(output_dir)
+        # if is_torch_tpu_available():
+        #     self._save_tpu(output_dir)
         elif is_sagemaker_mp_enabled():
             # Calling the state_dict needs to be done on the wrapped model and on all processes.
             os.makedirs(output_dir, exist_ok=True)
@@ -830,47 +830,6 @@ class OurTrainer(Trainer):
             if IS_SAGEMAKER_MP_POST_1_10:
                 # 'user_content.pt' indicates model state_dict saved with smp >= 1.10
                 Path(os.path.join(output_dir, "user_content.pt")).touch()
-        elif (
-                ShardedDDPOption.ZERO_DP_2 in self.args.sharded_ddp
-                or ShardedDDPOption.ZERO_DP_3 in self.args.sharded_ddp
-                or self.fsdp is not None
-        ):
-            from torch.distributed.fsdp import FullyShardedDataParallel as FSDP, StateDictType, FullStateDictConfig
-            full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-
-            # Fix the FSDP loading bug
-            with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
-                state_dict = self.model.state_dict()
-            # state_dict = self.model.state_dict()
-
-            if self.args.should_save:
-                self._save(output_dir, state_dict=state_dict)
-        elif self.deepspeed:
-            # this takes care of everything as long as we aren't under zero3
-            if self.args.should_save:
-                self._save(output_dir)
-
-            if is_deepspeed_zero3_enabled():
-                # It's too complicated to try to override different places where the weights dump gets
-                # saved, so since under zero3 the file is bogus, simply delete it. The user should
-                # either user deepspeed checkpoint to resume or to recover full weights use
-                # zero_to_fp32.py stored in the checkpoint.
-                if self.args.should_save:
-                    file = os.path.join(output_dir, WEIGHTS_NAME)
-                    if os.path.isfile(file):
-                        # logger.info(f"deepspeed zero3: removing {file}, see zero_to_fp32.py to recover weights")
-                        os.remove(file)
-
-                # now save the real model if stage3_gather_16bit_weights_on_model_save=True
-                # if false it will not be saved.
-                # This must be called on all ranks
-                if not self.deepspeed.save_16bit_model(output_dir, WEIGHTS_NAME):
-                    logger.warning(
-                        "deepspeed.save_16bit_model didn't save the model, since"
-                        " stage3_gather_16bit_weights_on_model_save=false. Saving the full checkpoint instead, use"
-                        " zero_to_fp32.py to recover weights"
-                    )
-                    self.deepspeed.save_checkpoint(output_dir)
 
         elif self.args.should_save:
             self._save(output_dir)
