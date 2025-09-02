@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=0
 export WANDB_DISABLED="false"
 # export WANDB_PROJECT="zo-lib-run"       
 # export WANDB_ENTITY="andrey"   
@@ -25,8 +25,8 @@ command+=" --logging_steps=10"
 # Training Configuration
 command+=" --num_train_epochs=5"
 command+=" --per_device_train_batch_size=16"
-command+=" --load_best_model_at_end"
-command+=" --evaluation_strategy=\"steps\""
+# command+=" --load_best_model_at_end"
+command+=" --eval_strategy=\"steps\""
 command+=" --save_strategy=\"steps\""
 command+=" --save_total_limit=1"
 command+=" --eval_steps=1000"
