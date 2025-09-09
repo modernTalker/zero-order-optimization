@@ -343,21 +343,21 @@ class OurTrainer(Trainer):
         params = [p for p in self.model.parameters() if p.requires_grad]
 
         if args.trainer == "zo_adam":
-            self.optimizer = ZO_Adam(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = ZO_Adam(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "zo_sgd":
-            self.optimizer = ZO_SGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = ZO_SGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "zo_signsgd":
-            self.optimizer = ZO_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = ZO_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "zo_conserv":
-            self.optimizer = ZO_Conserv(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = ZO_Conserv(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "jaguar_signsgd":
-            self.optimizer = Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode)
+            self.optimizer = Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "zo_muon":
-            self.optimizer = ZO_MUON(params, lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = ZO_MUON(params, lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "zo_sampling_muon":
-            self.optimizer = ZO_SamplingMUON(params, lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = ZO_SamplingMUON(params, lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "jaguar_muon":
-            self.optimizer = Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type)
+            self.optimizer = Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 

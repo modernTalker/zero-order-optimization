@@ -161,7 +161,8 @@ class OurArguments(TrainingArguments):
     ## - linear: perturb one linear layer at a time
     """
     tensor_sampling_type: str = "standard_normal"
-    # report_to: str = "clearml"
+    matrix_sampling_type: str = None 
+
     scheduler: str = "constant"
     num_training_steps: int = 20000
     warmup_steps: int = 0

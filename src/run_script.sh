@@ -59,7 +59,7 @@ command+=" --scheduler_cycle_length=1"
 
 # Sampling Methods
 command+=" --vector_sampling_type=\"standard_normal\""
-command+=" --matrix_sampling_type=\"Householder_reflection\""
+command+=" --matrix_sampling_type=None"
 
 # Jaguar-Specific Parameters
 command+=" --zo_tau=1e-3"
