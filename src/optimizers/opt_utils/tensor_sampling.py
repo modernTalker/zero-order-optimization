@@ -1,34 +1,48 @@
 import torch
-import math
-import numpy as np
-import random
-import scipy.stats as sps
-from collections import defaultdict
 
-class MatrixSampler:
-    
-    def __init__(self, sampler_type, device='cuda'):
+class TensorSampler:
+    def __init__(self, sampler_type, p=2.0, device=None):
+        """
+        Initialize a vector sampler.
         
-        self.sampler_type = sampler_type
-        self.device = device
-        if self.sampler_type == 'GS':                       # + +
+        Args:
+            sampler_type: The type of sampling to use ("standard_normal" or "lp_sphere")
+            device: The device to place tensors on (default: None, uses current default device)
+            p (float of 'inf'): The p-norm value for "lp_sphere" sampler (default: 2.0)
+        """
+        self.p = p
+        self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.create_sampler(sampler_type)
+
+    def create_sampler(self, sampler_type):
+        if sampler_type == "standard_normal":
+            self._sample_func = self._standard_normal
+        elif sampler_type == "lp_sphere":
+            self._sample_func = self._sample_lp_sphere
+        elif self.sampler_type == 'GS':                      
             self.sampler = self._GS_matrix
-        elif self.sampler_type == 'GS_v2':                  # + +
+        elif self.sampler_type == 'GS_v2':                 
             self.sampler = self._GS_matrix_v2
-        elif self.sampler_type == 'Householder_reflection': # + +
+        elif self.sampler_type == 'Householder_reflection':
             self.sampler = self._householder_matrix
-        elif self.sampler_type == 'Rotation':               # + + 
+        elif self.sampler_type == 'Rotation':               
             self.sampler = self._rotation_matrix
-        elif self.sampler_type == 'Reflection':             # + +
+        elif self.sampler_type == 'Reflection':            
             self.sampler = self._reflection_matrix
-        elif self.sampler_type == 'Random_baseline':        # + +
+        elif self.sampler_type == 'Random_baseline':       
             self.sampler = self._random_baseline
-        elif self.sampler_type == 'Torch_QR':        # + +
+        elif self.sampler_type == 'Torch_QR':       
             self.sampler = self._torch_qr
         else:
-            raise NotImplementedError(f"Sampling {self.sampler_type} is not implemented")
-        
-    def sample_single_matrix(self, param_shape, generator = None):
+            raise NotImplementedError(f"Sampling {sampler_type} is not implemented")
+    
+    def sample(self, param_shape, generator=None, sampler_type=None):
+        if sampler_type is not None:
+            self.create_sampler(sampler_type)
+
+        if self.sampler_type in ["standard_normal", "lp_sphere"]:
+            return self._sample_func(param_shape, generator)
+
         assert len(param_shape) > 1, f"Sample only matrices, current shape: {param_shape}"
         n, m = param_shape
         if self.sampler_type == 'Torch_QR':
@@ -37,38 +51,42 @@ class MatrixSampler:
             return self.sampler(n, generator=generator)[:, :m]
         return self.sampler(m, generator=generator)[:n, :]
 
-    def sample(self, param_shapes):
+    def _standard_normal(self, param_shape, generator=None):
+        return torch.normal(mean=0, std=1, size=param_shape, device=self.device, generator=generator)
+    
+    def _sample_lp_sphere(self, param_shape, generator=None):
+        return self._lp_uniform_sphere(param_shape=param_shape, p=self.p, generator=generator)
+    
+    def _lp_uniform_sphere(self, param_shape, p=2.0, device=None, generator=None):
+        if p == 'inf':
+            # For L_infinity norm, sample from {-1, 1}^d uniformly
+            return torch.randint(0, 2, param_shape, device=device, generator=generator) * 2 - 1
 
-        shape_to_names = defaultdict(list)
-        for name, shape in param_shapes:
-            shape_to_names[shape].append(name)
+        if p == 2.0:
+            # For L2 norm, we can use the standard Gaussian method
+            x = torch.randn(param_shape, device=device, generator=generator)
+            norm = torch.norm(x, p=2, dim=-1, keepdim=True)
+            return x / norm
 
-        E_dict = {}
-        for (n, m), names in shape_to_names.items():
-            
-            k = min(n, m)
-            S = self.Sigma(n, m)
-            U = self.sampler(n)
-            V = self.sampler(m)
-            S_k = S[:k, :k]
-            U_k = U[:, :k]
-            V_k = V[:, :k]
-            E_k = U_k @ S_k @ V_k.T
-            # E = U @ S @ V.T
-            for name in names:
-                E_dict[name] = (E_k.clone(), U_k.clone(), S_k.clone(), V_k.clone())
-                # E_dict[name] = (E.clone(), U.clone(), S.clone(), V.clone())
-        return E_dict
+        elif p == 1.0:
+            # For L1 norm, we can use the Dirichlet distribution
+            exp_samples = torch.empty(param_shape, device=device).exponential_(generator=generator)
+            l1_norm = torch.sum(exp_samples, dim=-1, keepdim=True)
+            samples = exp_samples / l1_norm
+            signs = torch.randint(0, 2, param_shape, device=device, generator=generator) * 2 - 1
+            return samples * signs
 
-    def Sigma(self, n, m, dtype=torch.float32):
+        else:
+            # General case for any p-norm
+            gamma_shape = 1.0 / p
+            exp_samples = torch.empty(param_shape, device=device).exponential_(generator=generator)
+            gamma_samples = exp_samples.pow(gamma_shape)
+            p_norm = torch.norm(gamma_samples, p=p, dim=-1, keepdim=True)
+            samples = gamma_samples / p_norm
+            signs = torch.randint(0, 2, param_shape, device=device, generator=generator) * 2 - 1
+            return samples * signs
 
-        p = min(n, m)
-
-        sigma = torch.zeros((n, m), device=self.device, dtype=dtype)
-        sigma[torch.arange(p), torch.arange(p)] = torch.diag(self._rotation_matrix(p))
-
-        return sigma
-
+    # Matrix methods 
     def _householder_matrix(self, d, generator = None):
         
         u = torch.randn(d, device=self.device, generator=generator)

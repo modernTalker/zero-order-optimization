@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=0,1
 export WANDB_DISABLED="false"
 # export WANDB_PROJECT="zo-lib-run"       
 # export WANDB_ENTITY="andrey"   
@@ -13,7 +13,7 @@ command="python run.py"
 command+=" --model_name=\"roberta-large\""
 command+=" --lora" # type of Fine-Tuning 
 command+=" --task_name=\"SST2\""
-command+=" --trainer=\"zo_sampling_muon\""
+command+=" --trainer=\"jaguar_signsgd\""
 
 # Logging and Reporting
 # TODO: output_dir is constructed in Python using args.tag, do we need it? 
@@ -47,17 +47,11 @@ command+=" --momentum=0.0"
 command+=" --weight_decay=0.0"
 command+=" --module_wise_perturbation=False"
 
-# Jaguar-Specific Parameters
-command+=" --zo_tau=1e-3"
-command+=" --zo_beta=0.9"
-command+=" --zo_use_smoothing=true"
-
 # Miscellaneous
 command+=" --overwrite_output_dir"
 
 # Learning Rate Scheduler Settings
-command+=" --lr_scheduler_type=\"constant\"" # FIXME: need to delete this 
-command+=" --scheduler=\"cosine\""
+command+=" --scheduler=\"constant\""
 command+=" --num_training_steps=20000"
 command+=" --warmup_steps=0"
 command+=" --min_lr_ratio=0.1"
@@ -67,8 +61,12 @@ command+=" --scheduler_cycle_length=1"
 command+=" --vector_sampling_type=\"standard_normal\""
 command+=" --matrix_sampling_type=\"Householder_reflection\""
 
+# Jaguar-Specific Parameters
+command+=" --zo_tau=1e-3"
+command+=" --zo_beta=0.9"
+
 # Learning Rate Loop
-for learning_rate in 1e-3; do
+for learning_rate in 1e-4; do
     full_command="$command --learning_rate=$learning_rate"
     eval "$full_command"
 done
