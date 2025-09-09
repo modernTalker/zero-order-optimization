@@ -46,7 +46,11 @@ class ZeroOrderOptimizer(Optimizer, ABC):
 
         for group in self.param_groups:
             for p in group['params']:
-                self.state[p]['tensor_sampling_type'] = tensor_sampling_type
+                if p.ndim == 1:
+                    self.state[p]['tensor_sampling_type'] = tensor_sampling_type
+                elif p.ndim >= 2:
+                     self.state[p]['tensor_sampling_type'] = matrix_sampling_type if matrix_sampling_type is not None else tensor_sampling_type
+
 
     def _validate_hyperparameters(self):
         """Obligatory hyperparameters check"""
