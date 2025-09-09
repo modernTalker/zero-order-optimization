@@ -41,6 +41,7 @@ command+=" --train_as_classification"
 command+=" --train_set_seed=0"
 
 # Training Hyperparameters
+command+=" --learning_rate=1e-3"
 command+=" --perturbation_mode=\"two_side\""
 command+=" --zo_eps=1e-3"
 command+=" --momentum=0.0"
@@ -65,8 +66,4 @@ command+=" --matrix_sampling_type=None"
 command+=" --zo_tau=1e-3"
 command+=" --zo_beta=0.9"
 
-# Learning Rate Loop
-for learning_rate in 1e-4; do
-    full_command="$command --learning_rate=$learning_rate"
-    eval "$full_command"
-done
+eval "$command"
