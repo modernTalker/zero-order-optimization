@@ -85,7 +85,7 @@ from transformers.utils import (
 
 # from torch.optim.optimizer import StateDict, params_t
 import wandb
-from clearml import Task
+# from clearml import Task
 from training_utils import * 
 
 from gradient_pruning.pruning_utils import (
@@ -349,13 +349,21 @@ class OurTrainer(Trainer):
         elif args.trainer == "zo_conserv":
             self.optimizer = ZO_Conserv(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "jaguar_signsgd":
-            self.optimizer = Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode)
+            self.optimizer = Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
+         elif args.trainer == "sparse_jaguar_signsgd":
+            self.optimizer = Sparse_Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "zo_sampling_muon":
             self.optimizer = ZO_SamplingMUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "jaguar_muon":
-            self.optimizer = Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode)
+            self.optimizer = Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
+        elif args.trainer == "sparse_jaguar_muon":
+            self.optimizer = Sparse_Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
+        elif args.trainer == "zo_clipped_sgd":
+            self.optimizer = ZO_clipped_SGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, clipping_type=args.clipping_type, clipping_level=args.clipping_level)
+        elif args.trainer == "zo_clipped_sstm":
+            self.optimizer = ZO_clipped_SSTM(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, clipping_type=args.clipping_type, clipping_level=args.clipping_level, L=args.clip_sstm_L)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
