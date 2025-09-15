@@ -350,7 +350,7 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_Conserv(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "jaguar_signsgd":
             self.optimizer = Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
-         elif args.trainer == "sparse_jaguar_signsgd":
+        elif args.trainer == "sparse_jaguar_signsgd":
             self.optimizer = Sparse_Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
