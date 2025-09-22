@@ -35,17 +35,19 @@ class Sparse_Jaguar_MUON(ZeroOrderOptimizer):
         for group in self.param_groups:
             group['beta'] = beta
 
+        self.all_params = [p for group in self.param_groups for p in group['params']]
+
     @torch.no_grad()
     def step(self, closure=None):
         loss1, loss2 = None, None 
-        self._prepare_parameters()  
+        # self._prepare_parameters()  
 
         for group in self.param_groups:
             for param in group['params']:    
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
-                    state['grad_accum'] = torch.zeros_like(
+                    state['grad_accum'] = torch.ones_like(
                         param, 
                         memory_format=torch.preserve_format
                     )
@@ -69,52 +71,70 @@ class Sparse_Jaguar_MUON(ZeroOrderOptimizer):
 
         grad_update = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
 
-
+        n = max(1, int(len(self.all_params) * self.params_ratio))
+        param_indices =  torch.randperm(len(self.all_params), device=self.device, generator=self.generator)[:n]
+        self.generator.manual_seed(self.zo_random_seed)
+        selected_param_ids = {id(self.all_params[idx]) for idx in param_indices}
         for group in self.param_groups:
             lr = group['lr']  
             beta = group['beta']
             eps = group['eps']
-            grad_final = grad_update / eps 
-
-            n = max(1, int(len(self.named_parameters_to_optim) * self.params_ratio))
-            param_indices =  torch.randperm(len(self.named_parameters_to_optim), device=self.device, generator=self.generator)[:n]
-
-            for idx in param_indices:
-                param = group['params'][idx]
-                if not any(name for name, p in self.named_parameters_to_optim if p is param):
+            
+            for param in group['params']:  
+                if id(param) not in selected_param_ids:
+                    continue
+                if not param.requires_grad:
+                    print("ALARM")
                     continue
                 state = self.state[param]
                 indices = self._select_indices(param_shape=param.shape, cols_ratio=self.columns_ratio, rows_ratio=self.rows_ratio, device=param.device)
                 
+                device = param.device
+                z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
+                grad_final = z * grad_update / eps 
+                
                 if isinstance(indices, torch.Tensor):
-                    state['grad_accum'][indices] = (
-                        beta * state['grad_accum'][indices] + 
+                    state['grad_accum'] = (
+                        beta * state['grad_accum'] + 
                         (1 - beta) * grad_final
                     )
                 else:
-                    rows, cols = indices
-                    state['grad_accum'][rows[:, None], cols] = (
-                        beta * state['grad_accum'][rows[:, None], cols] + 
+                    # rows, cols = indices
+                    state['grad_accum'] = (
+                        beta * state['grad_accum'] + 
                         (1 - beta) * grad_final
                     )
                 
                 if param.ndim >= 2:
-                    update_direction = zeropower_via_newtonschulz5(state['grad_accum'])
+                    update_direction = zeropower_via_newtonschulz5(state['grad_accum'], steps=5)
                 else:
                     update_direction = torch.sign(state['grad_accum'])
                 param.data.add_(update_direction, alpha=-lr)
+
+                # if id(param) == id(self.all_params[param_indices[0]]):
+                #     print(1)
+                #     print(param.data)
+                #     print(2)
+                #     print(grad_final)
+                #     print(3)
+                #     print(state['grad_accum'])
+                #     print(4)
+                #     print(update_direction)
+                #     print("--------------")
                 
         return loss1
     
     def _sparse_indices_perturb(self, scaling_factor = 1.0, params_ratio = 0.1, rows_ratio = 1.0, cols_ratio = 1.0):
-        n = max(1, int(len(self.named_parameters_to_optim) * params_ratio))
-        param_indices =  torch.randperm(len(self.named_parameters_to_optim), device=self.device, generator=self.generator)[:n]
+        n = max(1, int(len(self.all_params) * params_ratio))
+        param_indices =  torch.randperm(len(self.all_params), device=self.device, generator=self.generator)[:n]
+        self.generator.manual_seed(self.zo_random_seed)
         for idx in param_indices:
-            name, param = self.named_parameters_to_optim[idx]
-            indices = self._select_indices(param_shape=param.shape, rows_ratio=rows_ratio, cols_ratio=cols_ratio, device=param.device)
-            if isinstance(indices, torch.Tensor):
-                param.data[indices] += scaling_factor * self.zo_eps
-            else:
-                rows, cols = indices
-                param.data[rows[:, None], cols] += scaling_factor * self.zo_eps
-                
+            param = self.all_params[idx]
+            # indices = self._select_indices(param_shape=param.shape, rows_ratio=rows_ratio, cols_ratio=cols_ratio, device=param.device)
+            # if isinstance(indices, torch.Tensor):
+            #     param.data += scaling_factor * self.zo_eps
+            # else:
+            #     rows, cols = indices
+            device = param.device
+            z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
+            param.data += self.zo_eps * z

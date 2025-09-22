@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=0
 export WANDB_DISABLED="false"
 # export WANDB_PROJECT="zo-lib-run"       
 # export WANDB_ENTITY="andrey"   
@@ -13,7 +13,7 @@ command="python run.py"
 command+=" --model_name=\"roberta-large\""
 command+=" --lora" # type of Fine-Tuning 
 command+=" --task_name=\"SST2\""
-command+=" --trainer=\"zo_sampling_muon\""
+command+=" --trainer=\"sparse_jaguar_muon\""
 
 # Logging and Reporting
 # TODO: output_dir is constructed in Python using args.tag, do we need it? 
@@ -29,7 +29,7 @@ command+=" --load_best_model_at_end"
 command+=" --evaluation_strategy=\"steps\""
 command+=" --save_strategy=\"steps\""
 command+=" --save_total_limit=1"
-command+=" --eval_steps=1000"
+command+=" --eval_steps=500"
 command+=" --max_steps=20000"
 command+=" --save_steps=1000"
 
@@ -57,7 +57,7 @@ command+=" --overwrite_output_dir"
 
 # Learning Rate Scheduler Settings
 command+=" --lr_scheduler_type=\"constant\"" # FIXME: need to delete this 
-command+=" --scheduler=\"cosine\""
+# command+=" --scheduler=\"cosine\""
 command+=" --num_training_steps=20000"
 command+=" --warmup_steps=0"
 command+=" --min_lr_ratio=0.1"
@@ -65,10 +65,14 @@ command+=" --scheduler_cycle_length=1"
 
 # Sampling Methods
 command+=" --vector_sampling_type=\"standard_normal\""
-command+=" --matrix_sampling_type=\"Householder_reflection\""
+command+=" --matrix_sampling_type=\"Random_baseline\""
+
+command+=" --params_ratio=0.1"
 
 # Learning Rate Loop
-for learning_rate in 1e-3; do
-    full_command="$command --learning_rate=$learning_rate"
-    eval "$full_command"
+for learning_rate in 1e-4; do
+    for scheduler in  \"cosine\" \"constant\"; do
+        full_command="$command --learning_rate=$learning_rate --scheduler=$scheduler"
+        eval "$full_command"
+    done
 done

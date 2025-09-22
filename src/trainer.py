@@ -351,7 +351,8 @@ class OurTrainer(Trainer):
         elif args.trainer == "jaguar_signsgd":
             self.optimizer = Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "sparse_jaguar_signsgd":
-            self.optimizer = Sparse_Jaguar_SignSGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
+            params = [p for p in self.model.parameters() if p.requires_grad]
+            self.optimizer = Sparse_Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type,params_ratio=args.params_ratio)
         elif args.trainer == "zo_muon":
             self.optimizer = ZO_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "zo_sampling_muon":
@@ -359,7 +360,8 @@ class OurTrainer(Trainer):
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "sparse_jaguar_muon":
-            self.optimizer = Sparse_Jaguar_MUON(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
+            params = [p for p in self.model.parameters() if p.requires_grad]
+            self.optimizer = Sparse_Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type, params_ratio=args.params_ratio)
         elif args.trainer == "zo_clipped_sgd":
             self.optimizer = ZO_clipped_SGD(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, clipping_type=args.clipping_type, clipping_level=args.clipping_level)
         elif args.trainer == "zo_clipped_sstm":
