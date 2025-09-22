@@ -122,7 +122,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         elif perturbation_mode == "two_side":
             return ((loss_plus - loss_minus) / 2).item()
         elif perturbation_mode == "opf":
-            print(True)
+            # print(True)
             return loss_plus.item()
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")

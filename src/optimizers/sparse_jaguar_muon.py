@@ -47,7 +47,7 @@ class Sparse_Jaguar_MUON(ZeroOrderOptimizer):
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
-                    state['grad_accum'] = torch.ones_like(
+                    state['grad_accum'] = torch.zeros_like(
                         param, 
                         memory_format=torch.preserve_format
                     )
