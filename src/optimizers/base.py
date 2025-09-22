@@ -63,6 +63,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             (name, param) for name, param in self.named_parameters_all 
             if param.requires_grad
         ]
+
         for _, param in self.named_parameters_to_optim:
             param.grad = None
 
@@ -124,7 +125,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         else:
             raise ValueError(f"Unknown perturbation mode: {perturbation_mode}")
                     
-    def _select_indices(self, param_shape, rows_ratio = 0.1, cols_ratio = 0.1, device='cuda'):
+    def _select_indices(self, param_shape, rows_ratio = 0.9, cols_ratio = 0.9, device='cuda'):
         if len(param_shape) == 1:
             n_elems = param_shape[0]
             k = max(1, int(n_elems * rows_ratio))
@@ -137,7 +138,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
         selected_rows = torch.randperm(n_rows, device=device, generator=self.generator)[:k]
         selected_cols = torch.randperm(n_cols, device=device, generator=self.generator)[:m]
         return (selected_rows, selected_cols)
-    
+
+
     def _indices_perturb(self, scaling_factor = 1.0):
         for name, param in self.named_parameters_to_optim:
             indices = self._select_indices(param_shape=param.shape, device=param.device)

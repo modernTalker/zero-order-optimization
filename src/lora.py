@@ -59,6 +59,8 @@ class LoRALinear(nn.Linear):
         if r > 0:
             self.lora_A = nn.Parameter(self.weight.new_zeros((r, in_features)))
             self.lora_B = nn.Parameter(self.weight.new_zeros((out_features, r)))
+            # print(f"LORA BEFORE:{self.lora_A.shape, self.lora_B.shape}")
+            # print(f"WEIGHTS BEFORE:{self.weight.shape}")
             self.scaling = self.lora_alpha / self.r
             # Freezing the pre-trained weight matrix
             self.weight.requires_grad = False
@@ -94,9 +96,11 @@ class LoRALinear(nn.Linear):
     def forward(self, x: torch.Tensor):
         def T(w):
             return w.transpose(0, 1) if self.fan_in_fan_out else w
-
         if self.r > 0 and not self.merged:
+            # print(f"LORA AFTER:{self.lora_A.shape, self.lora_B.shape}")
+            # print(f"WEIGHTS AFTER:{self.weight.shape}")
             result = F.linear(x, T(self.weight), bias=self.bias)
+            # result = x @ self.weight.T
             if self.r > 0:
                 result += (self.lora_dropout(x) @ self.lora_A.transpose(0, 1) @ self.lora_B.transpose(0,
                                                                                                       1)) * self.scaling
@@ -122,7 +126,7 @@ class LoRA:
             attention_name = "attn"
         elif model.config.model_type == "roberta":
             attention_name = "attention"
-        elif model.config.model_type in ["llama", "mistral"]:
+        elif model.config.model_type in ["llama", "mistral", "gemma"]:
             attention_name = "self_attn"
         else:
             raise NotImplementedError
@@ -211,6 +215,36 @@ class LoRA:
                     attn.self.query.bias.data = original_q_bias
                     attn.self.value.weight.data = original_v_weight
                     attn.self.value.bias.data = original_v_bias
+                elif model.config.model_type == "gemma":
+                    config = model.config
+                    original_q_weight = attn.q_proj.weight.data
+                    original_v_weight = attn.v_proj.weight.data
+                    head_dim = config.hidden_size // config.num_attention_heads
+                    # attn.q_proj = LoRALinear(
+                    #     config.hidden_size,
+                    #     config.hidden_size,
+                    #     r=r, lora_alpha=alpha
+                    # ).to(original_q_weight.device)
+                    # attn.v_proj = LoRALinear(
+                    #     config.hidden_size,
+                    #     config.num_key_value_heads * head_dim,
+                    #     r=r, lora_alpha=alpha
+                    # ).to(original_v_weight.device)
+                    attn.q_proj = LoRALinear(
+                        attn.q_proj.in_features,
+                        attn.q_proj.out_features,
+                        r=r, lora_alpha=alpha
+                    ).to(original_q_weight.device)
+                    attn.v_proj = LoRALinear(
+                        attn.v_proj.in_features,
+                        attn.v_proj.out_features,
+                        r=r, lora_alpha=alpha
+                    ).to(original_v_weight.device)
+                    if float16:
+                        attn.q_proj.half()
+                        attn.v_proj.half()
+                    attn.q_proj.weight.data = original_q_weight
+                    attn.v_proj.weight.data = original_v_weight
                 else:
                     raise NotImplementedError
 

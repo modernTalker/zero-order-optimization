@@ -33,6 +33,8 @@ class MatrixSampler:
         n, m = param_shape
         if self.sampler_type == 'Torch_QR':
             return self.sampler(n, m, generator=generator)
+        elif self.sampler_type == 'Random_baseline':
+            return self.sampler(n, m, generator=generator)
         elif n > m:
             return self.sampler(n, generator=generator)[:, :m]
         return self.sampler(m, generator=generator)[:n, :]
@@ -133,8 +135,8 @@ class MatrixSampler:
         return Q
 
 
-    def _random_baseline(self, d, generator = None):
-        return torch.randn((d,d), device=self.device, generator=generator)
+    def _random_baseline(self, n, m, generator = None):
+        return torch.randn((n,m), device=self.device, generator=generator)
 
     def _GS_matrix(
         self,
