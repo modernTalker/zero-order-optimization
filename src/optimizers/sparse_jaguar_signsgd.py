@@ -81,11 +81,10 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
             eps = group['eps']
             
             for param in group['params']:  
-                if id(param) not in selected_param_ids:
-                    continue
-                if not param.requires_grad:
-                    print("ALARM")
-                    continue
+                
+                # if not param.requires_grad:
+                #     print("ALARM")
+                #     continue
                 state = self.state[param]
                 indices = self._select_indices(param_shape=param.shape, cols_ratio=self.columns_ratio, rows_ratio=self.rows_ratio, device=param.device)
                 
@@ -93,17 +92,18 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
                 z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
                 grad_final = z * grad_update / eps 
                 
-                if isinstance(indices, torch.Tensor):
+                # if isinstance(indices, torch.Tensor):
+                if id(param) in selected_param_ids:
                     state['grad_accum'] = (
                         beta * state['grad_accum'] + 
                         (1 - beta) * grad_final
                     )
-                else:
-                    # rows, cols = indices
-                    state['grad_accum'] = (
-                        beta * state['grad_accum'] + 
-                        (1 - beta) * grad_final
-                    )
+                # else:
+                #     # rows, cols = indices
+                #     state['grad_accum'] = (
+                #         beta * state['grad_accum'] + 
+                #         (1 - beta) * grad_final
+                #     )
                 
                 update_direction = torch.sign(state['grad_accum'])
                 param.data.add_(update_direction, alpha=-lr)

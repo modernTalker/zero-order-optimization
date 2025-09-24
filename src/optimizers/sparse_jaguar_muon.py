@@ -31,11 +31,16 @@ class Sparse_Jaguar_MUON(ZeroOrderOptimizer):
         self.params_ratio = params_ratio
         self.rows_ratio = rows_ratio
         self.columns_ratio = columns_ratio
+        self.grad_norm = None 
         
         for group in self.param_groups:
             group['beta'] = beta
 
         self.all_params = [p for group in self.param_groups for p in group['params']]
+        total_params = sum(p.numel() for p in self.all_params)
+        print("Всего параметров (тензоров):", len(self.all_params))
+        print("Всего скаляров:", total_params)
+
 
     @torch.no_grad()
     def step(self, closure=None):
@@ -81,11 +86,14 @@ class Sparse_Jaguar_MUON(ZeroOrderOptimizer):
             eps = group['eps']
             
             for param in group['params']:  
-                if id(param) not in selected_param_ids:
-                    continue
-                if not param.requires_grad:
-                    print("ALARM")
-                    continue
+                if id(param) == id(self.all_params[0]):
+                    state = self.state[param]
+                    self.grad_norm = torch.linalg.norm(zeropower_via_newtonschulz5(state['grad_accum'], steps=5))
+
+                
+                # if not param.requires_grad:
+                #     print("ALARM")
+                #     continue
                 state = self.state[param]
                 indices = self._select_indices(param_shape=param.shape, cols_ratio=self.columns_ratio, rows_ratio=self.rows_ratio, device=param.device)
                 
@@ -93,20 +101,20 @@ class Sparse_Jaguar_MUON(ZeroOrderOptimizer):
                 z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
                 grad_final = z * grad_update / eps 
                 
-                if isinstance(indices, torch.Tensor):
-                    state['grad_accum'] = (
-                        beta * state['grad_accum'] + 
-                        (1 - beta) * grad_final
-                    )
-                else:
-                    # rows, cols = indices
-                    state['grad_accum'] = (
-                        beta * state['grad_accum'] + 
-                        (1 - beta) * grad_final
-                    )
+                # if isinstance(indices, torch.Tensor):
+                if id(param) in selected_param_ids:
+                    # continue
+                    state['grad_accum'].mul_(beta).add_(grad_final, alpha=(1.0 - beta))
+                # else:
+                #     # rows, cols = indices
+                #     state['grad_accum'] = (
+                #         beta * state['grad_accum'] + 
+                #         grad_final
+                #     )
                 
                 if param.ndim >= 2:
                     update_direction = zeropower_via_newtonschulz5(state['grad_accum'], steps=5)
+                    # update_direction = orthogonalize_by_newton_schulz(state['grad_accum'], iters=5)
                 else:
                     update_direction = torch.sign(state['grad_accum'])
                 param.data.add_(update_direction, alpha=-lr)
