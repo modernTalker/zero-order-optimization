@@ -148,7 +148,7 @@ class OurTrainer(Trainer):
         self.dev_samples = dev_samples
         self.eval_samples = eval_samples
         self.perturb_module_regex = perturb_module_regex
-        self.gradient_sparsity = None # FIXME: is it ok?
+        self.gradient_sparsity = None 
 
     def create_optimizer_and_scheduler(self, num_training_steps):
         # self.optimizer = ""
@@ -339,7 +339,6 @@ class OurTrainer(Trainer):
             'momentum': args.momentum,
             'eps': args.zo_eps,
         }
-        # FIXME: values of parameteres should be chosen by user in run_script.sh!!!
         if args.trainer == "zo_adam":
             self.optimizer = ZO_Adam(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, vector_sampling_type=args.vector_sampling_type)
         elif args.trainer == "zo_sgd":
@@ -368,7 +367,7 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_clipped_SSTM(self.model.parameters(), lr=args.learning_rate, eps=args.zo_eps, clipping_type=args.clipping_type, clipping_level=args.clipping_level, L=args.clip_sstm_L)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
-            if args.optimizer == "adam": # FIXME: what to do with this? 
+            if args.optimizer == "adam": 
                 self.optimizer = Adam(self.model.parameters(), lr=args.learning_rate)
             elif args.optimizer == "sgd":
                 self.optimizer = SGD(self.model.parameters(), lr=args.learning_rate, momentum=args.momentum)
@@ -796,7 +795,6 @@ class OurTrainer(Trainer):
             loss.backward()
 
         # Sparse gradient
-        # FIXME: do we need it? 
         self.sparse_grad_rng.manual_seed(self.sparse_grad_random_seed)
         for name, param in model.named_parameters():
             if not param.requires_grad:

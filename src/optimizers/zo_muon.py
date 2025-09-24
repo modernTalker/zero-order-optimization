@@ -6,7 +6,7 @@ from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 from .opt_utils import *
 
 class ZO_MUON(ZeroOrderOptimizer):
-    def __init__(self, # FIXME: add Muon momentum 
+    def __init__(self, 
             params: Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]], 
             lr: Optional[float] = None,
             eps: Optional[float] = None,

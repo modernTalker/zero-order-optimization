@@ -3,7 +3,6 @@ import torch
 import numpy as np
 from typing import Optional, Callable, Dict, Any, Union, List, Iterable, Tuple
 from .opt_utils import *
-from gradient_pruning import fast_random_mask_like
 
 class ZO_SamplingMUON(ZeroOrderOptimizer):
     def __init__(self, 
