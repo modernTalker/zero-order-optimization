@@ -134,4 +134,4 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
             #     rows, cols = indices
             device = param.device
             z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
-            param.data += self.zo_eps * z
+            param.data += scaling_factor * self.zo_eps * z
