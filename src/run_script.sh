@@ -44,11 +44,6 @@ command+=" --momentum=0.0"
 command+=" --weight_decay=0.0"
 command+=" --module_wise_perturbation=False"
 
-# Jaguar-Specific Parameters
-command+=" --zo_tau=1e-3"
-command+=" --zo_beta=0.9"
-command+=" --zo_use_smoothing=true"
-
 # Miscellaneous
 command+=" --overwrite_output_dir"
 
@@ -61,10 +56,15 @@ command+=" --min_lr_ratio=0.1"
 command+=" --scheduler_cycle_length=1"
 
 # Sampling Methods
-command+=" --vector_sampling_type=\"standard_normal\""
+command+=" --tensor_sampling_type=\"standard_normal\""
 command+=" --matrix_sampling_type=\"Random_baseline\""
 
+# Jaguar-Specific Parameters
+command+=" --zo_tau=1e-3"
+command+=" --zo_beta=0.9"
+# command+=" --zo_use_smoothing=true"
+
+# Sparse Jaguar-Specific Parameters
 command+=" --params_ratio=0.1"
 
 eval "$command"
- 

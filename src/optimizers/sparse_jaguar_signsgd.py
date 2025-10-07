@@ -12,32 +12,36 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
             beta: float = 0.9,
             lr: float = 0.01,
             eps: float = 1e-3,
-            vector_sampling_type: str = "standard_normal", 
+            tensor_sampling_type: str = "standard_normal", 
             matrix_sampling_type: str = None,  
             perturbation_mode: str = "two_side",
-            params_ratio: float = 0.1,
-            rows_ratio: float = 1.0,
-            columns_ratio: float = 1.0
+            params_ratio: float = 0.1
     ):
         super().__init__(
             params,
             lr=lr,
             eps=eps,
-            vector_sampling_type=vector_sampling_type,
+            tensor_sampling_type=tensor_sampling_type,
             matrix_sampling_type=matrix_sampling_type,
             perturbation_mode=perturbation_mode,
         )
 
         self.params_ratio = params_ratio
-        self.rows_ratio = rows_ratio
-        self.columns_ratio = columns_ratio
-        self.grad_norm = None 
         
         for group in self.param_groups:
             group['beta'] = beta
 
         self.all_params = [p for group in self.param_groups for p in group['params']]
         total_params = sum(p.numel() for p in self.all_params)
+        for group in self.param_groups:
+            for param in group['params']:    
+                state = self.state[param]
+                if 'step' not in state:
+                    state['step'] = 0
+                    state['grad_accum'] = torch.zeros_like(
+                        param, 
+                        memory_format=torch.preserve_format
+                    )
 
     @torch.no_grad()
     def step(self, closure=None):
@@ -46,12 +50,6 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
         for group in self.param_groups:
             for param in group['params']:    
                 state = self.state[param]
-                if len(state) == 0:
-                    state['step'] = 0
-                    state['grad_accum'] = torch.zeros_like(
-                        param, 
-                        memory_format=torch.preserve_format
-                    )
                 state['step'] += 1
 
         self.zo_random_seed = np.random.randint(1_000_000_000)
@@ -73,7 +71,7 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
         grad_update = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
 
         n = max(1, int(len(self.all_params) * self.params_ratio))
-        param_indices =  torch.randperm(len(self.all_params), device=self.device, generator=self.generator)[:n]
+        param_indices =  torch.randperm(len(self.all_params), device=self.all_params[0].device, generator=self.generator)[:n]
         self.generator.manual_seed(self.zo_random_seed)
         selected_param_ids = {id(self.all_params[idx]) for idx in param_indices}
         for group in self.param_groups:
@@ -82,14 +80,12 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
             eps = group['eps']
             
             for param in group['params']:           
-                if not param.requires_grad:
-                    continue
 
                 state = self.state[param]                
                 device = param.device
                 
                 if id(param) in selected_param_ids:
-                    z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
+                    z = self.tensor_sampler.sample(param.shape, generator=self.generator).to(device)
                     grad_final = z * grad_update / eps 
                     state['grad_accum'].mul_(beta).add_(grad_final, alpha=(1.0 - beta))
                 
@@ -100,11 +96,14 @@ class Sparse_Jaguar_SignSGD(ZeroOrderOptimizer):
     
     def _sparse_indices_perturb(self, scaling_factor = 1.0, params_ratio = 0.1, rows_ratio = 1.0, cols_ratio = 1.0):
         n = max(1, int(len(self.all_params) * params_ratio))
-        param_indices =  torch.randperm(len(self.all_params), device=self.device, generator=self.generator)[:n]
+        param_indices =  torch.randperm(len(self.all_params), device=self.all_params[0].device, generator=self.generator)[:n]
         self.generator.manual_seed(self.zo_random_seed)
-        for idx in param_indices:
-            param = self.all_params[idx]
-
-            device = param.device
-            z = self.vector_sampler.sample(param.shape, generator=self.generator).to(device)
-            param.data += scaling_factor * self.zo_eps * z
+        selected_param_ids = {id(self.all_params[idx]) for idx in param_indices}
+        for group in self.param_groups:
+            eps = group['eps']
+            
+            for param in group['params']:                     
+                if id(param) in selected_param_ids:
+                    device = param.device
+                    z = self.tensor_sampler.sample(param.shape, generator=self.generator).to(device)
+                    param.data += scaling_factor * eps * z

@@ -15,6 +15,7 @@ class TensorSampler:
         self.create_sampler(sampler_type)
 
     def create_sampler(self, sampler_type):
+        self.sampler_type = sampler_type
         if sampler_type == "standard_normal":
             self._sample_func = self._standard_normal
         elif sampler_type == "lp_sphere":

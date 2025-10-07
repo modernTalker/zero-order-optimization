@@ -85,7 +85,7 @@ from transformers.utils import (
 
 # from torch.optim.optimizer import StateDict, params_t
 import wandb
-from clearml import Task
+# from clearml import Task
 from training_utils import * 
 
 from gradient_pruning.pruning_utils import (
@@ -358,6 +358,10 @@ class OurTrainer(Trainer):
             self.optimizer = ZO_SamplingMUON(params, lr=args.learning_rate, eps=args.zo_eps, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
+        elif args.trainer == "sparse_jaguar_signsgd":
+            self.optimizer = Sparse_Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
+        elif args.trainer == "sparse_jaguar_muon":
+            self.optimizer = Sparse_Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
