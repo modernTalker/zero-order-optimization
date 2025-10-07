@@ -21,7 +21,7 @@ class ZeroOrderOptimizer(Optimizer, ABC):
             perturbation_mode: str = "two_side",
             device: str = "cuda",
     ):
-        if lr is not None or eps is not None: # FIXME: looks strange 
+        if lr is not None or eps is not None: 
             defaults = {
                 'lr': lr,
                 'eps': eps,
