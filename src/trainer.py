@@ -51,14 +51,14 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm.auto import tqdm
 from transformers import Trainer
 from transformers.debug_utils import DebugOption, DebugUnderflowOverflow
-from transformers.deepspeed import deepspeed_init, is_deepspeed_zero3_enabled
+# from transformers.deepspeed import deepspeed_init, is_deepspeed_zero3_enabled
 from transformers.dependency_versions_check import dep_version_check
 # Integrations must be imported before ML frameworks:
 from transformers.integrations import (  # isort: split
     hp_params,
-    is_fairscale_available,
+    # is_fairscale_available,
 )
-from transformers.pytorch_utils import is_torch_greater_or_equal_than_1_10, is_torch_less_than_1_11
+# from transformers.pytorch_utils import is_torch_greater_or_equal_than_1_10, is_torch_less_than_1_11
 from transformers.trainer_callback import (
     DefaultFlowCallback,
     ProgressCallback,
@@ -69,7 +69,7 @@ from transformers.trainer_pt_utils import (
 )
 from transformers.trainer_utils import (
     HPSearchBackend,
-    ShardedDDPOption,
+    # ShardedDDPOption,
     TrainOutput,
     has_length,
     speed_metrics,
@@ -79,7 +79,7 @@ from transformers.utils import (
     is_apex_available,
     is_in_notebook,
     is_sagemaker_mp_enabled,
-    is_torch_tpu_available,
+    # is_torch_tpu_available,
     logging,
 )
 
@@ -97,7 +97,7 @@ from metrics import f1
 from utils import OPT_PERTURBATION_LEVEL_TO_REGEX
 from optimizers import * 
 
-_is_native_cpu_amp_available = is_torch_greater_or_equal_than_1_10
+# _is_native_cpu_amp_available = is_torch_greater_or_equal_than_1_10
 
 DEFAULT_CALLBACKS = [DefaultFlowCallback]
 DEFAULT_PROGRESS_CALLBACK = ProgressCallback
@@ -110,13 +110,13 @@ if is_in_notebook():
 if is_apex_available():
     from apex import amp
 
-if is_torch_tpu_available(check_device=False):
-    import torch_xla.core.xla_model as xm
-    import torch_xla.debug.metrics as met
-    import torch_xla.distributed.parallel_loader as pl
+# if is_torch_tpu_available(check_device=False):
+#     import torch_xla.core.xla_model as xm
+#     import torch_xla.debug.metrics as met
+#     import torch_xla.distributed.parallel_loader as pl
 
-if is_fairscale_available():
-    dep_version_check("fairscale")
+# if is_fairscale_available():
+#     dep_version_check("fairscale")
 
 if is_sagemaker_mp_enabled():
     import smdistributed.modelparallel.torch as smp
@@ -293,12 +293,12 @@ class OurTrainer(Trainer):
             else:
                 debug_overflow = DebugUnderflowOverflow(self.model)  # noqa
 
-        delay_optimizer_creation = (
-                self.sharded_ddp is not None
-                and self.sharded_ddp != ShardedDDPOption.SIMPLE
-                or is_sagemaker_mp_enabled()
-                or self.fsdp is not None
-        )
+        # delay_optimizer_creation = (
+                # self.sharded_ddp is not None
+                # and self.sharded_ddp != ShardedDDPOption.SIMPLE
+                # or is_sagemaker_mp_enabled()
+                # or self.fsdp is not None
+        # )
         if args.deepspeed:
             deepspeed_engine, optimizer, lr_scheduler = deepspeed_init(
                 self, num_training_steps=max_steps, resume_from_checkpoint=resume_from_checkpoint
@@ -308,10 +308,11 @@ class OurTrainer(Trainer):
             self.deepspeed = deepspeed_engine
             self.optimizer = optimizer
             self.lr_scheduler = lr_scheduler
-        elif not delay_optimizer_creation:
-            self.create_optimizer_and_scheduler(num_training_steps=max_steps)
+        # elif not delay_optimizer_creation:
+            # self.create_optimizer_and_scheduler(num_training_steps=max_steps)
 
         self.state = TrainerState()
+        self.state.logging_steps = args.logging_steps
         self.state.is_hyper_param_search = trial is not None
 
         # Activate gradient checkpointing if needed
@@ -327,8 +328,8 @@ class OurTrainer(Trainer):
         if model is not self.model:
             self.model_wrapped = model
 
-        if delay_optimizer_creation:
-            self.create_optimizer_and_scheduler(num_training_steps=max_steps)
+        # if delay_optimizer_creation:
+            # self.create_optimizer_and_scheduler(num_training_steps=max_steps)
 
         # Check if saved optimizer or scheduler states exist
         self._load_optimizer_and_scheduler(resume_from_checkpoint)
@@ -487,11 +488,11 @@ class OurTrainer(Trainer):
             elif hasattr(train_dataloader, "dataset") and isinstance(train_dataloader.dataset, IterableDatasetShard):
                 train_dataloader.dataset.set_epoch(epoch)
 
-            if is_torch_tpu_available():
-                parallel_loader = pl.ParallelLoader(train_dataloader, [args.device]).per_device_loader(args.device)
-                epoch_iterator = parallel_loader
-            else:
-                epoch_iterator = train_dataloader
+            # if is_torch_tpu_available():
+                # parallel_loader = pl.ParallelLoader(train_dataloader, [args.device]).per_device_loader(args.device)
+                # epoch_iterator = parallel_loader
+            # else:
+            epoch_iterator = train_dataloader
 
             # Reset the past mems state at the beginning of each epoch if necessary.
             if args.past_index >= 0:
@@ -541,7 +542,7 @@ class OurTrainer(Trainer):
 
                 if (
                         args.logging_nan_inf_filter
-                        and not is_torch_tpu_available()
+                        # and not is_torch_tpu_available()
                         and (torch.isnan(tr_loss_step) or torch.isinf(tr_loss_step))
                 ):
                     # if loss is nan or inf simply add the average of previous logged losses
@@ -564,7 +565,7 @@ class OurTrainer(Trainer):
                     self.state.global_step += 1
                     self.state.epoch = epoch + (step + 1) / steps_in_epoch
                     self.control = self.callback_handler.on_step_end(args, self.state, self.control)
-                    self._maybe_log_save_evaluate(tr_loss, model, trial, epoch, ignore_keys_for_eval)
+                    self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval, None)
 
                 else:
                     self.control = self.callback_handler.on_substep_end(args, self.state, self.control)
@@ -625,7 +626,7 @@ class OurTrainer(Trainer):
                 self.control.should_training_stop = True
 
             self.control = self.callback_handler.on_epoch_end(args, self.state, self.control)
-            self._maybe_log_save_evaluate(tr_loss, model, trial, epoch, ignore_keys_for_eval)
+            self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval, None)
 
             if DebugOption.TPU_METRICS_DEBUG in self.args.debug:
                 if is_torch_tpu_available():
