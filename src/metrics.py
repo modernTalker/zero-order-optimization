@@ -3,6 +3,9 @@ import collections
 import re
 import string
 from collections import Counter
+import evaluate
+import warnings
+warnings.filterwarnings("ignore")
 
 def normalize_answer(s):
     """Lower text and remove punctuation, articles and extra whitespace."""
@@ -54,6 +57,16 @@ def calculate_metric(predictions, metric_name):
                 f1.append(max(all_f1s))
 
         return np.mean(f1)
+    elif metric_name == "pass_at_k":
+        code_eval = evaluate.load("code_eval", module_type="metric")
+        k = len(predictions[0].predicted_candidate)
+        results = code_eval.compute(
+            references=[pred.test for pred in predictions],
+            predictions=[pred.predicted_candidate for pred in predictions],
+            k=[k],
+            num_workers=16
+        )
+        return results[0][f'pass@{k}']
 
 
 def f1(pred, gold):
@@ -76,3 +89,4 @@ def f1(pred, gold):
                 recall = 1.0 * num_same / len(ground_truth_tokens)
                 all_f1s.append((2 * precision * recall) / (precision + recall))
         return np.max(all_f1s)
+        
