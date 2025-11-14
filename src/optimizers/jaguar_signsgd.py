@@ -28,12 +28,24 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         for group in self.param_groups:
             group['beta'] = beta
 
+        self.all_params = [p for group in self.param_groups for p in group['params']]
+        total_params = sum(p.numel() for p in self.all_params)
+        for group in self.param_groups:
+            for param in group['params']:    
+                state = self.state[param]
+                if 'step' not in state:
+                    state['step'] = 0
+                    state['grad_accum'] = torch.zeros_like(
+                        param, 
+                        memory_format=torch.preserve_format
+                    )
+
     @torch.no_grad()
     def step(self, closure=None):
         loss1, loss2 = None, None 
 
         for group in self.param_groups:
-            for param in group['params']:    
+            for param in group['params']:
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
@@ -60,18 +72,18 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         self.generator.manual_seed(self.zo_random_seed)
 
         grad_update = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
-
+        
         for group in self.param_groups:
             lr = group['lr']  
             beta = group['beta']
             eps = group['eps']
-            
+
             grad_final = grad_update / eps 
 
             for p in group['params']:
                 state = self.state[p]
                 tensor_sampling_type = state["tensor_sampling_type"]
-                indices = self._select_indices(p_shape=p.shape, device=p.device)
+                indices = self._select_indices(param_shape=p.shape, device=p.device)
                 
                 if isinstance(indices, torch.Tensor):
                     state['grad_accum'][indices] = (

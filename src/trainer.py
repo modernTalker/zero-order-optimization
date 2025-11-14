@@ -536,7 +536,7 @@ class OurTrainer(Trainer):
                     self.control = self.callback_handler.on_step_begin(args, self.state, self.control)
 
                 closure = self.create_closure(model, inputs)
-                tr_loss_step = self.optimizer.step(closure)     
+                tr_loss_step = self.optimizer.step(closure)
                 self.lr_scheduler.step()
                 # print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']}")
 

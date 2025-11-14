@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 from dataclasses import dataclass
 from typing import List, Union
 
@@ -8,7 +9,6 @@ from datasets import load_dataset
 
 from templates import *
 from utils import temp_seed
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -102,6 +102,40 @@ class Dataset:
     def valid_samples(self):
         return self.samples["valid"]
 
+class HumanEvalDataset(Dataset):
+    metric_name = "pass_at_k"
+    generation=True
+
+    def __init__(self, path, **kwargs) -> None:
+        os.environ["HF_ALLOW_CODE_EVAL"] = "1"
+        self.load_dataset()
+
+    def load_dataset(self):
+        
+        all_examples = load_dataset("openai_humaneval")["test"]
+        all_examples = all_examples.shuffle(seed=42)
+        train_frac = 0.7
+        train_examples = all_examples.select(range(int(len(all_examples)*train_frac)))
+        valid_examples = all_examples.select(range(int(len(all_examples)*train_frac), len(all_examples)))
+
+        train_samples = [self.build_sample(example) for example in train_examples]
+        valid_samples = [self.build_sample(example) for example in valid_examples]
+        self.samples = {"train": train_samples, "valid": valid_samples}
+
+    # for generative tasks, candidates are []
+    def build_sample(self, example):
+        sample = \
+            Sample(
+                id=example["task_id"],
+                data=example,
+                candidates=None,
+                correct_candidate=example["canonical_solution"],
+            )
+
+        return sample
+
+    def get_template(self, template_version=0):
+        return {0: HumanEvalTemplate}[template_version]()
 
 class SST2Dataset(Dataset):
     train_sep = "\n\n"

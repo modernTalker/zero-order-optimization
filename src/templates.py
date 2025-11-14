@@ -23,6 +23,20 @@ class Template:
         """
         return candidate
 
+class HumanEvalTemplate(Template):
+
+    def encode(self, sample):
+        return sample.data["prompt"]
+
+    def verbalize(self, sample, candidate):
+        return sample.data["prompt"] + sample.data["canonical_solution"]
+
+    def encode_sfc(self, sample):
+        raise NotImplementedError
+
+    def verbalize_sfc(self, sample, candidate):
+        raise NotImplementedError
+
 
 class SST2Template(Template):
     verbalizer = {0: "terrible", 1: "great"}

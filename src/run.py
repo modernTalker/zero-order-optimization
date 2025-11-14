@@ -107,9 +107,10 @@ class OurArguments(TrainingArguments):
     temperature: float = 1.0  # temperature for generation
     num_beams: int = 1  # number of beams for generation
     top_k: int = None  # top-k for generation
-    top_p: float = 0.95  # top-p for generation
+    top_p: float = None  # top-p for generation
     max_new_tokens: int = 50  # max number of new tokens to generate
     eos_token: str = "\n"  # end of sentence token
+    num_return_sequences: int = 5  # number of return sequences (for pass@k)
 
     # Saving
     save_model: bool = False  # whether to save the model
@@ -322,15 +323,16 @@ class Framework:
         if generation:
             args = self.args
             # Autoregressive generation
+            # if self.model.config.model_type != "gemma":
             outputs = self.model.generate(input_ids, do_sample=args.sampling, temperature=args.temperature,
-                                          num_beams=args.num_beams, top_p=args.top_p, top_k=args.top_k,
-                                          max_new_tokens=min(args.max_new_tokens, args.max_length - input_ids.size(1)),
-                                          num_return_sequences=1,
-                                          eos_token_id=[
-                                              self.tokenizer.encode(args.eos_token, add_special_tokens=False)[-1],
-                                              self.tokenizer.eos_token_id], )
+                                          max_new_tokens=args.max_new_tokens,
+                                          num_return_sequences=args.num_return_sequences,
+                                          eos_token_id=self.tokenizer.eos_token_id, pad_token_id=self.tokenizer.pad_token_id)
+            # else:
+            #     outputs = self.model.generate(input_ids, max_new_tokens=args.max_new_tokens, num_return_sequences=n, do_sample=True, temperature=temperature, top_p=top_p, eos_token_id=tokenizer.eos_token_id, pad_token_id=tokenizer.pad_token_id).to(device)
             # For generation, directly return the text output
-            output_text = self.tokenizer.decode(outputs[0][input_ids.size(1):], skip_special_tokens=True).strip()
+            
+            output_text = list(map(lambda x: x.strip(), self.tokenizer.batch_decode(outputs, skip_special_tokens=True)))
             return output_text
         else:
             with torch.inference_mode():
@@ -381,7 +383,10 @@ class Framework:
             #     logger.info("=== Prompt ===")
             #     logger.info(self.tokenizer.decode(encoded_candidates[0]))
             #     logger.info(f"Output: {output_text}")
-            return Prediction(correct_candidate=eval_sample.correct_candidate, predicted_candidate=output_text)
+            if self.args.task_name == "HumanEval":
+                return Prediction(correct_candidate=eval_sample.correct_candidate, predicted_candidate=output_text, prompt=self.tokenizer.decode(encoded_candidates[0]), test=eval_sample.data['test'])
+            else:
+                return Prediction(correct_candidate=eval_sample.correct_candidate, predicted_candidate=output_text[0], prompt=None, test=None)
         else:
             # For classification/multiple-choice, calculate the probabilities of all candidates
             for candidate_id, encoded_candidate in enumerate(encoded_candidates):
@@ -442,8 +447,11 @@ class Framework:
                 self.one_step_pred(train_samples[eval_id] if one_train_set_per_eval_sample else train_samples,
                                    eval_sample, verbose=False))
 
-        # Calculate metrics 
-        metric_name = getattr(self.task, "metric_name", "accuracy")
+        # Calculate metrics
+        if self.args.task_name != "HumanEval":
+            metric_name = getattr(self.task, "metric_name", "accuracy")
+        else:
+            metric_name = getattr(self.task, "metric_name", "pass_at_k")
         metrics = {metric_name: calculate_metric(predictions, metric_name)}
         return metrics
 

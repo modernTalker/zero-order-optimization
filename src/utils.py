@@ -357,6 +357,8 @@ class SIGUSR1Callback(transformers.TrainerCallback):
 class Prediction:
     correct_candidate: Union[int, str]
     predicted_candidate: Union[int, str]
+    prompt: Union[int, str]
+    test: Union[int, str]
 
 
 @contextlib.contextmanager
