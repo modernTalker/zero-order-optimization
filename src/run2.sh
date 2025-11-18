@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=1
 export WANDB_DISABLED="false"
 export WANDB_API_KEY=""
 export HF_TOKEN="" 
@@ -11,7 +11,7 @@ base_command="python run.py"
 base_command+=" --model_name=\"roberta-large\""
 base_command+=" --lora" # type of Fine-Tuning 
 base_command+=" --task_name=\"SST2\""
-base_command+=" --trainer=\"sparse_jaguar_muon\""
+base_command+=" --trainer=\"zo_signsgd\""
 
 # Logging and Reporting
 base_command+=" --output_dir=\"result/SST2-FT-\$TAG\""
@@ -48,7 +48,6 @@ base_command+=" --module_wise_perturbation=False"
 base_command+=" --overwrite_output_dir"
 
 # Learning Rate Scheduler Settings
-base_command+=" --learning_rate=7e-3"
 base_command+=" --scheduler=\"cosine\""
 base_command+=" --num_training_steps=20000"
 base_command+=" --warmup_steps=0"
@@ -65,7 +64,9 @@ base_command+=" --zo_beta=0.9"
 # command+=" --zo_use_smoothing=true"
 
 # Sparse Jaguar-Specific Parameters
-for params_ratio in 0.1; do
-  command="$base_command --params_ratio=${params_ratio}"
+base_command+=" --params_ratio=0.1"
+
+for learning_rate in 5e-3 1e-2; do
+  command="$base_command --learning_rate=${learning_rate}"
   eval "$command"
 done

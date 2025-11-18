@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=1
 export WANDB_DISABLED="false"
 export WANDB_API_KEY=""
 export HF_TOKEN="" 
@@ -27,7 +27,7 @@ base_command+=" --evaluation_strategy=\"steps\""
 base_command+=" --save_strategy=\"steps\""
 base_command+=" --save_total_limit=1"
 base_command+=" --eval_steps=500"
-base_command+=" --max_steps=20000"
+base_command+=" --max_steps=1000"
 base_command+=" --save_steps=1000"
 
 # Dataset Settings
@@ -48,9 +48,9 @@ base_command+=" --module_wise_perturbation=False"
 base_command+=" --overwrite_output_dir"
 
 # Learning Rate Scheduler Settings
-base_command+=" --learning_rate=7e-3"
+base_command+=" --learning_rate=1e-3"
 base_command+=" --scheduler=\"cosine\""
-base_command+=" --num_training_steps=20000"
+base_command+=" --num_training_steps=1000"
 base_command+=" --warmup_steps=0"
 base_command+=" --min_lr_ratio=0.1"
 base_command+=" --scheduler_cycle_length=1"
@@ -65,7 +65,9 @@ base_command+=" --zo_beta=0.9"
 # command+=" --zo_use_smoothing=true"
 
 # Sparse Jaguar-Specific Parameters
-for params_ratio in 0.1; do
+base_command+=" --params_ratio=0.1"
+
+for params_ratio in 0.1 0.2; do
   command="$base_command --params_ratio=${params_ratio}"
   eval "$command"
 done

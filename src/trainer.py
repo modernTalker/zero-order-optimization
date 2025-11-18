@@ -362,6 +362,10 @@ class OurTrainer(Trainer):
             self.optimizer = Sparse_Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
         elif args.trainer == "sparse_jaguar_muon":
             self.optimizer = Sparse_Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
+        elif args.trainer == "fo_sgd":
+            self.optimizer = FO_SGD(params, lr=args.learning_rate, momentum=args.momentum, weight_decay=getattr(args, 'weight_decay', 0.0))
+        elif args.trainer == "fo_muon":
+            self.optimizer = FO_MUON(params, lr=args.learning_rate, momentum=args.momentum, weight_decay=getattr(args, 'weight_decay', 0.0))
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
@@ -507,6 +511,10 @@ class OurTrainer(Trainer):
             if epoch == epochs_trained and resume_from_checkpoint is not None and steps_trained_in_current_epoch == 0:
                 self._load_rng_state(resume_from_checkpoint)
 
+            # Zero gradients at the start of each epoch for first-order optimizers to ensure clean state
+            if args.trainer == "fo_sgd" or args.trainer == "fo_muon":
+                self.optimizer.zero_grad()
+
             step = -1
             # Start one epoch training
             for step, inputs in enumerate(epoch_iterator):
@@ -534,16 +542,43 @@ class OurTrainer(Trainer):
                 if step % args.gradient_accumulation_steps == 0:
                     self.control = self.callback_handler.on_step_begin(args, self.state, self.control)
 
-                closure = self.create_closure(model, inputs)
-                tr_loss_step = self.optimizer.step(closure)     
-                self.lr_scheduler.step()
+                # For first-order optimizers (FO_SGD, FO_MUON), use standard backward() approach
+                if args.trainer == "fo_sgd" or args.trainer == "fo_muon":
+                    tr_loss_step = self.training_step(model, inputs)
+                    # Only step optimizer after accumulating gradients
+                    if (step + 1) % args.gradient_accumulation_steps == 0 or (
+                        steps_in_epoch <= args.gradient_accumulation_steps
+                        and (step + 1) == steps_in_epoch
+                    ):
+                        self.optimizer.step()
+                        self.optimizer.zero_grad()
+                        # Step lr_scheduler only when optimizer steps (after gradient accumulation)
+                        self.lr_scheduler.step()
+                    # Convert tensor to scalar for consistency with zero-order optimizers
+                    if isinstance(tr_loss_step, torch.Tensor):
+                        tr_loss_step = tr_loss_step.item() if tr_loss_step.numel() == 1 else tr_loss_step
+                else:
+                    # For zero-order optimizers, use closure approach
+                    closure = self.create_closure(model, inputs)
+                    tr_loss_step = self.optimizer.step(closure)
+                    # Step lr_scheduler every iteration for zero-order optimizers
+                    self.lr_scheduler.step()
                 # print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']}")
 
-                if (
-                        args.logging_nan_inf_filter
-                        and not is_torch_tpu_available()
-                        and (torch.isnan(tr_loss_step) or torch.isinf(tr_loss_step))
-                ):
+                # Check for NaN/Inf - handle both Tensor and float types
+                is_nan_or_inf = False
+                if args.logging_nan_inf_filter and not is_torch_tpu_available():
+                    if isinstance(tr_loss_step, torch.Tensor):
+                        # Convert tensor to scalar for checking
+                        if tr_loss_step.numel() == 1:
+                            tr_loss_value = tr_loss_step.item()
+                            is_nan_or_inf = math.isnan(tr_loss_value) or math.isinf(tr_loss_value)
+                        else:
+                            is_nan_or_inf = torch.isnan(tr_loss_step).any().item() or torch.isinf(tr_loss_step).any().item()
+                    else:
+                        is_nan_or_inf = math.isnan(tr_loss_step) or math.isinf(tr_loss_step)
+                
+                if is_nan_or_inf:
                     # if loss is nan or inf simply add the average of previous logged losses
                     tr_loss += tr_loss / (1 + self.state.global_step - self._globalstep_last_logged)
                 else:

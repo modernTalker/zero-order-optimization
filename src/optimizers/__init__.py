@@ -8,10 +8,12 @@ from .zo_adam import ZO_Adam
 from .zo_conserv import ZO_Conserv
 from .sparse_jaguar_signsgd import Sparse_Jaguar_SignSGD
 from .sparse_jaguar_muon import Sparse_Jaguar_MUON
+from .fo_sgd import FO_SGD
+from .fo_muon import FO_MUON
 
 # which optimizers will be added by calling *
 __all__ = [
     'ZO_MUON', 'ZO_SamplingMUON', 'Jaguar_MUON', 'Jaguar_SignSGD', 
     'ZO_SGD', 'ZO_SignSGD', 'ZO_Adam', 'ZO_Conserv',
-    'Sparse_Jaguar_SignSGD', 'Sparse_Jaguar_MUON'
+    'Sparse_Jaguar_SignSGD', 'Sparse_Jaguar_MUON', 'FO_SGD', 'FO_MUON'
 ]
