@@ -150,10 +150,10 @@ class OurTrainer(Trainer):
         self.perturb_module_regex = perturb_module_regex
         self.gradient_sparsity = None # FIXME: is it ok?
 
-    def create_optimizer_and_scheduler(self, num_training_steps):
-        # self.optimizer = ""
-        # self.lr_scheduler = get_cosine_schedule_with_warmup(self.optimizer)
-        pass
+    # def create_optimizer_and_scheduler(self, num_training_steps):
+    #     # self.optimizer = ""
+    #     # self.lr_scheduler = get_cosine_schedule_with_warmup(self.optimizer)
+    #     pass
 
     def _inner_training_loop(
             self, batch_size=None, args=None, resume_from_checkpoint=None, trial=None, ignore_keys_for_eval=None
@@ -344,11 +344,11 @@ class OurTrainer(Trainer):
         params = [p for p in self.model.parameters() if p.requires_grad]
 
         if args.trainer == "zo_adam":
-            self.optimizer = ZO_Adam(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
+            self.optimizer = ZO_Adam(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode)
         elif args.trainer == "zo_sgd":
             self.optimizer = ZO_SGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "zo_signsgd":
-            self.optimizer = ZO_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
+            self.optimizer = ZO_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode)
         elif args.trainer == "zo_conserv":
             self.optimizer = ZO_Conserv(params, lr=args.learning_rate, eps=args.zo_eps, momentum=args.momentum, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "jaguar_signsgd":
@@ -535,8 +535,21 @@ class OurTrainer(Trainer):
                 if step % args.gradient_accumulation_steps == 0:
                     self.control = self.callback_handler.on_step_begin(args, self.state, self.control)
 
-                closure = self.create_closure(model, inputs)
-                tr_loss_step = self.optimizer.step(closure)
+                if self.args.optimizer == "sgd" or self.args.optimizer == "adam":
+
+                    inputs = self._prepare_inputs(inputs)
+                    self.optimizer.zero_grad()
+
+                    with self.compute_loss_context_manager():
+                        loss = self.compute_loss(model, inputs)
+                    if self.args.n_gpu > 1:
+                        loss = loss.mean()
+                    loss.backward()
+                    self.optimizer.step()
+                    tr_loss_step = loss
+                else:
+                    closure = self.create_closure(model, inputs)
+                    tr_loss_step = self.optimizer.step(closure)
                 self.lr_scheduler.step()
                 # print(f"Step {total_steps}, LR: {self.optimizer.param_groups[0]['lr']}")
 
@@ -565,7 +578,7 @@ class OurTrainer(Trainer):
                     self.state.global_step += 1
                     self.state.epoch = epoch + (step + 1) / steps_in_epoch
                     self.control = self.callback_handler.on_step_end(args, self.state, self.control)
-                    self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval, None)
+                    self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval)
 
                 else:
                     self.control = self.callback_handler.on_substep_end(args, self.state, self.control)
@@ -626,7 +639,7 @@ class OurTrainer(Trainer):
                 self.control.should_training_stop = True
 
             self.control = self.callback_handler.on_epoch_end(args, self.state, self.control)
-            self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval, None)
+            self._maybe_log_save_evaluate(tr_loss, None, model, trial, epoch, ignore_keys_for_eval)
 
             if DebugOption.TPU_METRICS_DEBUG in self.args.debug:
                 if is_torch_tpu_available():

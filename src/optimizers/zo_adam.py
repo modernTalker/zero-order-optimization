@@ -37,9 +37,6 @@ class ZO_Adam(ZO_SGD):
             momentum = momentum,
             gradient_sparsity = gradient_sparsity,
             perturbation_mode = perturbation_mode,
-            q = q,
-            module_wise_perturbation = module_wise_perturbation,
-            coordinate_perturbation = coordinate_perturbation
             )
 
         self._inner_optimizers = []

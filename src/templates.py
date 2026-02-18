@@ -23,6 +23,7 @@ class Template:
         """
         return candidate
 
+
 class HumanEvalTemplate(Template):
 
     def encode(self, sample):
@@ -36,7 +37,158 @@ class HumanEvalTemplate(Template):
 
     def verbalize_sfc(self, sample, candidate):
         raise NotImplementedError
+    
 
+class GSM8KTemplate(Template):
+    """
+    Template for GSM8K (Grade School Math 8K) dataset.
+    GSM8K consists of grade school math word problems requiring multi-step reasoning.
+    """
+    
+    question_prefix: str = "Question: "
+    answer_prefix: str = "Answer:"
+    newline: str = "\n"
+    include_reasoning: bool = False  # Whether to include step-by-step reasoning in answers
+    
+    def get_prompt(self, sample):
+        """
+        Create the prompt with the math question.
+        Expected sample.data format:
+        {
+            "question": "...",  # The math word problem
+            "answer": "..."     # The solution with reasoning and final answer (format: "reasoning\n#### number")
+        }
+        """
+        prompt = ""
+        
+        # Add question
+        question = sample.data["question"]
+        # prompt += f"{self.question_prefix}{question}{self.newline}"
+        
+        # Add answer prefix
+        # prompt += self.answer_prefix
+        
+        return question
+    
+    def encode(self, sample):
+        """
+        Return prompted version of the example (without the answer).
+        """
+        return self.get_prompt(sample)
+    
+    def verbalize(self, sample, candidate):
+        """
+        Return the prompted version of the example with the answer/candidate.
+        Candidate should be the numerical answer or full solution depending on include_reasoning.
+        """
+        prompt = self.get_prompt(sample)
+        
+        if self.include_reasoning:
+            # Include full step-by-step reasoning from the answer field
+            full_answer = sample.data["answer"]
+            return prompt + " " + full_answer
+        else:
+            # Only include the final numerical answer
+            return prompt + " " + str(candidate)
+    
+    def extract_answer(self, text):
+        """
+        Extract the numerical answer from generated text.
+        Looks for patterns like "#### number" or just extracts the last number.
+        """
+        
+        # Try to find #### pattern first
+        if "####" in text:
+            answer = text.split("####")[-1].strip()
+            return answer
+        
+        # Otherwise, try to extract the last number from the text
+        import re
+        numbers = re.findall(r'-?\d+\.?\d*', text)
+        if numbers:
+            return numbers[-1]
+        
+        return text.strip()
+
+
+class MMLUTemplate(Template):
+    """
+    Template for MMLU (Massive Multitask Language Understanding) dataset.
+    MMLU consists of multiple-choice questions with 4 options (A, B, C, D).
+    """
+    
+    include_subject: bool = True
+    question_prefix: str = "Question: "
+    answer_prefix: str = "Answer:"
+    choices_labels: list = ["A", "B", "C", "D"]
+    newline: str = "\n"
+    
+    def format_choices(self, sample):
+        """
+        Format the multiple choice options.
+        Expected sample.data to have 'choices' key with list of options.
+        """
+        choices_text = ""
+        choices = sample.data.get("choices", [])
+        for i, choice in enumerate(choices):
+            label = self.choices_labels[i] if i < len(self.choices_labels) else str(i)
+            choices_text += f"{label}. {choice}{self.newline}"
+        return choices_text
+    
+    def get_prompt(self, sample):
+        """
+        Create the prompt with optional subject, question, and choices.
+        Expected sample.data format:
+        {
+            "subject": "...",  # optional, e.g., "high_school_biology"
+            "question": "...",
+            "choices": ["choice1", "choice2", "choice3", "choice4"]
+        }
+        """
+        prompt = ""
+        
+        # Add subject if requested
+        if self.include_subject and "subject" in sample.data:
+            subject = sample.data["subject"].replace("_", " ").title()
+            prompt += f"The following are multiple choice questions about {subject}.{self.newline}{self.newline}"
+        
+        # Add question
+        question = sample.data["question"]
+        prompt += f"{self.question_prefix}{question}{self.newline}"
+        
+        # Add choices
+        prompt += self.format_choices(sample)
+        
+        # Add answer prefix
+        prompt += self.answer_prefix
+        
+        return prompt
+    
+    def encode(self, sample):
+        """
+        Return prompted version of the example (without the answer).
+        """
+        return self.get_prompt(sample)
+    
+    def verbalize(self, sample, candidate):
+        """
+        Return the prompted version of the example with the answer/candidate.
+        Candidate should be one of the choice labels (A, B, C, D).
+        """
+        prompt = self.get_prompt(sample)
+        return prompt + " " + str(candidate)
+    
+    def encode_sfc(self, sample):
+        """
+        For calibration: return just the answer prefix without context.
+        """
+        return self.answer_prefix
+    
+    def verbalize_sfc(self, sample, candidate):
+        """
+        For calibration: return answer prefix with the candidate.
+        """
+        return self.answer_prefix + " " + str(candidate)
 
 class SST2Template(Template):
     verbalizer = {0: "terrible", 1: "great"}
@@ -71,9 +223,23 @@ class SST2TemplateEmpty(Template):
 
     def verbalize_sfc(self, sample, candidate):
         return f" {self.verbalizer[candidate]}"
+    
+
+class HellaSwagTemplate(Template):
+
+    def encode(self, sample):
+        text = sample.data["ctx"]
+        return f"{text} "
+    
+    def verbalize(self, sample, candidate):
+        text = sample.data["ctx"]
+        verbalized = sample.data['endings'][int(sample.data['label'])]
+        return f"{text}{verbalized}"
+        
 
 
 class CopaTemplate(Template):
+
     capitalization: str = "correct"
     effect_conj: str = " so "
     cause_conj: str = " because "

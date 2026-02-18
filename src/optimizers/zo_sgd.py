@@ -16,6 +16,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             tensor_sampling_type: str = "standard_normal",
             matrix_sampling_type: str = None, 
             perturbation_mode: str = "two_side",
+            gradient_sparsity: Optional[Union[float, Dict[str, float]]] = None
     ):
         super().__init__(
             params,
@@ -25,6 +26,7 @@ class ZO_SGD(ZeroOrderOptimizer):
             tensor_sampling_type=tensor_sampling_type,
             matrix_sampling_type=matrix_sampling_type,
             perturbation_mode=perturbation_mode,
+            gradient_sparsity=gradient_sparsity
         )
         
     @torch.no_grad()

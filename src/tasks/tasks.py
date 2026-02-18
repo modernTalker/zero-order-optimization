@@ -136,6 +136,65 @@ class HumanEvalDataset(Dataset):
 
     def get_template(self, template_version=0):
         return {0: HumanEvalTemplate}[template_version]()
+    
+
+class GSM8KDataset(Dataset):
+    metric_name = "accuracy"
+    generation=True
+    
+    def __init__(self, subtask=None, **kwargs) -> None:
+        self.load_dataset(subtask, **kwargs)
+    
+    def load_dataset(self, path, **kwargs):
+        train_examples = load_dataset("gsm8k", "main")["train"]
+        valid_examples = load_dataset("gsm8k", "main")["test"]
+        train_samples = [self.build_sample(example) for example in train_examples]
+        valid_samples = [self.build_sample(example) for example in valid_examples]
+        self.samples = {"train": train_samples, "valid": valid_samples}
+    
+    # for generative tasks, candidates are []
+    def build_sample(self, example):
+
+        answer_text = example["answer"]
+        final_answer = answer_text.split("####")[-1].strip()
+
+        sample = \
+            Sample(
+                id=None,
+                data=example,
+                candidates=[],  # generative task, no candidates
+                correct_candidate=final_answer,
+            )
+        return sample
+    
+    def get_template(self, template_version=0):
+        return {0: GSM8KTemplate}[template_version]()
+
+
+class HellaSwagDataset(Dataset):
+    train_sep = "\n\n"
+
+    def __init__(self, subtask=None, **kwargs) -> None:
+        self.load_dataset(subtask, **kwargs)
+
+    def load_dataset(self, path, **kwargs):
+        d = load_dataset('Rowan/hellaswag')
+        train_d = d["train"]
+        validation_d = d["validation"]
+
+        train_samples = [self.build_sample(example) for example in train_d]
+        valid_samples = [self.build_sample(example) for example in validation_d]
+
+        self.samples = {"train": train_samples, "valid": valid_samples}
+
+    # for generative tasks, candidates are []
+    def build_sample(self, example):
+        label = int(example["label"])
+        return Sample(id=example["ind"], data=example, correct_candidate=label, candidates=[0, 1, 2, 3])
+
+    def get_template(self, template_version=0):
+        return {0: HellaSwagTemplate}[template_version]()
+
 
 class SST2Dataset(Dataset):
     train_sep = "\n\n"
@@ -160,6 +219,37 @@ class SST2Dataset(Dataset):
 
     def get_template(self, template_version=0):
         return {0: SST2Template, 1: SST2TemplateEmpty}[template_version]()
+
+
+class MMLUDataset(Dataset):
+    train_sep = "\n\n"
+    mixed_set = False
+
+    def __init__(self, subtask=None, **kwargs) -> None:
+        self.load_dataset(subtask, **kwargs)
+
+    def load_dataset(self, path, **kwargs):
+        train_examples = load_dataset("cais/mmlu", "all")["auxiliary_train"]
+        valid_examples = load_dataset("cais/mmlu", "all")["validation"]
+
+        train_samples = [self.build_sample(example) for example in train_examples]
+        valid_samples = [self.build_sample(example) for example in valid_examples]
+        self.samples = {"train": train_samples, "valid": valid_samples}
+
+    # for generative tasks, candidates are []
+    def build_sample(self, example):
+        sample = \
+            Sample(
+                id=None,
+                data=example,
+                candidates=example['choices'],
+                correct_candidate=example["choices"][example["answer"]],
+            )
+
+        return sample
+
+    def get_template(self, template_version=0):
+        return {0: MMLUTemplate}[template_version]()
 
 
 class CopaDataset(Dataset):

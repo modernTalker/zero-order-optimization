@@ -55,6 +55,8 @@ class OurArguments(TrainingArguments):
     load_int8: bool = False  # load model parameters as int8
     max_length: int = 2048  # max length the model can take
     no_auto_device: bool = False  # do not load model by auto device; should turn this on when using FSDP
+    overwrite_output_dir: bool = True
+    past_index: int = -1
 
     # Calibration
     sfc: bool = False  # whether to use SFC calibration
@@ -194,6 +196,7 @@ class Framework:
         self.args = args
         self.task = task
         self.model, self.tokenizer = self.load_model()
+        print(self.model.config)
 
     def load_model(self):
         """
@@ -260,13 +263,12 @@ class Framework:
                 model = AutoModelForCausalLM.from_pretrained(self.args.model_name, config=config, device_map='auto',
                                                              torch_dtype=torch_dtype,
                                                              max_memory={i: f'{free_in_GB - 5}GB' for i in
-                                                                         range(torch.cuda.device_count())},
-                                                             load_in_8bit=self.args.load_int8, )
+                                                                         range(torch.cuda.device_count())}, local_files_only=True)
             model.eval()
 
         # Load tokenizer
         #  In mezo, use_fast is set to False. But TypeError will occur when running SQuaD. Setting to be True can fix.
-        tokenizer = AutoTokenizer.from_pretrained(self.args.model_name, use_fast=True)
+        tokenizer = AutoTokenizer.from_pretrained(self.args.model_name, use_fast=True, local_files_only=True)
 
         # HF tokenizer bug fix
         if "opt" in self.args.model_name:
@@ -379,12 +381,16 @@ class Framework:
         if self.task.generation:
             # For generation tasks, return the autoregressively-generated text
             output_text = self.forward(encoded_candidates[0], generation=True)
+            # print(output_text)
             # if verbose:
             #     logger.info("=== Prompt ===")
             #     logger.info(self.tokenizer.decode(encoded_candidates[0]))
             #     logger.info(f"Output: {output_text}")
             if self.args.task_name == "HumanEval":
                 return Prediction(correct_candidate=eval_sample.correct_candidate, predicted_candidate=output_text, prompt=self.tokenizer.decode(encoded_candidates[0]), test=eval_sample.data['test'])
+            elif self.args.task_name == "GSM8K":
+                numeric_answer = self.task.get_template(template_version=self.args.template_ver).extract_answer(output_text[0])
+                return Prediction(correct_candidate=eval_sample.correct_candidate, predicted_candidate=numeric_answer, prompt=None, test=None)
             else:
                 return Prediction(correct_candidate=eval_sample.correct_candidate, predicted_candidate=output_text[0], prompt=None, test=None)
         else:
@@ -407,7 +413,6 @@ class Framework:
 
                 outputs.append({"log_probs": selected_log_probs,
                                 "sfc_log_probs": sfc_selected_log_probs if self.args.sfc or self.args.icl_sfc else None})
-
             if self.args.sfc or self.args.icl_sfc:
                 # Calibrated probabilities (surface form competition; https://arxiv.org/pdf/2104.08315.pdf)
                 # log p(candidate | input) = log p_lm(candidate | input) - log p_lm(candidate | sfc prompt)
@@ -425,8 +430,7 @@ class Framework:
                 correct_candidate_id = [eval_sample.candidates.index(c) for c in eval_sample.correct_candidate]
             else:
                 correct_candidate_id = eval_sample.candidates.index(eval_sample.correct_candidate)
-
-            return Prediction(correct_candidate=correct_candidate_id, predicted_candidate=int(np.argmax(scores)))
+            return Prediction(correct_candidate=correct_candidate_id, predicted_candidate=int(np.argmax(scores)), prompt=None, test=None)
 
     def evaluate(self, train_samples, eval_samples, one_train_set_per_eval_sample=False, description=None):
         """
