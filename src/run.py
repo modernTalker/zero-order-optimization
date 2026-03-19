@@ -31,6 +31,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+from huggingface_hub import login
+
+login(token=os.getenv("HF_TOKEN"))
+
 # AutoConfig.register("mistral", MistralConfig)
 # AutoModelForCausalLM.register(MistralConfig, MistralForCausalLM)
 

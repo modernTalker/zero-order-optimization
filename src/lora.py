@@ -122,7 +122,7 @@ class LoRA:
             attention_name = "attn"
         elif model.config.model_type == "roberta":
             attention_name = "attention"
-        elif model.config.model_type in ["llama", "mistral"]:
+        elif model.config.model_type in ["llama", "mistral", "gemma"]:
             attention_name = "self_attn"
         else:
             raise NotImplementedError
@@ -189,6 +189,26 @@ class LoRA:
                         config.hidden_size,
                         config.num_key_value_heads * head_dim,
                         r=r, lora_alpha=alpha
+                    ).to(original_v_weight.device)
+                    if float16:
+                        attn.q_proj.half()
+                        attn.v_proj.half()
+                    attn.q_proj.weight.data = original_q_weight
+                    attn.v_proj.weight.data = original_v_weight
+                elif model.config.model_type == "gemma":
+                    config = model.config
+                    original_q_weight = attn.q_proj.weight.data
+                    original_v_weight = attn.v_proj.weight.data
+                    head_dim = config.head_dim
+                    q_out_dim = config.num_attention_heads * head_dim
+                    v_out_dim = config.num_key_value_heads * head_dim
+                    attn.q_proj = LoRALinear(
+                        config.hidden_size, q_out_dim,
+                        r=r, lora_alpha=alpha, bias=False
+                    ).to(original_q_weight.device)
+                    attn.v_proj = LoRALinear(
+                        config.hidden_size, v_out_dim,
+                        r=r, lora_alpha=alpha, bias=False
                     ).to(original_v_weight.device)
                     if float16:
                         attn.q_proj.half()
