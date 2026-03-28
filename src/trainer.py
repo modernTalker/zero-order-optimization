@@ -362,6 +362,20 @@ class OurTrainer(Trainer):
             self.optimizer = Sparse_Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
         elif args.trainer == "sparse_jaguar_muon":
             self.optimizer = Sparse_Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
+        elif args.trainer == "lozo":
+            self.optimizer = LOZO(
+                params,
+                lr=args.learning_rate,
+                eps=args.zo_eps,
+                rank=args.lozo_rank,
+                step_interval=args.lozo_step_interval,
+                lozo_optimizer=args.lozo_optimizer,
+                beta1=args.lozo_beta1,
+                weight_decay=args.weight_decay,
+                tensor_sampling_type=args.tensor_sampling_type,
+                matrix_sampling_type=args.matrix_sampling_type,
+                perturbation_mode=args.perturbation_mode,
+            )
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 

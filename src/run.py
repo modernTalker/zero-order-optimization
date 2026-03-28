@@ -163,6 +163,12 @@ class OurArguments(TrainingArguments):
     tensor_sampling_type: str = "standard_normal"
     matrix_sampling_type: str = None 
 
+    # LOZO (Low-Rank Zeroth-Order) specific parameters
+    lozo_rank: int = 1                  # low-rank dimension for uv^T perturbation
+    lozo_step_interval: int = 1         # how often to resample the right singular vectors v
+    lozo_optimizer: str = "sgd"         # "sgd" or "sgdm" (momentum version)
+    lozo_beta1: float = 0.9             # momentum coefficient for "sgdm"
+
     scheduler: str = "constant"
     num_training_steps: int = 20000
     warmup_steps: int = 0
@@ -642,6 +648,8 @@ def main():
     args.tag = "momen" + args.tag if args.momentum > 0 else args.tag
     args.tag = f"sparse_grad-{args.gradient_sparsity}-{args.sparse_gradient_group}-{args.sparse_gradient_resample_steps}-" + args.tag if args.gradient_sparsity is not None else args.tag
     args.tag = f"module_perturb-{args.perturbed_module_level}-" + args.tag if args.module_wise_perturbation else args.tag
+    if args.trainer == "lozo":
+        args.tag += f"-LOZO-R{args.lozo_rank}-I{args.lozo_step_interval}-{args.lozo_optimizer}-B{args.lozo_beta1}"
     args.run_name = args.tag
     args.output_dir = f"result/{args.tag}"
     args.result_file = f"result/{args.tag}/results.json"
