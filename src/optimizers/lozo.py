@@ -40,7 +40,7 @@ class LOZO(ZeroOrderOptimizer):
         self.step_interval = step_interval
         self.lozo_optimizer = lozo_optimizer
         self.beta1 = beta1
-        self.step = 0
+        self.step_count = 0 
         self.projected_grad = 0.0
 
         # Per-parameter state initialization
@@ -85,7 +85,7 @@ class LOZO(ZeroOrderOptimizer):
             raise ValueError(f"Unsupported lozo_optimizer: {self.lozo_optimizer}")
 
         # Advance step counter (matches official LOZOtrainer.py timing)
-        self.step += 1
+        self.step_count += 1
         return loss1
 
     def _lowrank_zo_perturb_parameters(self, scaling_factor: float = 1.0):
@@ -98,7 +98,7 @@ class LOZO(ZeroOrderOptimizer):
                 state = self.state[param]
                 if param.ndim >= 2:
                     # Resample v every step_interval steps
-                    if self.step % self.step_interval == 0:
+                    if self.step_count % self.step_interval == 0:
                         v = torch.randn(
                             param.size(1), self.rank,
                             device=param.device, dtype=param.dtype,
@@ -166,7 +166,7 @@ class LOZO(ZeroOrderOptimizer):
                     )
 
                     # Momentum logic (exact port from official LOZO)
-                    if self.step % self.step_interval == 0:
+                    if self.step_count % self.step_interval == 0:
                         if state.get("v_old") is not None:
                             v_old = state["v_old"]
                             n = v_old.shape[0]
@@ -182,7 +182,7 @@ class LOZO(ZeroOrderOptimizer):
                             )
                         else:
                             state["exp_avg_m"] = self.projected_grad * u
-                    elif self.step % self.step_interval == self.step_interval - 1:
+                    elif self.step_count % self.step_interval == self.step_interval - 1:
                         state["v_old"] = v.clone()
                         if state.get("exp_avg_m") is None:
                             state["exp_avg_m"] = torch.zeros(
@@ -213,7 +213,7 @@ class LOZO(ZeroOrderOptimizer):
                         param.size(), device=param.device, dtype=param.dtype,
                         generator=self.generator
                     )
-                    if self.step == 0:
+                    if self.step_count == 0:
                         state["exp_avg_m"] = self.projected_grad * z
                     else:
                         if state.get("exp_avg_m") is None:
