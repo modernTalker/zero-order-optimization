@@ -61,7 +61,7 @@ class ZO_MUON(ZeroOrderOptimizer):
                 tensor_sampling_type = state["tensor_sampling_type"]
 
                 z = self.tensor_sampler.sample(p.shape, generator=self.generator, sampler_type=tensor_sampling_type).to(device)
-                self.generator.manual_seed(self.zo_random_seed)
+                # self.generator.manual_seed(self.zo_random_seed)
 
                 grad_update = projected_grad * z / eps 
 
