@@ -2,7 +2,6 @@ from .base import ZeroOrderOptimizer
 import torch
 import numpy as np
 from typing import Optional, Dict, Any, Union, Iterable
-import time
 
 from .opt_utils import *
 
@@ -28,72 +27,59 @@ class Jaguar_SignSGD(ZeroOrderOptimizer):
         for group in self.param_groups:
             group['beta'] = beta
 
-        for group in self.param_groups:
-            for param in group['params']:    
-                state = self.state[param]
-                if 'step' not in state:
-                    state['step'] = 0
-                    state['grad_accum'] = torch.zeros_like(
-                        param, 
-                        memory_format=torch.preserve_format
-                    )
-
-
     @torch.no_grad()
     def step(self, closure=None):
+        if closure is None:
+            raise ValueError("ZO optimizers require a closure function.")
+
         loss1, loss2 = None, None 
 
+        # 1. Standardized lazy state init (matches MUON)
         for group in self.param_groups:
             for param in group['params']:    
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
-                    state['grad_accum'] = torch.zeros_like(
-                        param, 
-                        memory_format=torch.preserve_format
-                    )
+                    state['grad_accum'] = torch.zeros_like(param, memory_format=torch.preserve_format)
                 state['step'] += 1
 
-        self.zo_random_seed = np.random.randint(1_000_000_000)
+        # 2. Paired ZO perturbation
+        self.zo_random_seed = int(np.random.randint(1_000_000_000))
         self.generator.manual_seed(self.zo_random_seed)
 
-        self._indices_perturb(scaling_factor = 1.0)
-        if closure is not None:
-            loss1 = closure()
+        self._indices_perturb(scaling_factor=1.0)
+        loss1 = closure()
+        
         self.generator.manual_seed(self.zo_random_seed)
-
-        self._indices_perturb(scaling_factor = -2.0)
-        if closure is not None:
-            loss2 = closure()
+        self._indices_perturb(scaling_factor=-2.0)
+        loss2 = closure()
+        
         self.generator.manual_seed(self.zo_random_seed)
-
-        self._indices_perturb(scaling_factor = 1.0)
-        self.generator.manual_seed(self.zo_random_seed)
+        self._indices_perturb(scaling_factor=1.0)
 
         grad_update = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
 
+        # 3. Update phase
         for group in self.param_groups:
             lr = group['lr']  
             beta = group['beta']
             eps = group['eps']
+            grad_scalar = torch.tensor(grad_update / eps, device='cpu', dtype=torch.float32)
             
-            grad_final = grad_update / eps 
-
             for p in group['params']:
                 state = self.state[p]
-                tensor_sampling_type = state["tensor_sampling_type"]
                 indices = self._select_indices(param_shape=p.shape, device=p.device)
                 
                 if isinstance(indices, torch.Tensor):
                     state['grad_accum'][indices] = (
                         beta * state['grad_accum'][indices] + 
-                        (1 - beta) * grad_final
+                        (1.0 - beta) * grad_scalar
                     )
                 else:
                     rows, cols = indices
                     state['grad_accum'][rows[:, None], cols] = (
                         beta * state['grad_accum'][rows[:, None], cols] + 
-                        (1 - beta) * grad_final
+                        (1.0 - beta) * grad_scalar
                     )
                 
                 update_direction = torch.sign(state['grad_accum'])

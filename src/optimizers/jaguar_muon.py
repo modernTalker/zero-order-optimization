@@ -2,7 +2,6 @@ from .base import ZeroOrderOptimizer
 import torch
 import numpy as np
 from typing import Optional, Dict, Any, Union, Iterable
-import time
 
 from .opt_utils import *
 
@@ -27,63 +26,62 @@ class Jaguar_MUON(ZeroOrderOptimizer):
         
         for group in self.param_groups:
             group['beta'] = beta
-        
 
     @torch.no_grad()
     def step(self, closure=None):
+        if closure is None:
+            raise ValueError("ZO optimizers require a closure function.")
+
         loss1, loss2 = None, None 
 
+        # 1. Lazy state initialization
         for group in self.param_groups:
             for param in group['params']:    
                 state = self.state[param]
                 if len(state) == 0:
                     state['step'] = 0
-                    state['grad_accum'] = torch.zeros_like(
-                        param, 
-                        memory_format=torch.preserve_format
-                    )
+                    state['grad_accum'] = torch.zeros_like(param, memory_format=torch.preserve_format)
                 state['step'] += 1
 
-        self.zo_random_seed = np.random.randint(1_000_000_000)
+        # 2. Paired ZO perturbation (seed reset ensures matched coordinates)
+        self.zo_random_seed = int(np.random.randint(1_000_000_000))
         self.generator.manual_seed(self.zo_random_seed)
 
-        self._indices_perturb(scaling_factor = 1.0)
-        if closure is not None:
-            loss1 = closure()
+        self._indices_perturb(scaling_factor=1.0)
+        loss1 = closure()
+        
         self.generator.manual_seed(self.zo_random_seed)
-
-        self._indices_perturb(scaling_factor = -2.0)
-        if closure is not None:
-            loss2 = closure()
+        self._indices_perturb(scaling_factor=-2.0)
+        loss2 = closure()
+        
         self.generator.manual_seed(self.zo_random_seed)
-
-        self._indices_perturb(scaling_factor = 1.0)
-        self.generator.manual_seed(self.zo_random_seed)
+        self._indices_perturb(scaling_factor=1.0)
 
         grad_update = self.grad_approx(loss_plus=loss1, loss_minus=loss2, perturbation_mode="two_side")
 
+        # 3. Update phase: DO NOT reset seed here to allow independent coordinate sampling
         for group in self.param_groups:
             lr = group['lr']  
             beta = group['beta']
             eps = group['eps']
-
-            grad_final = grad_update / eps 
+            grad_scalar = torch.tensor(grad_update / eps, device='cpu', dtype=torch.float32)
 
             for p in group['params']:
                 state = self.state[p]
-                indices = self._select_indices(p_shape=p.shape, device=p.device)
-                tensor_sampling_type = state["tensor_sampling_type"]
+                # FIX: Match base class signature
+                indices = self._select_indices(param_shape=p.shape, device=p.device)
                 
+                # Broadcast scalar to selected indices safely
                 if isinstance(indices, torch.Tensor):
                     state['grad_accum'][indices] = (
                         beta * state['grad_accum'][indices] + 
-                        (1 - beta) * grad_final
+                        (1.0 - beta) * grad_scalar
                     )
                 else:
                     rows, cols = indices
                     state['grad_accum'][rows[:, None], cols] = (
                         beta * state['grad_accum'][rows[:, None], cols] + 
-                        (1 - beta) * grad_final
+                        (1.0 - beta) * grad_scalar
                     )
                 
                 if p.ndim >= 2:
