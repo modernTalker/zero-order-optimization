@@ -54,7 +54,7 @@ class ZO_MUON(ZeroOrderOptimizer):
         for group_idx, group in enumerate(self.param_groups):
             lr = group['lr']
             eps = group['eps']
-            tensor_sampling_type = group['tensor_sampling_type']
+            # tensor_sampling_type = group['tensor_sampling_type']
             for p in group['params']:
                 device = p.device
                 state = self.state[p]
