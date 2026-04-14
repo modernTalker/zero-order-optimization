@@ -22,3 +22,7 @@ scheduler settings, `max_steps: 20000`, `num_training_steps: 20000`, and
 not consumed by the LLM trainer.
 
 Only configs for optimizers present in this repository are included.
+
+Optuna trial tags, which are also used as WandB run names, include the study,
+trainer, task, short model name, tuning mode, and trial number, for example:
+`optuna/study/sparse_jaguar_muon-SST2-roberta-large-lora/trial_0`.
