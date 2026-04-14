@@ -38,9 +38,10 @@ class ZeroOrderOptimizer(Optimizer, ABC):
 
         self.state = defaultdict(dict)
 
-        self.generator = torch.Generator(device=device)
+        generator_device = self._resolve_generator_device(device)
+        self.generator = torch.Generator(device=generator_device)
 
-        self.tensor_sampler = TensorSampler(tensor_sampling_type, device=device)
+        self.tensor_sampler = TensorSampler(tensor_sampling_type, device=generator_device)
 
         self.perturbation_mode = perturbation_mode
 
@@ -51,6 +52,19 @@ class ZeroOrderOptimizer(Optimizer, ABC):
                 elif p.ndim >= 2:
                      self.state[p]['tensor_sampling_type'] = matrix_sampling_type if matrix_sampling_type is not None else tensor_sampling_type
 
+    def _resolve_generator_device(self, fallback_device: str) -> str:
+        for group in self.param_groups:
+            for p in group['params']:
+                param_device = p.device.type
+                if param_device == "cuda" and not torch.cuda.is_available():
+                    return "cpu"
+                if param_device in {"cpu", "cuda"}:
+                    return param_device
+                return "cpu"
+
+        if fallback_device == "cuda" and not torch.cuda.is_available():
+            return "cpu"
+        return fallback_device
 
     def _validate_hyperparameters(self):
         """Obligatory hyperparameters check"""
@@ -78,8 +92,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
     ) -> None:
         for group in self.param_groups:
             eps = group["eps"]
-            tensor_sampling_type = group["tensor_sampling_type"]
             for p in group['params']:
+                tensor_sampling_type = self.state[p]['tensor_sampling_type']
                 z = self.tensor_sampler.sample(p.shape, generator=self.generator, sampler_type=tensor_sampling_type)
                 perturb = z * eps
                 p.data.add_(scaling_factor * perturb.to(p.device))
@@ -128,8 +142,8 @@ class ZeroOrderOptimizer(Optimizer, ABC):
     ) -> None:
         for group in self.param_groups:
             eps = group["eps"]
-            tensor_sampling_type = group["tensor_sampling_type"]
             for p in group['params']:
+                tensor_sampling_type = self.state[p]['tensor_sampling_type']
                 z = self.tensor_sampler.sample(p.shape, generator=self.generator, sampler_type=tensor_sampling_type)
 
                 perturb = z * eps
