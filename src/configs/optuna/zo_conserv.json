@@ -7,7 +7,7 @@
     "lora": true,
     "task_name": "SST2",
     "trainer": "zo_conserv",
-    "project_name": "zo-rl-optuna",
+    "project_name": "zo-order-optuna",
     "report_to": "wandb",
     "logging_steps": 10,
     "num_train_epochs": 5,

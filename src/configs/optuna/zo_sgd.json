@@ -5,9 +5,9 @@
   "base_args": {
     "model_name": "meta-llama/Llama-2-7b-hf",
     "lora": true,
-    "task_name": "WinoGrande",
+    "task_name": "SST2",
     "trainer": "zo_sgd",
-    "project_name": "zo-rl-optuna",
+    "project_name": "zo-order-optuna",
     "report_to": "wandb",
     "logging_steps": 10,
     "num_train_epochs": 5,
