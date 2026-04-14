@@ -1,0 +1,24 @@
+# Optuna configs
+
+Use from `src`:
+
+```bash
+./scripts/run_optuna.sh --config configs/optuna/sparse_jaguar_muon.json
+```
+
+Per-trial local logging is enabled by default. To keep only the final
+`best_params.json` summary with the best Optuna parameters and their
+`test_accuracy`, run:
+
+```bash
+LOG_TRIALS=false ./scripts/run_optuna.sh --config configs/optuna/sparse_jaguar_muon.json
+```
+
+Each config is self-contained: `base_args` explicitly includes fixed launch
+parameters such as `model_name`, `task_name`, dataset sizes, logging settings,
+scheduler settings, `max_steps: 20000`, `num_training_steps: 20000`, and
+`save_strategy: "no"`. Each trial logs to WandB via `use_wandb: true` and
+`report_to: "wandb"`. `tau` is mapped to `zo_eps` because `zo_tau` is currently
+not consumed by the LLM trainer.
+
+Only configs for optimizers present in this repository are included.

@@ -171,6 +171,13 @@ class OurArguments(TrainingArguments):
 
     params_ratio: float = 0.1
 
+    k_value: int = None
+    evaluate_memory: bool = False
+    variance: float = 1.0
+    lr_mu: float = None
+    use_grad_first: bool = False
+    use_wandb: bool = True
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -638,10 +645,13 @@ def main():
         args.mode = "prompt"
     else:
         args.mode = "ft"
-    args.tag = f"{args.trainer}-{args.task_name}-{args.template_ver}-{args.model_name.split('/')[-1]}-OPTIM_{args.mode}-STEP{args.max_steps}-{args.optimizer}-LR{args.learning_rate}-{args.scheduler}-ZOEPS{args.zo_eps}-Q{args.q}-MATRXSAMPLING{args.matrix_sampling_type}-TENSORSAMPLING{args.tensor_sampling_type}"
-    args.tag = "momen" + args.tag if args.momentum > 0 else args.tag
-    args.tag = f"sparse_grad-{args.gradient_sparsity}-{args.sparse_gradient_group}-{args.sparse_gradient_resample_steps}-" + args.tag if args.gradient_sparsity is not None else args.tag
-    args.tag = f"module_perturb-{args.perturbed_module_level}-" + args.tag if args.module_wise_perturbation else args.tag
+    args.k_value = args.k_value if args.k_value is not None else 1
+
+    if not args.tag:
+        args.tag = f"{args.trainer}-{args.task_name}-{args.template_ver}-{args.model_name.split('/')[-1]}-OPTIM_{args.mode}-STEP{args.max_steps}-{args.optimizer}-LR{args.learning_rate}-{args.scheduler}-ZOEPS{args.zo_eps}-Q{args.q}-MATRXSAMPLING{args.matrix_sampling_type}-TENSORSAMPLING{args.tensor_sampling_type}"
+        args.tag = "momen" + args.tag if args.momentum > 0 else args.tag
+        args.tag = f"sparse_grad-{args.gradient_sparsity}-{args.sparse_gradient_group}-{args.sparse_gradient_resample_steps}-" + args.tag if args.gradient_sparsity is not None else args.tag
+        args.tag = f"module_perturb-{args.perturbed_module_level}-" + args.tag if args.module_wise_perturbation else args.tag
     args.run_name = args.tag
     args.output_dir = f"result/{args.tag}"
     args.result_file = f"result/{args.tag}/results.json"
@@ -649,7 +659,8 @@ def main():
     args.logging_dir = os.path.join(args.output_dir, "logs")
     os.makedirs(args.logging_dir, exist_ok=True)
 
-    wandb.init(project=args.project_name, name=args.tag, config=args)
+    if args.use_wandb:
+        wandb.init(project=args.project_name, name=args.tag, config=args)
     # clearml_task = Task.init(project_name='zo-bench', task_name=args.tag)
     # clearml_task.connect(args)
 
@@ -721,7 +732,8 @@ def main():
                 # Zero-shot / in-context learning
                 metrics = framework.evaluate(train_samples, eval_samples)
             logger.info(metrics)
-            wandb.log(metrics)
+            if args.use_wandb:
+                wandb.log(metrics)
             # for key, value in metrics.items():
             #     clearml_task.get_logger().report_scalar(
             #         title=key,
@@ -733,7 +745,8 @@ def main():
             if not args.no_eval:
                 logger.info("===== Train set %d =====" % train_set_seed)
                 logger.info(metrics)
-                wandb.log(metrics)
+                if args.use_wandb:
+                    wandb.log(metrics)
                 # for key, value in metrics.items():
                 #     clearml_task.get_logger().report_scalar(
                 #         title=key,
@@ -757,7 +770,8 @@ def main():
             eval_samples = task.valid_samples
         metrics = framework.evaluate(train_sets, eval_samples, one_train_set_per_eval_sample=True)
         logger.info(metrics)
-        wandb.log(metrics)
+        if args.use_wandb:
+            wandb.log(metrics)
         # for key, value in metrics.items():
         #     clearml_task.get_logger().report_scalar(
         #         title=key,

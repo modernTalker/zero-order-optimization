@@ -339,6 +339,7 @@ class OurTrainer(Trainer):
             'momentum': args.momentum,
             'eps': args.zo_eps,
         }
+        effective_k = args.k_value if args.k_value is not None else 1
 
         params = [p for p in self.model.parameters() if p.requires_grad]
 
@@ -359,9 +360,9 @@ class OurTrainer(Trainer):
         elif args.trainer == "jaguar_muon":
             self.optimizer = Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type)
         elif args.trainer == "sparse_jaguar_signsgd":
-            self.optimizer = Sparse_Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
+            self.optimizer = Sparse_Jaguar_SignSGD(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio, k=effective_k, evaluate_memory=args.evaluate_memory)
         elif args.trainer == "sparse_jaguar_muon":
-            self.optimizer = Sparse_Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio)
+            self.optimizer = Sparse_Jaguar_MUON(params, lr=args.learning_rate, eps=args.zo_eps, beta=args.zo_beta, perturbation_mode=args.perturbation_mode, tensor_sampling_type=args.tensor_sampling_type, matrix_sampling_type=args.matrix_sampling_type, params_ratio=args.params_ratio, k=effective_k, evaluate_memory=args.evaluate_memory)
         else:
             # assert args.lr_scheduler_type == 'constant', "we did not implement lr_schedule."
             if args.optimizer == "adam": # FIXME: what to do with this? 
