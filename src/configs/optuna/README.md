@@ -20,6 +20,7 @@ scheduler settings, `max_steps: 20000`, `num_training_steps: 20000`, and
 `save_strategy: "no"`. Each trial logs to WandB via `use_wandb: true` and
 `report_to: "wandb"`. `tau` is mapped to `zo_eps` because `zo_tau` is currently
 not consumed by the LLM trainer.
+Optuna optimizes `test_accuracy` by default.
 
 Only configs for optimizers present in this repository are included.
 

@@ -26,7 +26,7 @@ from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional,
 
 LOGGER = logging.getLogger("optuna_runner")
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_METRIC_KEY = "val_accuracy"
+DEFAULT_METRIC_KEY = "test_accuracy"
 DEFAULT_DIRECTION = "maximize"
 DEFAULT_STUDY_PREFIX = "zero_order_optuna"
 BETA_TRAINERS = {
