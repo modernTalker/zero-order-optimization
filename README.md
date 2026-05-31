@@ -1,6 +1,6 @@
-# Zero-order LLM Fine-tuning
+# Zero-order Fine-tuning
 
-This is a repository for running and comparing LLM fine-tuning methods and for adding custom optimizers (with emphasis on zero-order optimizers). This README contains: project overview, installation, usage, examples, how to add a custom optimizer, an example `run_script.sh`, and recommended practices.
+This is a repository for running and comparing fine-tuning methods and for adding custom optimizers (with emphasis on zero-order optimizers). This README contains: project overview, installation, usage, examples, how to add a custom optimizer, an example `run_script.sh`, and recommended practices.
 
 ## Table of contents
 
@@ -30,7 +30,7 @@ This is a repository for running and comparing LLM fine-tuning methods and for a
 
 ## Project overview
 
-This repository contains code to run LLM fine-tuning experiments, evaluate different fine-tuning strategies on standard NLP tasks, and extend the optimizer API with custom optimizers — including a focus on zero-order optimization methods (ZO). The training pipeline handles data loading, model preparation, selection of fine-tuning method, optimization loop, logging and checkpointing. The codebase is designed to make it easy to add new optimizers and compare them against first-order baselines.
+This repository contains code to run fine-tuning experiments, evaluate different fine-tuning strategies on standard NLP tasks, and extend the optimizer API with custom optimizers — including a focus on zero-order optimization methods (ZO). The training pipeline handles data loading, model preparation, selection of fine-tuning method, optimization loop, logging and checkpointing. The codebase is designed to make it easy to add new optimizers and compare them against first-order baselines.
 
 ## Features
 
